@@ -268,7 +268,8 @@ production:
       enclosure: '"'
       escape: "\\"
       forcedValues:
-        company: ${auth.companyId}
+        company: *forcedCompany
+
 
 
     #HuntGroupsRelUsers
