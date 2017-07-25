@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\HuntGroup;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class HuntGroup extends HuntGroupAbstract implements HuntGroupInterface
 
 
 }
+

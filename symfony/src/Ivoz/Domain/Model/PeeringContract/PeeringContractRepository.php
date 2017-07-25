@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\PeeringContract;
 
-interface PeeringContractRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface PeeringContractRepository extends ObjectRepository {}
 

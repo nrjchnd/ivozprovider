@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## post_persist
+  ##################################
+  Kam\Domain\Service\Dispatcher\UpdateByApplicationServer:
+    tags:
+      - { name: ivoz.lifecycle.application_server.post_persist, priority: 10}
+    arguments:
+      $entityPersister:
+        '@Core\Infrastructure\Domain\Service\DoctrineEntityPersister'
+      $dispatcherRepository:
+        '@=service("doctrine.orm.entity_manager").getRepository("Kam\\Domain\\Model\\Dispatcher\\Dispatcher")'
+
+  # services with priority 20 & 21 in lifecycle/xml_rpc.yml

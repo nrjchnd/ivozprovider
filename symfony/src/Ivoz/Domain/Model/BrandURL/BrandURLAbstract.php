@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\BrandURL;
 
 use Assert\Assertion;
@@ -61,9 +60,23 @@ abstract class BrandURLAbstract
         $this->setUrl($url);
         $this->setUrlType($urlType);
         $this->setLogo($logo);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return BrandURLDTO
@@ -180,7 +193,7 @@ abstract class BrandURLAbstract
      *
      * @return self
      */
-    protected function setUrl($url)
+    public function setUrl($url)
     {
         Assertion::notNull($url);
         Assertion::maxLength($url, 255);
@@ -207,7 +220,7 @@ abstract class BrandURLAbstract
      *
      * @return self
      */
-    protected function setKlearTheme($klearTheme = null)
+    public function setKlearTheme($klearTheme = null)
     {
         if (!is_null($klearTheme)) {
             Assertion::maxLength($klearTheme, 200);
@@ -235,7 +248,7 @@ abstract class BrandURLAbstract
      *
      * @return self
      */
-    protected function setUrlType($urlType)
+    public function setUrlType($urlType)
     {
         Assertion::notNull($urlType);
         Assertion::maxLength($urlType, 25);
@@ -268,7 +281,7 @@ abstract class BrandURLAbstract
      *
      * @return self
      */
-    protected function setName($name = null)
+    public function setName($name = null)
     {
         if (!is_null($name)) {
             Assertion::maxLength($name, 200);
@@ -296,7 +309,7 @@ abstract class BrandURLAbstract
      *
      * @return self
      */
-    protected function setUserTheme($userTheme = null)
+    public function setUserTheme($userTheme = null)
     {
         if (!is_null($userTheme)) {
             Assertion::maxLength($userTheme, 200);
@@ -348,7 +361,7 @@ abstract class BrandURLAbstract
      *
      * @return self
      */
-    protected function setLogo(Logo $logo)
+    public function setLogo(Logo $logo)
     {
         $this->logo = $logo;
 

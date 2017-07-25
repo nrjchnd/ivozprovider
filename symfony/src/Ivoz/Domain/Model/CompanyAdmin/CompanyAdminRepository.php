@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\CompanyAdmin;
 
-interface CompanyAdminRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface CompanyAdminRepository extends ObjectRepository {}
 

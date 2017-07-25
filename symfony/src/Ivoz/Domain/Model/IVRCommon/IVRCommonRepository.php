@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\IVRCommon;
 
-interface IVRCommonRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface IVRCommonRepository extends ObjectRepository {}
 

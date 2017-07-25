@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Fax;
 
 use Core\Application\DataTransferObjectInterface;

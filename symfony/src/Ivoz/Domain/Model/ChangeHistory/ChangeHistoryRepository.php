@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\ChangeHistory;
 
-interface ChangeHistoryRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface ChangeHistoryRepository extends ObjectRepository {}
 

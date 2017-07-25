@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersWatcher;
 
 use Assert\Assertion;
@@ -73,9 +72,23 @@ abstract class UsersWatcherAbstract
         $this->setEvent($event);
         $this->setStatus($status);
         $this->setInsertedTime($insertedTime);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersWatcherDTO
@@ -175,7 +188,7 @@ abstract class UsersWatcherAbstract
      *
      * @return self
      */
-    protected function setPresentityUri($presentityUri)
+    public function setPresentityUri($presentityUri)
     {
         Assertion::notNull($presentityUri);
         Assertion::maxLength($presentityUri, 128);
@@ -202,7 +215,7 @@ abstract class UsersWatcherAbstract
      *
      * @return self
      */
-    protected function setWatcherUsername($watcherUsername)
+    public function setWatcherUsername($watcherUsername)
     {
         Assertion::notNull($watcherUsername);
         Assertion::maxLength($watcherUsername, 64);
@@ -229,7 +242,7 @@ abstract class UsersWatcherAbstract
      *
      * @return self
      */
-    protected function setWatcherDomain($watcherDomain)
+    public function setWatcherDomain($watcherDomain)
     {
         Assertion::notNull($watcherDomain);
         Assertion::maxLength($watcherDomain, 190);
@@ -256,7 +269,7 @@ abstract class UsersWatcherAbstract
      *
      * @return self
      */
-    protected function setEvent($event)
+    public function setEvent($event)
     {
         Assertion::notNull($event);
         Assertion::maxLength($event, 64);
@@ -283,7 +296,7 @@ abstract class UsersWatcherAbstract
      *
      * @return self
      */
-    protected function setStatus($status)
+    public function setStatus($status)
     {
         Assertion::notNull($status);
         Assertion::integerish($status);
@@ -310,7 +323,7 @@ abstract class UsersWatcherAbstract
      *
      * @return self
      */
-    protected function setReason($reason = null)
+    public function setReason($reason = null)
     {
         if (!is_null($reason)) {
             Assertion::maxLength($reason, 64);
@@ -338,7 +351,7 @@ abstract class UsersWatcherAbstract
      *
      * @return self
      */
-    protected function setInsertedTime($insertedTime)
+    public function setInsertedTime($insertedTime)
     {
         Assertion::notNull($insertedTime);
         Assertion::integerish($insertedTime);

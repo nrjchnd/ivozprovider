@@ -7,11 +7,31 @@ use Core\Domain\Model\EntityInterface;
 interface ConferenceRoomInterface extends EntityInterface
 {
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return ConferenceRoomInterface
+     */
+    public function setName($name);
+
+
+    /**
      * Get name
      *
      * @return string
      */
     public function getName();
+
+
+    /**
+     * Set pinProtected
+     *
+     * @param boolean $pinProtected
+     *
+     * @return ConferenceRoomInterface
+     */
+    public function setPinProtected($pinProtected);
 
 
     /**
@@ -23,6 +43,16 @@ interface ConferenceRoomInterface extends EntityInterface
 
 
     /**
+     * Set pinCode
+     *
+     * @param string $pinCode
+     *
+     * @return ConferenceRoomInterface
+     */
+    public function setPinCode($pinCode = null);
+
+
+    /**
      * Get pinCode
      *
      * @return string
@@ -31,11 +61,31 @@ interface ConferenceRoomInterface extends EntityInterface
 
 
     /**
+     * Set maxMembers
+     *
+     * @param boolean $maxMembers
+     *
+     * @return ConferenceRoomInterface
+     */
+    public function setMaxMembers($maxMembers);
+
+
+    /**
      * Get maxMembers
      *
      * @return boolean
      */
     public function getMaxMembers();
+
+
+    /**
+     * Set company
+     *
+     * @param \Ivoz\Domain\Model\Company\CompanyInterface $company
+     *
+     * @return ConferenceRoomInterface
+     */
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company);
 
 
     /**

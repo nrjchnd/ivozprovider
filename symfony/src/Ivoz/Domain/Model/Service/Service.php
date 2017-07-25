@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Service;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class Service extends ServiceAbstract implements ServiceInterface
 
 
 }
+

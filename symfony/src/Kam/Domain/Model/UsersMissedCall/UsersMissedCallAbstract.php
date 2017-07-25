@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersMissedCall;
 
 use Assert\Assertion;
@@ -115,9 +114,23 @@ abstract class UsersMissedCallAbstract
         $this->setSipCode($sipCode);
         $this->setSipReason($sipReason);
         $this->setLocaltime($localtime);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersMissedCallDTO
@@ -245,7 +258,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setMethod($method)
+    public function setMethod($method)
     {
         Assertion::notNull($method);
         Assertion::maxLength($method, 16);
@@ -272,7 +285,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setFromTag($fromTag)
+    public function setFromTag($fromTag)
     {
         Assertion::notNull($fromTag);
         Assertion::maxLength($fromTag, 64);
@@ -299,7 +312,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setToTag($toTag)
+    public function setToTag($toTag)
     {
         Assertion::notNull($toTag);
         Assertion::maxLength($toTag, 64);
@@ -326,7 +339,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setCallid($callid)
+    public function setCallid($callid)
     {
         Assertion::notNull($callid);
         Assertion::maxLength($callid, 255);
@@ -353,7 +366,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setSipCode($sipCode)
+    public function setSipCode($sipCode)
     {
         Assertion::notNull($sipCode);
         Assertion::maxLength($sipCode, 3);
@@ -380,7 +393,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setSipReason($sipReason)
+    public function setSipReason($sipReason)
     {
         Assertion::notNull($sipReason);
         Assertion::maxLength($sipReason, 128);
@@ -407,7 +420,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setSrcIp($srcIp = null)
+    public function setSrcIp($srcIp = null)
     {
         if (!is_null($srcIp)) {
             Assertion::maxLength($srcIp, 64);
@@ -435,7 +448,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setFromUser($fromUser = null)
+    public function setFromUser($fromUser = null)
     {
         if (!is_null($fromUser)) {
             Assertion::maxLength($fromUser, 64);
@@ -463,7 +476,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setFromDomain($fromDomain = null)
+    public function setFromDomain($fromDomain = null)
     {
         if (!is_null($fromDomain)) {
             Assertion::maxLength($fromDomain, 190);
@@ -491,7 +504,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setRuriUser($ruriUser = null)
+    public function setRuriUser($ruriUser = null)
     {
         if (!is_null($ruriUser)) {
             Assertion::maxLength($ruriUser, 64);
@@ -519,7 +532,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setRuriDomain($ruriDomain = null)
+    public function setRuriDomain($ruriDomain = null)
     {
         if (!is_null($ruriDomain)) {
             Assertion::maxLength($ruriDomain, 190);
@@ -547,7 +560,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setCseq($cseq = null)
+    public function setCseq($cseq = null)
     {
         if (!is_null($cseq)) {
             if (!is_null($cseq)) {
@@ -578,7 +591,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setLocaltime($localtime)
+    public function setLocaltime($localtime)
     {
         Assertion::notNull($localtime);
 
@@ -604,7 +617,7 @@ abstract class UsersMissedCallAbstract
      *
      * @return self
      */
-    protected function setUtctime($utctime = null)
+    public function setUtctime($utctime = null)
     {
         if (!is_null($utctime)) {
             Assertion::maxLength($utctime, 128);

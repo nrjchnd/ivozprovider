@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\TargetPattern;
 
-interface TargetPatternRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TargetPatternRepository extends ObjectRepository {}
 

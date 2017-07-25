@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersLocation;
 
-interface UsersLocationRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersLocationRepository extends ObjectRepository {}
 

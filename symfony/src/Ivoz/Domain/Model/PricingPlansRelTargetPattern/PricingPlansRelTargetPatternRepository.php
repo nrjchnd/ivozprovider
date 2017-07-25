@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\PricingPlansRelTargetPattern;
 
-interface PricingPlansRelTargetPatternRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface PricingPlansRelTargetPatternRepository extends ObjectRepository {}
 

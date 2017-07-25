@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\IVRCustomEntry;
 
 use Assert\Assertion;
@@ -60,9 +59,23 @@ abstract class IVRCustomEntryAbstract
     {
         $this->setEntry($entry);
         $this->setTargetType($targetType);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return IVRCustomEntryDTO
@@ -162,7 +175,7 @@ abstract class IVRCustomEntryAbstract
      *
      * @return self
      */
-    protected function setEntry($entry)
+    public function setEntry($entry)
     {
         Assertion::notNull($entry);
         Assertion::maxLength($entry, 40);
@@ -189,7 +202,7 @@ abstract class IVRCustomEntryAbstract
      *
      * @return self
      */
-    protected function setTargetType($targetType)
+    public function setTargetType($targetType)
     {
         Assertion::notNull($targetType);
         Assertion::maxLength($targetType, 25);
@@ -221,7 +234,7 @@ abstract class IVRCustomEntryAbstract
      *
      * @return self
      */
-    protected function setTargetNumberValue($targetNumberValue = null)
+    public function setTargetNumberValue($targetNumberValue = null)
     {
         if (!is_null($targetNumberValue)) {
             Assertion::maxLength($targetNumberValue, 25);
@@ -249,7 +262,7 @@ abstract class IVRCustomEntryAbstract
      *
      * @return self
      */
-    protected function setIVRCustom(\Ivoz\Domain\Model\IVRCustom\IVRCustomInterface $iVRCustom)
+    public function setIVRCustom(\Ivoz\Domain\Model\IVRCustom\IVRCustomInterface $iVRCustom)
     {
         $this->IVRCustom = $iVRCustom;
 
@@ -273,7 +286,7 @@ abstract class IVRCustomEntryAbstract
      *
      * @return self
      */
-    protected function setWelcomeLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $welcomeLocution = null)
+    public function setWelcomeLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $welcomeLocution = null)
     {
         $this->welcomeLocution = $welcomeLocution;
 
@@ -297,7 +310,7 @@ abstract class IVRCustomEntryAbstract
      *
      * @return self
      */
-    protected function setTargetExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $targetExtension = null)
+    public function setTargetExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $targetExtension = null)
     {
         $this->targetExtension = $targetExtension;
 
@@ -321,7 +334,7 @@ abstract class IVRCustomEntryAbstract
      *
      * @return self
      */
-    protected function setTargetVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $targetVoiceMailUser = null)
+    public function setTargetVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $targetVoiceMailUser = null)
     {
         $this->targetVoiceMailUser = $targetVoiceMailUser;
 

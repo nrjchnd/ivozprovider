@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\EtagVersion;
 
-interface EtagVersionRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface EtagVersionRepository extends ObjectRepository {}
 

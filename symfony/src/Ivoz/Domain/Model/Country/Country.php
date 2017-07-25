@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Country;
 
 use Core\Application\DataTransferObjectInterface;
@@ -9,6 +8,8 @@ use Core\Application\DataTransferObjectInterface;
  */
 class Country extends CountryAbstract implements CountryInterface
 {
+    use CountryTrait;
+
     /**
      * @var integer
      */
@@ -109,3 +110,4 @@ class Country extends CountryAbstract implements CountryInterface
 
 
 }
+

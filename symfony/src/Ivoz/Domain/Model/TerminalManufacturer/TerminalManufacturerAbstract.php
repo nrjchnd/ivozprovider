@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\TerminalManufacturer;
 
 use Assert\Assertion;
@@ -40,9 +39,23 @@ abstract class TerminalManufacturerAbstract
         $this->setIden($iden);
         $this->setName($name);
         $this->setDescription($description);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TerminalManufacturerDTO
@@ -125,7 +138,7 @@ abstract class TerminalManufacturerAbstract
      *
      * @return self
      */
-    protected function setIden($iden)
+    public function setIden($iden)
     {
         Assertion::notNull($iden);
         Assertion::maxLength($iden, 100);
@@ -152,7 +165,7 @@ abstract class TerminalManufacturerAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 100);
@@ -179,7 +192,7 @@ abstract class TerminalManufacturerAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 500);

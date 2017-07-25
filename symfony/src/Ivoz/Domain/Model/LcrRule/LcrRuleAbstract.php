@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\LcrRule;
 
 use Assert\Assertion;
@@ -85,9 +84,23 @@ abstract class LcrRuleAbstract
         $this->setEnabled($enabled);
         $this->setTag($tag);
         $this->setDescription($description);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return LcrRuleDTO
@@ -199,7 +212,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setLcrId($lcrId)
+    public function setLcrId($lcrId)
     {
         Assertion::notNull($lcrId);
         Assertion::integerish($lcrId);
@@ -227,7 +240,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setPrefix($prefix = null)
+    public function setPrefix($prefix = null)
     {
         if (!is_null($prefix)) {
             Assertion::maxLength($prefix, 100);
@@ -255,7 +268,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setFromUri($fromUri = null)
+    public function setFromUri($fromUri = null)
     {
         if (!is_null($fromUri)) {
             Assertion::maxLength($fromUri, 255);
@@ -283,7 +296,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setRequestUri($requestUri = null)
+    public function setRequestUri($requestUri = null)
     {
         if (!is_null($requestUri)) {
             Assertion::maxLength($requestUri, 100);
@@ -311,7 +324,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setStopper($stopper)
+    public function setStopper($stopper)
     {
         Assertion::notNull($stopper);
         Assertion::integerish($stopper);
@@ -339,7 +352,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setEnabled($enabled)
+    public function setEnabled($enabled)
     {
         Assertion::notNull($enabled);
         Assertion::integerish($enabled);
@@ -367,7 +380,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setTag($tag)
+    public function setTag($tag)
     {
         Assertion::notNull($tag);
         Assertion::maxLength($tag, 55);
@@ -394,7 +407,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 500);
@@ -421,7 +434,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setRoutingPattern(\Ivoz\Domain\Model\RoutingPattern\RoutingPatternInterface $routingPattern = null)
+    public function setRoutingPattern(\Ivoz\Domain\Model\RoutingPattern\RoutingPatternInterface $routingPattern = null)
     {
         $this->routingPattern = $routingPattern;
 
@@ -445,7 +458,7 @@ abstract class LcrRuleAbstract
      *
      * @return self
      */
-    protected function setOutgoingRouting(\Ivoz\Domain\Model\OutgoingRouting\OutgoingRoutingInterface $outgoingRouting)
+    public function setOutgoingRouting(\Ivoz\Domain\Model\OutgoingRouting\OutgoingRoutingInterface $outgoingRouting)
     {
         $this->outgoingRouting = $outgoingRouting;
 

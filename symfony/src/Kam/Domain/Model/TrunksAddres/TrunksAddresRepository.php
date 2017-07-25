@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\TrunksAddres;
 
-interface TrunksAddresRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TrunksAddresRepository extends ObjectRepository {}
 

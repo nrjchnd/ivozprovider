@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PickUpGroup;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class PickUpGroup extends PickUpGroupAbstract implements PickUpGroupInterface
 
 
 }
+

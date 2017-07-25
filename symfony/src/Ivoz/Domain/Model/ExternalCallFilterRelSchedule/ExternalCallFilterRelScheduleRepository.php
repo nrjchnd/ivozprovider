@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\ExternalCallFilterRelSchedule;
 
-interface ExternalCallFilterRelScheduleRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ExternalCallFilterRelScheduleRepository extends ObjectRepository {}
 

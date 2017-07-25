@@ -47,9 +47,23 @@ protected $_initialValues = [];
  */
 public function __construct(<requiredFields>)<lineBreak>{
 <requiredFieldsSetters><collections>
+    $this->initChangelog();
 }
 
-abstract public function __wakeup();
+public function initChangelog()
+{
+    $this->_initialValues = $this->__toArray();
+}
+
+public function hasChanged($fieldName)
+{
+    if (array_key_exists($fieldName, $this->_initialValues)) {
+        throw new \Exception($fieldName . \' field was not found\');
+    }
+    $getter = \'get\' . ucfisrt($fieldName);
+
+    return $this->$getter() != $this->_initialValues[$fieldName];
+}
 
 /**
  * @return <dtoClass>
@@ -153,7 +167,7 @@ public function <methodName>(<criteriaArgument>)
  *
  * @return <entity>
  */
-protected function <methodName>(<methodTypeHint>$<variableName>)
+<visibility> function <methodName>(<methodTypeHint>$<variableName>)
 {
 <spaces>$this-><fieldName>[] = $<variableName>;
 
@@ -169,7 +183,7 @@ protected function <methodName>(<methodTypeHint>$<variableName>)
  *
  * @param <variableType> $<variableName>
  */
-protected function <methodName>(<methodTypeHint>$<variableName>)
+<visibility> function <methodName>(<methodTypeHint>$<variableName>)
 {
 <spaces>$this-><fieldName>->removeElement($<variableName>);
 }';
@@ -184,7 +198,7 @@ protected function <methodName>(<methodTypeHint>$<variableName>)
  * @param \<relEntity>[] $<variableName>
  * @return self
  */
-protected function <methodName>(array $<variableName>)
+<visibility> function <methodName>(array $<variableName>)
 {
 <spaces>$updatedEntities = [];
 <spaces>$fallBackId = -1;
@@ -254,6 +268,18 @@ protected function <methodName>(array $<variableName>)
         $code = str_replace($placeHolders, $replacements, static::$classTemplate) . "\n";
         $code = str_replace('\\Doctrine\\Common\\Collections\\Collection', 'ArrayCollection', $code);
         $code = str_replace('\\Doctrine\\Common\\Collections\\ArrayCollection', 'ArrayCollection', $code);
+
+        $classTrait = $metadata->name . 'Trait';
+        if (trait_exists($classTrait)) {
+            if (!class_exists($metadata->name)/* || !in_array($classTrait, class_uses($metadata->name))*/) {
+                $classTraitSegments = explode('\\', $classTrait);
+                $code = str_replace('<entityTrait>', $this->spaces . 'use ' . end($classTraitSegments) . ";\n", $code);
+            }
+        }
+
+        if (strpos($code, '<entityTrait>') !== false) {
+            $code = str_replace('<entityTrait>', '', $code);
+        }
 
         return str_replace('<spaces>', $this->spaces, $code);
     }
@@ -834,10 +860,12 @@ protected function <methodName>(array $<variableName>)
                 continue;
             }
 
-            if (( ! isset($fieldMapping['id']) ||
-                    ! $fieldMapping['id'] ||
-                    $metadata->generatorType == ClassMetadataInfo::GENERATOR_TYPE_NONE
-                ) && (! $metadata->isEmbeddedClass || ! $this->embeddablesImmutable)
+            if ((
+                    (!isset($fieldMapping['id']) || !$fieldMapping['id'])
+                    && $metadata->generatorType == ClassMetadataInfo::GENERATOR_TYPE_NONE
+                ) && (
+                    !$metadata->isEmbeddedClass || ! $this->embeddablesImmutable
+                )
             ) {
                 if ($code = $this->generateEntityStubMethod($metadata, 'set', $fieldMapping['fieldName'], $fieldMapping['type'])) {
                     $methods[] = $code;
@@ -981,7 +1009,7 @@ protected function <methodName>(array $<variableName>)
         $isNullable = false;
         $visibility = $metadata->isEmbeddedClass
             ? 'protected'
-            : 'protected';
+            : 'public';
 
         if (array_key_exists($fieldName, $metadata->fieldMappings)) {
             $currentField = (object) $metadata->fieldMappings[$fieldName];

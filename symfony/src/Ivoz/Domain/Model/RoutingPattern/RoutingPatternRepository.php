@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\RoutingPattern;
 
-interface RoutingPatternRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface RoutingPatternRepository extends ObjectRepository {}
 

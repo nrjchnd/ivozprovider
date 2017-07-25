@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\ProxyTrunk;
 
-interface ProxyTrunkRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ProxyTrunkRepository extends ObjectRepository {}
 

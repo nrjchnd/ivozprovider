@@ -7,11 +7,31 @@ use Core\Domain\Model\EntityInterface;
 interface BrandOperatorInterface extends EntityInterface
 {
     /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return BrandOperatorInterface
+     */
+    public function setUsername($username);
+
+
+    /**
      * Get username
      *
      * @return string
      */
     public function getUsername();
+
+
+    /**
+     * Set pass
+     *
+     * @param string $pass
+     *
+     * @return BrandOperatorInterface
+     */
+    public function setPass($pass);
 
 
     /**
@@ -23,11 +43,31 @@ interface BrandOperatorInterface extends EntityInterface
 
 
     /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return BrandOperatorInterface
+     */
+    public function setEmail($email);
+
+
+    /**
      * Get email
      *
      * @return string
      */
     public function getEmail();
+
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return BrandOperatorInterface
+     */
+    public function setActive($active);
 
 
     /**
@@ -39,11 +79,31 @@ interface BrandOperatorInterface extends EntityInterface
 
 
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return BrandOperatorInterface
+     */
+    public function setName($name = null);
+
+
+    /**
      * Get name
      *
      * @return string
      */
     public function getName();
+
+
+    /**
+     * Set lastname
+     *
+     * @param string $lastname
+     *
+     * @return BrandOperatorInterface
+     */
+    public function setLastname($lastname = null);
 
 
     /**
@@ -70,6 +130,16 @@ interface BrandOperatorInterface extends EntityInterface
      * @return \Ivoz\Domain\Model\Brand\BrandInterface
      */
     public function getBrand();
+
+
+    /**
+     * Set timezone
+     *
+     * @param \Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone
+     *
+     * @return BrandOperatorInterface
+     */
+    public function setTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone = null);
 
 
     /**

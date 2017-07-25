@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\FeaturesRelBrand;
 
-interface FeaturesRelBrandRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface FeaturesRelBrandRepository extends ObjectRepository {}
 

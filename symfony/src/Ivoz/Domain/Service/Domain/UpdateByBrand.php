@@ -2,6 +2,7 @@
 namespace Ivoz\Domain\Service\Domain;
 
 use Core\Domain\Model\EntityInterface;
+use Core\Domain\Service\EntityPersisterInterface;
 use Core\Domain\Service\LifecycleEventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Ivoz\Domain\Model\Brand\Brand;
@@ -10,6 +11,11 @@ use Ivoz\Domain\Model\Domain\DomainDTO;
 use Ivoz\Domain\Model\Domain\DomainInterface;
 use Ivoz\Domain\Model\Domain\DomainRepository;
 
+/**
+ * Class UpdateByBrand
+ * @package Ivoz\Domain\Service\Domain
+ * @lifecycle brand.post_persist
+ */
 class UpdateByBrand implements LifecycleEventHandlerInterface
 {
     /**
@@ -18,22 +24,29 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
     protected $em;
 
     /**
+     * @var EntityPersisterInterface
+     */
+    protected $entityPersister;
+
+    /**
      * @var DomainRepository
      */
     protected $domainRepository;
 
     public function __construct(
         EntityManagerInterface $em,
+        EntityPersisterInterface $entityPersister,
         DomainRepository $domainRepository
     ) {
         $this->em = $em;
+        $this->entityPersister = $entityPersister;
         $this->domainRepository = $domainRepository;
     }
 
     /**
      * @param Brand $entity
      */
-    public function execute(EntityInterface $entity, callable $entityPersister)
+    public function execute(EntityInterface $entity)
     {
         $id = $entity->getId();
         $name = $entity->getDomainUsers();
@@ -71,6 +84,6 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
             ->setDescription($entity->getName() . " proxyusers domain");
 
 
-        $entityPersister($domainDto, $domain);
+        $this->entityPersister->persist($domainDto, $domain);
     }
 }

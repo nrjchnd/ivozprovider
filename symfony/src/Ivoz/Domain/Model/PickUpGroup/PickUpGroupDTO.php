@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PickUpGroup;
 
 use Core\Application\DataTransferObjectInterface;

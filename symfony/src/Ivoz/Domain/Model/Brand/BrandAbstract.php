@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Brand;
 
 use Assert\Assertion;
@@ -119,9 +118,23 @@ abstract class BrandAbstract
         $this->setProvince($province);
         $this->setCountry($country);
         $this->setLogo($logo);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return BrandDTO
@@ -274,7 +287,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 75);
@@ -301,7 +314,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setNif($nif)
+    public function setNif($nif)
     {
         Assertion::notNull($nif);
         Assertion::maxLength($nif, 25);
@@ -328,7 +341,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setDomainUsers($domainUsers = null)
+    public function setDomainUsers($domainUsers = null)
     {
         if (!is_null($domainUsers)) {
             Assertion::maxLength($domainUsers, 255);
@@ -356,7 +369,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setPostalAddress($postalAddress)
+    public function setPostalAddress($postalAddress)
     {
         Assertion::notNull($postalAddress);
         Assertion::maxLength($postalAddress, 255);
@@ -383,7 +396,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setPostalCode($postalCode)
+    public function setPostalCode($postalCode)
     {
         Assertion::notNull($postalCode);
         Assertion::maxLength($postalCode, 10);
@@ -410,7 +423,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setTown($town)
+    public function setTown($town)
     {
         Assertion::notNull($town);
         Assertion::maxLength($town, 255);
@@ -437,7 +450,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setProvince($province)
+    public function setProvince($province)
     {
         Assertion::notNull($province);
         Assertion::maxLength($province, 255);
@@ -464,7 +477,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setCountry($country)
+    public function setCountry($country)
     {
         Assertion::notNull($country);
         Assertion::maxLength($country, 255);
@@ -491,7 +504,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setRegistryData($registryData = null)
+    public function setRegistryData($registryData = null)
     {
         if (!is_null($registryData)) {
             Assertion::maxLength($registryData, 1024);
@@ -519,7 +532,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setFromName($fromName = null)
+    public function setFromName($fromName = null)
     {
         if (!is_null($fromName)) {
             Assertion::maxLength($fromName, 255);
@@ -547,7 +560,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setFromAddress($fromAddress = null)
+    public function setFromAddress($fromAddress = null)
     {
         if (!is_null($fromAddress)) {
             Assertion::maxLength($fromAddress, 255);
@@ -575,7 +588,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setRecordingsLimitMB($recordingsLimitMB = null)
+    public function setRecordingsLimitMB($recordingsLimitMB = null)
     {
         if (!is_null($recordingsLimitMB)) {
             if (!is_null($recordingsLimitMB)) {
@@ -605,7 +618,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setRecordingslimitemail($recordingslimitemail = null)
+    public function setRecordingslimitemail($recordingslimitemail = null)
     {
         if (!is_null($recordingslimitemail)) {
             Assertion::maxLength($recordingslimitemail, 250);
@@ -633,7 +646,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
+    public function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
     {
         $this->language = $language;
 
@@ -657,7 +670,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setDefaultTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $defaultTimezone = null)
+    public function setDefaultTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $defaultTimezone = null)
     {
         $this->defaultTimezone = $defaultTimezone;
 
@@ -681,7 +694,7 @@ abstract class BrandAbstract
      *
      * @return self
      */
-    protected function setLogo(Logo $logo)
+    public function setLogo(Logo $logo)
     {
         $this->logo = $logo;
 

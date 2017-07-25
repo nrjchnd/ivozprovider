@@ -7,11 +7,31 @@ use Core\Domain\Model\EntityInterface;
 interface BrandURLInterface extends EntityInterface
 {
     /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return BrandURLInterface
+     */
+    public function setUrl($url);
+
+
+    /**
      * Get url
      *
      * @return string
      */
     public function getUrl();
+
+
+    /**
+     * Set klearTheme
+     *
+     * @param string $klearTheme
+     *
+     * @return BrandURLInterface
+     */
+    public function setKlearTheme($klearTheme = null);
 
 
     /**
@@ -23,6 +43,16 @@ interface BrandURLInterface extends EntityInterface
 
 
     /**
+     * Set urlType
+     *
+     * @param string $urlType
+     *
+     * @return BrandURLInterface
+     */
+    public function setUrlType($urlType);
+
+
+    /**
      * Get urlType
      *
      * @return string
@@ -31,11 +61,31 @@ interface BrandURLInterface extends EntityInterface
 
 
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return BrandURLInterface
+     */
+    public function setName($name = null);
+
+
+    /**
      * Get name
      *
      * @return string
      */
     public function getName();
+
+
+    /**
+     * Set userTheme
+     *
+     * @param string $userTheme
+     *
+     * @return BrandURLInterface
+     */
+    public function setUserTheme($userTheme = null);
 
 
     /**
@@ -62,6 +112,16 @@ interface BrandURLInterface extends EntityInterface
      * @return \Ivoz\Domain\Model\Brand\BrandInterface
      */
     public function getBrand();
+
+
+    /**
+     * Set logo
+     *
+     * @param Logo $logo
+     *
+     * @return BrandURLInterface
+     */
+    public function setLogo(Logo $logo);
 
 
     /**

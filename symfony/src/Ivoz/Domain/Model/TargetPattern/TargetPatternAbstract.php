@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\TargetPattern;
 
 use Assert\Assertion;
@@ -43,9 +42,23 @@ abstract class TargetPatternAbstract
         $this->setRegExp($regExp);
         $this->setName($name);
         $this->setDescription($description);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TargetPatternDTO
@@ -161,7 +174,7 @@ abstract class TargetPatternAbstract
      *
      * @return self
      */
-    protected function setRegExp($regExp)
+    public function setRegExp($regExp)
     {
         Assertion::notNull($regExp);
         Assertion::maxLength($regExp, 80);
@@ -188,7 +201,7 @@ abstract class TargetPatternAbstract
      *
      * @return self
      */
-    protected function setName(Name $name)
+    public function setName(Name $name)
     {
         $this->name = $name;
 
@@ -212,7 +225,7 @@ abstract class TargetPatternAbstract
      *
      * @return self
      */
-    protected function setDescription(Description $description)
+    public function setDescription(Description $description)
     {
         $this->description = $description;
 

@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Feature;
 
-interface FeatureRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface FeatureRepository extends ObjectRepository {}
 

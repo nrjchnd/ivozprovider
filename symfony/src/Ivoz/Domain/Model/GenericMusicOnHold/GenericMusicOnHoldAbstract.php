@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\GenericMusicOnHold;
 
 use Assert\Assertion;
@@ -54,9 +53,23 @@ abstract class GenericMusicOnHoldAbstract
         $this->setName($name);
         $this->setOriginalFile($originalFile);
         $this->setEncodedFile($encodedFile);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return GenericMusicOnHoldDTO
@@ -181,7 +194,7 @@ abstract class GenericMusicOnHoldAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 80);
@@ -208,7 +221,7 @@ abstract class GenericMusicOnHoldAbstract
      *
      * @return self
      */
-    protected function setStatus($status = null)
+    public function setStatus($status = null)
     {
         if (!is_null($status)) {
             Assertion::maxLength($status, 20);
@@ -242,7 +255,7 @@ abstract class GenericMusicOnHoldAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand = null)
     {
         $this->brand = $brand;
 
@@ -266,7 +279,7 @@ abstract class GenericMusicOnHoldAbstract
      *
      * @return self
      */
-    protected function setOriginalFile(OriginalFile $originalFile)
+    public function setOriginalFile(OriginalFile $originalFile)
     {
         $this->originalFile = $originalFile;
 
@@ -290,7 +303,7 @@ abstract class GenericMusicOnHoldAbstract
      *
      * @return self
      */
-    protected function setEncodedFile(EncodedFile $encodedFile)
+    public function setEncodedFile(EncodedFile $encodedFile)
     {
         $this->encodedFile = $encodedFile;
 

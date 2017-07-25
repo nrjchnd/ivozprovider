@@ -36,4 +36,7 @@ Ivoz\Domain\Model\Brand\Brand:
     genericMusicsOnHold:
       targetEntity: Ivoz\Domain\Model\GenericMusicOnHold\GenericMusicOnHoldInterface
       mappedBy: brand
+    genericCallACLPatterns:
+      targetEntity: Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPatternInterface
+      mappedBy: brand
   lifecycleCallbacks: {  }

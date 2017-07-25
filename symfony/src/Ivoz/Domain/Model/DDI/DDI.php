@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\DDI;
 
 use Core\Application\DataTransferObjectInterface;
@@ -9,6 +8,8 @@ use Core\Application\DataTransferObjectInterface;
  */
 class DDI extends DDIAbstract implements DDIInterface
 {
+    use DDITrait;
+
     /**
      * @var integer
      */
@@ -109,3 +110,4 @@ class DDI extends DDIAbstract implements DDIInterface
 
 
 }
+

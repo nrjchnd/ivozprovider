@@ -7,6 +7,16 @@ use Core\Domain\Model\EntityInterface;
 interface FriendsPatternInterface extends EntityInterface
 {
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return FriendsPatternInterface
+     */
+    public function setName($name);
+
+
+    /**
      * Get name
      *
      * @return string
@@ -15,11 +25,31 @@ interface FriendsPatternInterface extends EntityInterface
 
 
     /**
+     * Set regExp
+     *
+     * @param string $regExp
+     *
+     * @return FriendsPatternInterface
+     */
+    public function setRegExp($regExp);
+
+
+    /**
      * Get regExp
      *
      * @return string
      */
     public function getRegExp();
+
+
+    /**
+     * Set friend
+     *
+     * @param \Ivoz\Domain\Model\Friend\FriendInterface $friend
+     *
+     * @return FriendsPatternInterface
+     */
+    public function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend);
 
 
     /**

@@ -1,19 +1,24 @@
 imports:
-  - { resource: "@CoreBundle/Resources/config/lifecycle_application_server.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle_brand.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle_brand_service.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/xml_rpc.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/application_server.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/brand.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/brand_service.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/call_forward_setting.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/company.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/company_admin.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/conference_room.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ddi.yml" }
 
 services:
   _defaults:
     autowire: true
     public: false
 
-  Core\Infrastructure\Model\Lifecycle\DoctrineSubscriber:
+  Core\Infrastructure\Domain\Model\Lifecycle\DoctrineSubscriber:
       arguments:
         - "@service_container"
       tags:
-          - { name: doctrine.event_subscriber }
+        - { name: doctrine.event_subscriber }
 
-  Core\Infrastructure\Model\Lifecycle\HandlerChain:
+  Core\Infrastructure\Domain\Model\Lifecycle\HandlerChain:
     public: true
-

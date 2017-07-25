@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\TargetPattern;
 
 use Core\Application\DataTransferObjectInterface;
@@ -126,7 +125,7 @@ class TargetPattern extends TargetPatternAbstract implements TargetPatternInterf
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -145,3 +144,4 @@ class TargetPattern extends TargetPatternAbstract implements TargetPatternInterf
 
 
 }
+

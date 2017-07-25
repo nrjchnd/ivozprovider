@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\BrandURL;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class BrandURL extends BrandURLAbstract implements BrandURLInterface
 
 
 }
+

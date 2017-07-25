@@ -30,7 +30,7 @@ Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPatternAbstract:
       cascade: {  }
       fetch: LAZY
       mappedBy: null
-      inversedBy: null
+      inversedBy: genericCallACLPatterns
       joinColumns:
         brandId:
           referencedColumnName: id

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\BrandService;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class BrandService extends BrandServiceAbstract implements BrandServiceInterface
 
 
 }
+

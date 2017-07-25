@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\ApplicationServer;
 
-interface ApplicationServerRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ApplicationServerRepository extends ObjectRepository {}
 

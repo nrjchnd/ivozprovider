@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\InvoiceTemplate;
 
-interface InvoiceTemplateRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface InvoiceTemplateRepository extends ObjectRepository {}
 

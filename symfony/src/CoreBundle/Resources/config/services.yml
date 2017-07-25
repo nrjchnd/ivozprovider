@@ -31,3 +31,5 @@ services:
         - "@core.doctrine_foreign_key_transformer"
         - "@core.doctrine_collection_transformer"
 
+  Core\Infrastructure\Domain\Service\DoctrineEntityPersister:
+    public: true

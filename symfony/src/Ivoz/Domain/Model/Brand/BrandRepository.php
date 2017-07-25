@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Brand;
 
-interface BrandRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface BrandRepository extends ObjectRepository {}
 

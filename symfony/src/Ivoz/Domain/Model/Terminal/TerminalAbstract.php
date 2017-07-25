@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Terminal;
 
 use Assert\Assertion;
@@ -88,9 +87,23 @@ abstract class TerminalAbstract
         $this->setAllowAudio($allowAudio);
         $this->setDirectMediaMethod($directMediaMethod);
         $this->setPassword($password);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TerminalDTO
@@ -206,7 +219,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setName($name = null)
+    public function setName($name = null)
     {
         if (!is_null($name)) {
             Assertion::maxLength($name, 100);
@@ -234,7 +247,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setDomain($domain = null)
+    public function setDomain($domain = null)
     {
         if (!is_null($domain)) {
             Assertion::maxLength($domain, 255);
@@ -262,7 +275,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setDisallow($disallow)
+    public function setDisallow($disallow)
     {
         Assertion::notNull($disallow);
         Assertion::maxLength($disallow, 200);
@@ -289,7 +302,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setAllowAudio($allowAudio)
+    public function setAllowAudio($allowAudio)
     {
         Assertion::notNull($allow_audio);
         Assertion::maxLength($allow_audio, 200);
@@ -316,7 +329,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setAllowVideo($allowVideo = null)
+    public function setAllowVideo($allowVideo = null)
     {
         if (!is_null($allow_video)) {
             Assertion::maxLength($allow_video, 200);
@@ -344,7 +357,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setDirectMediaMethod($directMediaMethod)
+    public function setDirectMediaMethod($directMediaMethod)
     {
         Assertion::notNull($directMediaMethod);
         Assertion::choice($directMediaMethod, array (
@@ -375,7 +388,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setPassword($password)
+    public function setPassword($password)
     {
         Assertion::notNull($password);
         Assertion::maxLength($password, 25);
@@ -402,7 +415,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setMac($mac = null)
+    public function setMac($mac = null)
     {
         if (!is_null($mac)) {
             Assertion::maxLength($mac, 12);
@@ -430,7 +443,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setLastProvisionDate($lastProvisionDate = null)
+    public function setLastProvisionDate($lastProvisionDate = null)
     {
         if (!is_null($lastProvisionDate)) {
         }
@@ -457,7 +470,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -481,7 +494,7 @@ abstract class TerminalAbstract
      *
      * @return self
      */
-    protected function setTerminalModel(\Ivoz\Domain\Model\TerminalModel\TerminalModelInterface $terminalModel = null)
+    public function setTerminalModel(\Ivoz\Domain\Model\TerminalModel\TerminalModelInterface $terminalModel = null)
     {
         $this->TerminalModel = $terminalModel;
 

@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\TrunksDialplan;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface TrunksDialplanInterface
+interface TrunksDialplanInterface extends EntityInterface
 {
+    /**
+     * Set dpid
+     *
+     * @param integer $dpid
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setDpid($dpid);
+
+
     /**
      * Get dpid
      *
      * @return integer
      */
     public function getDpid();
+
+
+    /**
+     * Set pr
+     *
+     * @param integer $pr
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setPr($pr);
 
 
     /**
@@ -23,11 +43,31 @@ interface TrunksDialplanInterface
 
 
     /**
+     * Set matchOp
+     *
+     * @param integer $matchOp
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setMatchOp($matchOp);
+
+
+    /**
      * Get matchOp
      *
      * @return integer
      */
     public function getMatchOp();
+
+
+    /**
+     * Set matchExp
+     *
+     * @param string $matchExp
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setMatchExp($matchExp);
 
 
     /**
@@ -39,11 +79,31 @@ interface TrunksDialplanInterface
 
 
     /**
+     * Set matchLen
+     *
+     * @param integer $matchLen
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setMatchLen($matchLen);
+
+
+    /**
      * Get matchLen
      *
      * @return integer
      */
     public function getMatchLen();
+
+
+    /**
+     * Set substExp
+     *
+     * @param string $substExp
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setSubstExp($substExp);
 
 
     /**
@@ -55,6 +115,16 @@ interface TrunksDialplanInterface
 
 
     /**
+     * Set replExp
+     *
+     * @param string $replExp
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setReplExp($replExp);
+
+
+    /**
      * Get replExp
      *
      * @return string
@@ -63,11 +133,31 @@ interface TrunksDialplanInterface
 
 
     /**
+     * Set attrs
+     *
+     * @param string $attrs
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setAttrs($attrs);
+
+
+    /**
      * Get attrs
      *
      * @return string
      */
     public function getAttrs();
+
+
+    /**
+     * Set transformationRulesetGroupsTrunk
+     *
+     * @param \Ivoz\Domain\Model\TransformationRulesetGroupsTrunk\TransformationRulesetGroupsTrunkInterface $transformationRulesetGroupsTrunk
+     *
+     * @return TrunksDialplanInterface
+     */
+    public function setTransformationRulesetGroupsTrunk(\Ivoz\Domain\Model\TransformationRulesetGroupsTrunk\TransformationRulesetGroupsTrunkInterface $transformationRulesetGroupsTrunk);
 
 
     /**

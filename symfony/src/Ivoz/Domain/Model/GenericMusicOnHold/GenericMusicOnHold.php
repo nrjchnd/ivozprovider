@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\GenericMusicOnHold;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class GenericMusicOnHold extends GenericMusicOnHoldAbstract implements GenericMu
 
 
 }
+

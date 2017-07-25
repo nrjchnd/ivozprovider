@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CompanyService;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class CompanyService extends CompanyServiceAbstract implements CompanyServiceInt
 
 
 }
+

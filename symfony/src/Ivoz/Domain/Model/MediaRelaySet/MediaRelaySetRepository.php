@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\MediaRelaySet;
 
-interface MediaRelaySetRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface MediaRelaySetRepository extends ObjectRepository {}
 

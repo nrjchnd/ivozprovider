@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\User;
 
-interface UserRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface UserRepository extends ObjectRepository {}
 

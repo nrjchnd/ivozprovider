@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\User;
 
 use Assert\Assertion;
@@ -164,9 +163,23 @@ abstract class UserAbstract
         $this->setVoicemailEnabled($voicemailEnabled);
         $this->setVoicemailSendMail($voicemailSendMail);
         $this->setVoicemailAttachSound($voicemailAttachSound);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UserDTO
@@ -334,7 +347,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 100);
@@ -361,7 +374,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setLastname($lastname)
+    public function setLastname($lastname)
     {
         Assertion::notNull($lastname);
         Assertion::maxLength($lastname, 100);
@@ -388,7 +401,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setEmail($email = null)
+    public function setEmail($email = null)
     {
         if (!is_null($email)) {
             Assertion::maxLength($email, 100);
@@ -416,7 +429,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setPass($pass = null)
+    public function setPass($pass = null)
     {
         if (!is_null($pass)) {
             Assertion::maxLength($pass, 80);
@@ -444,7 +457,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setDoNotDisturb($doNotDisturb)
+    public function setDoNotDisturb($doNotDisturb)
     {
         Assertion::notNull($doNotDisturb);
         Assertion::between(intval($doNotDisturb), 0, 1);
@@ -471,7 +484,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setIsBoss($isBoss)
+    public function setIsBoss($isBoss)
     {
         Assertion::notNull($isBoss);
         Assertion::between(intval($isBoss), 0, 1);
@@ -498,7 +511,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setExceptionBoosAssistantRegExp($exceptionBoosAssistantRegExp = null)
+    public function setExceptionBoosAssistantRegExp($exceptionBoosAssistantRegExp = null)
     {
         if (!is_null($exceptionBoosAssistantRegExp)) {
             Assertion::maxLength($exceptionBoosAssistantRegExp, 255);
@@ -526,7 +539,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setActive($active)
+    public function setActive($active)
     {
         Assertion::notNull($active);
         Assertion::between(intval($active), 0, 1);
@@ -553,7 +566,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setMaxCalls($maxCalls)
+    public function setMaxCalls($maxCalls)
     {
         Assertion::notNull($maxCalls);
         Assertion::integerish($maxCalls);
@@ -581,7 +594,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setExternalIpCalls($externalIpCalls)
+    public function setExternalIpCalls($externalIpCalls)
     {
         Assertion::notNull($externalIpCalls);
         Assertion::between(intval($externalIpCalls), 0, 1);
@@ -614,7 +627,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setVoicemailEnabled($voicemailEnabled)
+    public function setVoicemailEnabled($voicemailEnabled)
     {
         Assertion::notNull($voicemailEnabled);
         Assertion::between(intval($voicemailEnabled), 0, 1);
@@ -641,7 +654,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setVoicemailSendMail($voicemailSendMail)
+    public function setVoicemailSendMail($voicemailSendMail)
     {
         Assertion::notNull($voicemailSendMail);
         Assertion::between(intval($voicemailSendMail), 0, 1);
@@ -668,7 +681,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setVoicemailAttachSound($voicemailAttachSound)
+    public function setVoicemailAttachSound($voicemailAttachSound)
     {
         Assertion::notNull($voicemailAttachSound);
         Assertion::between(intval($voicemailAttachSound), 0, 1);
@@ -695,7 +708,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setTokenKey($tokenKey = null)
+    public function setTokenKey($tokenKey = null)
     {
         if (!is_null($tokenKey)) {
             Assertion::maxLength($tokenKey, 125);
@@ -723,7 +736,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setAreaCode($areaCode = null)
+    public function setAreaCode($areaCode = null)
     {
         if (!is_null($areaCode)) {
             Assertion::maxLength($areaCode, 10);
@@ -751,7 +764,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 
@@ -775,7 +788,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setCallACL(\Ivoz\Domain\Model\CallACL\CallACLInterface $callACL = null)
+    public function setCallACL(\Ivoz\Domain\Model\CallACL\CallACLInterface $callACL = null)
     {
         $this->callACL = $callACL;
 
@@ -799,7 +812,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setBossAssistant(UserInterface $bossAssistant = null)
+    public function setBossAssistant(UserInterface $bossAssistant = null)
     {
         $this->bossAssistant = $bossAssistant;
 
@@ -823,7 +836,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
+    public function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
     {
         $this->country = $country;
 
@@ -847,7 +860,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
+    public function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
     {
         $this->language = $language;
 
@@ -871,7 +884,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal = null)
+    public function setTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal = null)
     {
         $this->terminal = $terminal;
 
@@ -895,7 +908,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension = null)
+    public function setExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension = null)
     {
         $this->extension = $extension;
 
@@ -919,7 +932,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone = null)
+    public function setTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone = null)
     {
         $this->timezone = $timezone;
 
@@ -943,7 +956,7 @@ abstract class UserAbstract
      *
      * @return self
      */
-    protected function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
+    public function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
     {
         $this->outgoingDDI = $outgoingDDI;
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersPua;
 
 use Core\Application\DataTransferObjectInterface;

@@ -7,11 +7,31 @@ use Core\Domain\Model\EntityInterface;
 interface CountryInterface extends EntityInterface
 {
     /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return CountryInterface
+     */
+    public function setCode($code);
+
+
+    /**
      * Get code
      *
      * @return string
      */
     public function getCode();
+
+
+    /**
+     * Set callingCode
+     *
+     * @param integer $callingCode
+     *
+     * @return CountryInterface
+     */
+    public function setCallingCode($callingCode = null);
 
 
     /**
@@ -23,11 +43,31 @@ interface CountryInterface extends EntityInterface
 
 
     /**
+     * Set intCode
+     *
+     * @param string $intCode
+     *
+     * @return CountryInterface
+     */
+    public function setIntCode($intCode = null);
+
+
+    /**
      * Get intCode
      *
      * @return string
      */
     public function getIntCode();
+
+
+    /**
+     * Set e164Pattern
+     *
+     * @param string $e164Pattern
+     *
+     * @return CountryInterface
+     */
+    public function setE164Pattern($e164Pattern = null);
 
 
     /**
@@ -39,6 +79,16 @@ interface CountryInterface extends EntityInterface
 
 
     /**
+     * Set nationalCC
+     *
+     * @param boolean $nationalCC
+     *
+     * @return CountryInterface
+     */
+    public function setNationalCC($nationalCC);
+
+
+    /**
      * Get nationalCC
      *
      * @return boolean
@@ -47,11 +97,31 @@ interface CountryInterface extends EntityInterface
 
 
     /**
+     * Set name
+     *
+     * @param Name $name
+     *
+     * @return CountryInterface
+     */
+    public function setName(Name $name);
+
+
+    /**
      * Get name
      *
      * @return Name
      */
     public function getName();
+
+
+    /**
+     * Set zone
+     *
+     * @param Zone $zone
+     *
+     * @return CountryInterface
+     */
+    public function setZone(Zone $zone);
 
 
     /**

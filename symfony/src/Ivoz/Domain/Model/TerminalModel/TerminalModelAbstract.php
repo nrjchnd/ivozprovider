@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\TerminalModel;
 
 use Assert\Assertion;
@@ -65,9 +64,23 @@ abstract class TerminalModelAbstract
         $this->setIden($iden);
         $this->setName($name);
         $this->setDescription($description);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TerminalModelDTO
@@ -171,7 +184,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setIden($iden)
+    public function setIden($iden)
     {
         Assertion::notNull($iden);
         Assertion::maxLength($iden, 100);
@@ -198,7 +211,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 100);
@@ -225,7 +238,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 500);
@@ -252,7 +265,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setGenericTemplate($genericTemplate = null)
+    public function setGenericTemplate($genericTemplate = null)
     {
         if (!is_null($genericTemplate)) {
             Assertion::maxLength($genericTemplate, 65535);
@@ -280,7 +293,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setSpecificTemplate($specificTemplate = null)
+    public function setSpecificTemplate($specificTemplate = null)
     {
         if (!is_null($specificTemplate)) {
             Assertion::maxLength($specificTemplate, 65535);
@@ -308,7 +321,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setGenericUrlPattern($genericUrlPattern = null)
+    public function setGenericUrlPattern($genericUrlPattern = null)
     {
         if (!is_null($genericUrlPattern)) {
             Assertion::maxLength($genericUrlPattern, 225);
@@ -336,7 +349,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setSpecificUrlPattern($specificUrlPattern = null)
+    public function setSpecificUrlPattern($specificUrlPattern = null)
     {
         if (!is_null($specificUrlPattern)) {
             Assertion::maxLength($specificUrlPattern, 225);
@@ -364,7 +377,7 @@ abstract class TerminalModelAbstract
      *
      * @return self
      */
-    protected function setTerminalManufacturer(\Ivoz\Domain\Model\TerminalManufacturer\TerminalManufacturerInterface $terminalManufacturer)
+    public function setTerminalManufacturer(\Ivoz\Domain\Model\TerminalManufacturer\TerminalManufacturerInterface $terminalManufacturer)
     {
         $this->TerminalManufacturer = $terminalManufacturer;
 

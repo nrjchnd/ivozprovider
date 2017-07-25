@@ -1,8 +1,9 @@
 <?php
-
 namespace Ivoz\Domain\Model\Friend;
 
 use Core\Application\DataTransferObjectInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Friend
@@ -13,6 +14,11 @@ class Friend extends FriendAbstract implements FriendInterface
      * @var integer
      */
     protected $id;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $psEndpoints;
 
 
     /**
@@ -27,7 +33,7 @@ class Friend extends FriendAbstract implements FriendInterface
     public function __construct()
     {
         parent::__construct(...func_get_args());
-
+        $this->psEndpoints = new ArrayCollection();
     }
 
     public function __wakeup()
@@ -58,7 +64,9 @@ class Friend extends FriendAbstract implements FriendInterface
          */
         $self = parent::fromDTO($dto);
 
-        return $self;
+        return $self
+            ->replacePsEndpoints($dto->getPsEndpoints())
+        ;
     }
 
     /**
@@ -72,7 +80,10 @@ class Friend extends FriendAbstract implements FriendInterface
          */
         parent::updateFromDTO($dto);
 
-        
+        $this
+            ->replacePsEndpoints($dto->getPsEndpoints());
+
+
         return $this;
     }
 
@@ -83,7 +94,8 @@ class Friend extends FriendAbstract implements FriendInterface
     {
         $dto = parent::toDTO();
         return $dto
-            ->setId($this->getId());
+            ->setId($this->getId())
+            ->setPsEndpoints($this->getPsEndpoints());
     }
 
     /**
@@ -107,5 +119,78 @@ class Friend extends FriendAbstract implements FriendInterface
         return $this->id;
     }
 
+    /**
+     * Add psEndpoint
+     *
+     * @param \Ast\Domain\Model\PsEndpoint\PsEndpointInterface $psEndpoint
+     *
+     * @return Friend
+     */
+    public function addPsEndpoint(\Ast\Domain\Model\PsEndpoint\PsEndpointInterface $psEndpoint)
+    {
+        $this->psEndpoints[] = $psEndpoint;
+
+        return $this;
+    }
+
+    /**
+     * Remove psEndpoint
+     *
+     * @param \Ast\Domain\Model\PsEndpoint\PsEndpointInterface $psEndpoint
+     */
+    public function removePsEndpoint(\Ast\Domain\Model\PsEndpoint\PsEndpointInterface $psEndpoint)
+    {
+        $this->psEndpoints->removeElement($psEndpoint);
+    }
+
+    /**
+     * Replace psEndpoints
+     *
+     * @param \Ast\Domain\Model\PsEndpoint\PsEndpointInterface[] $psEndpoints
+     * @return self
+     */
+    public function replacePsEndpoints(array $psEndpoints)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($psEndpoints as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setFriend($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->psEndpoints as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->psEndpoints[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removePsEndpoint($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addPsEndpoint($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get psEndpoints
+     *
+     * @return array
+     */
+    public function getPsEndpoints(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->psEndpoints->matching($criteria)->toArray();
+        }
+
+        return $this->psEndpoints->toArray();
+    }
+
 
 }
+

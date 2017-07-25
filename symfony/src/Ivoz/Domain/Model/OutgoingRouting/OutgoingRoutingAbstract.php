@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\OutgoingRouting;
 
 use Assert\Assertion;
@@ -64,9 +63,23 @@ abstract class OutgoingRoutingAbstract
     {
         $this->setPriority($priority);
         $this->setWeight($weight);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return OutgoingRoutingDTO
@@ -170,7 +183,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setType($type = null)
+    public function setType($type = null)
     {
         if (!is_null($type)) {
         }
@@ -197,7 +210,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setPriority($priority)
+    public function setPriority($priority)
     {
         Assertion::notNull($priority);
         Assertion::between(intval($priority), 0, 1);
@@ -224,7 +237,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setWeight($weight)
+    public function setWeight($weight)
     {
         Assertion::notNull($weight);
         Assertion::integerish($weight);
@@ -252,7 +265,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -276,7 +289,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -300,7 +313,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract)
+    public function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract)
     {
         $this->peeringContract = $peeringContract;
 
@@ -324,7 +337,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setRoutingPattern(\Ivoz\Domain\Model\RoutingPattern\RoutingPatternInterface $routingPattern = null)
+    public function setRoutingPattern(\Ivoz\Domain\Model\RoutingPattern\RoutingPatternInterface $routingPattern = null)
     {
         $this->routingPattern = $routingPattern;
 
@@ -348,7 +361,7 @@ abstract class OutgoingRoutingAbstract
      *
      * @return self
      */
-    protected function setRoutingPatternGroup(\Ivoz\Domain\Model\RoutingPatternGroup\RoutingPatternGroupInterface $routingPatternGroup = null)
+    public function setRoutingPatternGroup(\Ivoz\Domain\Model\RoutingPatternGroup\RoutingPatternGroupInterface $routingPatternGroup = null)
     {
         $this->routingPatternGroup = $routingPatternGroup;
 

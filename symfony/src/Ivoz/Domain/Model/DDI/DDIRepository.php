@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\DDI;
 
-interface DDIRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface DDIRepository extends ObjectRepository {}
 

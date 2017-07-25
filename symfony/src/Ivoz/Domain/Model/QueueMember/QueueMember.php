@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\QueueMember;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class QueueMember extends QueueMemberAbstract implements QueueMemberInterface
 
 
 }
+

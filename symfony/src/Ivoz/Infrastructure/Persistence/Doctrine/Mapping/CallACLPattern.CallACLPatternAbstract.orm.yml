@@ -29,7 +29,7 @@ Ivoz\Domain\Model\CallACLPattern\CallACLPatternAbstract:
       cascade: {  }
       fetch: LAZY
       mappedBy: null
-      inversedBy: null
+      inversedBy: callACLPatterns
       joinColumns:
         companyId:
           referencedColumnName: id

@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\CallACLPattern;
 
-interface CallACLPatternRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface CallACLPatternRepository extends ObjectRepository {}
 

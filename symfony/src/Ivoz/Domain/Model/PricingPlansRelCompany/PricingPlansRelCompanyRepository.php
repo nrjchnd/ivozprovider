@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\PricingPlansRelCompany;
 
-interface PricingPlansRelCompanyRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface PricingPlansRelCompanyRepository extends ObjectRepository {}
 

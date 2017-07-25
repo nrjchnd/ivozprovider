@@ -1,0 +1,49 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  Core\Infrastructure\Service\RequestProxyTrunksLcrReload:
+    tags:
+      - { name: ivoz.lifecycle.company.post_persist, priority: 40 }
+      - { name: ivoz.lifecycle.brand.post_persist, priority: 50 }
+        ## post_remove
+      - { name: ivoz.lifecycle.brand.post_remove, priority: 50 }
+    arguments:
+      $xmlrpc:
+        '@IvozProvider\Gearmand\Jobs\Xmlrpc'
+
+  Core\Infrastructure\Service\RequestProxyTrunksDispatcherReload:
+    tags:
+      - { name: ivoz.lifecycle.application_server.post_persist, priority: 20 }
+        ## post_remove
+      - { name: ivoz.lifecycle.application_server.post_remove, priority: 20 }
+    arguments:
+      $xmlrpc:
+        '@IvozProvider\Gearmand\Jobs\Xmlrpc'
+
+  Core\Infrastructure\Service\RequestProxyUsersDomainReload:
+    tags:
+      - { name: ivoz.lifecycle.company.post_persist, priority: 41 }
+      - { name: ivoz.lifecycle.brand.post_persist, priority: 51 }
+        ## post_remove
+      - { name: ivoz.lifecycle.brand.post_remove, priority: 51 }
+    arguments:
+      $xmlrpc:
+        '@IvozProvider\Gearmand\Jobs\Xmlrpc'
+
+  Core\Infrastructure\Service\RequestProxyUsersDispatcherReload:
+    tags:
+      - { name: ivoz.lifecycle.application_server.post_persist, priority: 21 }
+        ## post_remove
+      - { name: ivoz.lifecycle.application_server.post_remove, priority: 21 }
+    arguments:
+      $xmlrpc:
+        '@IvozProvider\Gearmand\Jobs\Xmlrpc'
+
+  Core\Infrastructure\Service\RequestProxyUserPermissionsAddressReload:
+    tags:
+      - { name: ivoz.lifecycle.company.post_persist, priority: 42 }
+    arguments:
+      $xmlrpc:
+        '@IvozProvider\Gearmand\Jobs\Xmlrpc'

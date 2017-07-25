@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersXcap;
 
-interface UsersXcapRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersXcapRepository extends ObjectRepository {}
 

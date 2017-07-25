@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\DDI\SanitizeValues:
+    tags:
+      - { name: ivoz.lifecycle.ddi.pre_persist, priority: 10 }

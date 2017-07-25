@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\HuntGroup;
 
 use Assert\Assertion;
@@ -87,9 +86,23 @@ abstract class HuntGroupAbstract
         $this->setDescription($description);
         $this->setStrategy($strategy);
         $this->setRingAllTimeout($ringAllTimeout);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return HuntGroupDTO
@@ -205,7 +218,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 100);
@@ -232,7 +245,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 500);
@@ -259,7 +272,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setStrategy($strategy)
+    public function setStrategy($strategy)
     {
         Assertion::notNull($strategy);
         Assertion::maxLength($strategy, 25);
@@ -292,7 +305,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setRingAllTimeout($ringAllTimeout)
+    public function setRingAllTimeout($ringAllTimeout)
     {
         Assertion::notNull($ringAllTimeout);
         Assertion::integerish($ringAllTimeout);
@@ -319,7 +332,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setNextUserPosition($nextUserPosition = null)
+    public function setNextUserPosition($nextUserPosition = null)
     {
         if (!is_null($nextUserPosition)) {
             if (!is_null($nextUserPosition)) {
@@ -350,7 +363,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setNoAnswerTargetType($noAnswerTargetType = null)
+    public function setNoAnswerTargetType($noAnswerTargetType = null)
     {
         if (!is_null($noAnswerTargetType)) {
             Assertion::maxLength($noAnswerTargetType, 25);
@@ -383,7 +396,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setNoAnswerNumberValue($noAnswerNumberValue = null)
+    public function setNoAnswerNumberValue($noAnswerNumberValue = null)
     {
         if (!is_null($noAnswerNumberValue)) {
             Assertion::maxLength($noAnswerNumberValue, 25);
@@ -411,7 +424,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 
@@ -435,7 +448,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setNoAnswerLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $noAnswerLocution = null)
+    public function setNoAnswerLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $noAnswerLocution = null)
     {
         $this->noAnswerLocution = $noAnswerLocution;
 
@@ -459,7 +472,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setNoAnswerExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $noAnswerExtension = null)
+    public function setNoAnswerExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $noAnswerExtension = null)
     {
         $this->noAnswerExtension = $noAnswerExtension;
 
@@ -483,7 +496,7 @@ abstract class HuntGroupAbstract
      *
      * @return self
      */
-    protected function setNoAnswerVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $noAnswerVoiceMailUser = null)
+    public function setNoAnswerVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $noAnswerVoiceMailUser = null)
     {
         $this->noAnswerVoiceMailUser = $noAnswerVoiceMailUser;
 

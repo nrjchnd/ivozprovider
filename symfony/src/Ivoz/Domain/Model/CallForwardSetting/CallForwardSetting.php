@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CallForwardSetting;
 
 use Core\Application\DataTransferObjectInterface;
@@ -111,3 +110,4 @@ class CallForwardSetting extends CallForwardSettingAbstract implements CallForwa
 
 
 }
+

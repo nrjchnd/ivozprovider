@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\OutgoingRouting;
 
-interface OutgoingRoutingRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface OutgoingRoutingRepository extends ObjectRepository {}
 

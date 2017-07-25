@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersLocation;
 
 use Assert\Assertion;
@@ -169,9 +168,23 @@ abstract class UsersLocationAbstract
         $this->setConnectionId($connectionId);
         $this->setKeepalive($keepalive);
         $this->setPartition($partition);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersLocationDTO
@@ -331,7 +344,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setRuid($ruid)
+    public function setRuid($ruid)
     {
         Assertion::notNull($ruid);
         Assertion::maxLength($ruid, 64);
@@ -358,7 +371,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setUsername($username)
+    public function setUsername($username)
     {
         Assertion::notNull($username);
         Assertion::maxLength($username, 64);
@@ -385,7 +398,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setDomain($domain = null)
+    public function setDomain($domain = null)
     {
         if (!is_null($domain)) {
             Assertion::maxLength($domain, 190);
@@ -413,7 +426,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setContact($contact)
+    public function setContact($contact)
     {
         Assertion::notNull($contact);
         Assertion::maxLength($contact, 255);
@@ -440,7 +453,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setReceived($received = null)
+    public function setReceived($received = null)
     {
         if (!is_null($received)) {
             Assertion::maxLength($received, 128);
@@ -468,7 +481,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setPath($path = null)
+    public function setPath($path = null)
     {
         if (!is_null($path)) {
             Assertion::maxLength($path, 512);
@@ -496,7 +509,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setExpires($expires)
+    public function setExpires($expires)
     {
         Assertion::notNull($expires);
 
@@ -522,7 +535,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setQ($q)
+    public function setQ($q)
     {
         Assertion::notNull($q);
         Assertion::numeric($q);
@@ -549,7 +562,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setCallid($callid)
+    public function setCallid($callid)
     {
         Assertion::notNull($callid);
         Assertion::maxLength($callid, 255);
@@ -576,7 +589,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setCseq($cseq)
+    public function setCseq($cseq)
     {
         Assertion::notNull($cseq);
         Assertion::integerish($cseq);
@@ -603,7 +616,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setLastModified($lastModified)
+    public function setLastModified($lastModified)
     {
         Assertion::notNull($lastModified);
 
@@ -629,7 +642,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setFlags($flags)
+    public function setFlags($flags)
     {
         Assertion::notNull($flags);
         Assertion::integerish($flags);
@@ -656,7 +669,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setCflags($cflags)
+    public function setCflags($cflags)
     {
         Assertion::notNull($cflags);
         Assertion::integerish($cflags);
@@ -683,7 +696,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setUserAgent($userAgent)
+    public function setUserAgent($userAgent)
     {
         Assertion::notNull($userAgent);
         Assertion::maxLength($userAgent, 255);
@@ -710,7 +723,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setSocket($socket = null)
+    public function setSocket($socket = null)
     {
         if (!is_null($socket)) {
             Assertion::maxLength($socket, 64);
@@ -738,7 +751,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setMethods($methods = null)
+    public function setMethods($methods = null)
     {
         if (!is_null($methods)) {
             if (!is_null($methods)) {
@@ -768,7 +781,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setInstance($instance = null)
+    public function setInstance($instance = null)
     {
         if (!is_null($instance)) {
             Assertion::maxLength($instance, 255);
@@ -796,7 +809,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setRegId($regId)
+    public function setRegId($regId)
     {
         Assertion::notNull($regId);
         Assertion::integerish($regId);
@@ -823,7 +836,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setServerId($serverId)
+    public function setServerId($serverId)
     {
         Assertion::notNull($serverId);
         Assertion::integerish($serverId);
@@ -850,7 +863,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setConnectionId($connectionId)
+    public function setConnectionId($connectionId)
     {
         Assertion::notNull($connectionId);
         Assertion::integerish($connectionId);
@@ -877,7 +890,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setKeepalive($keepalive)
+    public function setKeepalive($keepalive)
     {
         Assertion::notNull($keepalive);
         Assertion::integerish($keepalive);
@@ -904,7 +917,7 @@ abstract class UsersLocationAbstract
      *
      * @return self
      */
-    protected function setPartition($partition)
+    public function setPartition($partition)
     {
         Assertion::notNull($partition);
         Assertion::integerish($partition);

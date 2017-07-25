@@ -33,13 +33,16 @@ Ivoz\Domain\Model\Company\Company:
     musicsOnHold:
       targetEntity: Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface
       mappedBy: company
-    countries:
-      targetEntity: Ivoz\Domain\Model\Country\CountryInterface
-      mappedBy: company
     recordings:
       targetEntity: Ivoz\Domain\Model\Recording\RecordingInterface
       mappedBy: company
     relFeatures:
       targetEntity: Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompanyInterface
+      mappedBy: company
+    callACLPatterns:
+      targetEntity: Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface
+      mappedBy: company
+    domains:
+      targetEntity: Ivoz\Domain\Model\Domain\DomainInterface
       mappedBy: company
   lifecycleCallbacks: {  }

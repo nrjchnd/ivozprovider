@@ -2,6 +2,7 @@
 
 namespace Core\Infrastructure\Application;
 
+use Core\Application\DataTransferObjectInterface;
 use Core\Application\ForeignKeyTransformerInterface;
 use Core\Domain\Model\EntityInterface;
 use Doctrine\ORM\EntityManager;
@@ -20,14 +21,21 @@ class DoctrineForeignKeyTransformer implements ForeignKeyTransformerInterface
 
     /**
      * @param string $entityName
-     * @param mixed $key
+     * @param DataTransferObjectInterface|mixed $key
      * @return EntityInterface
      */
     public function transform($entityName, $key)
     {
         if (is_null($key)) {
-
             return null;
+        }
+
+        if ($key instanceof DataTransferObjectInterface) {
+            /**
+             * @todo this must be tested
+             */
+            $entitytClass = substr(get_class($key), 0, -3);
+            return $entitytClass::fromDto($key);
         }
 
         return $this->em->getReference($entityName, $key);

@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\XMLRPCLog;
 
-interface XMLRPCLogRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface XMLRPCLogRepository extends ObjectRepository {}
 

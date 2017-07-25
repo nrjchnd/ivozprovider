@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersWatcher;
 
-interface UsersWatcherRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersWatcherRepository extends ObjectRepository {}
 

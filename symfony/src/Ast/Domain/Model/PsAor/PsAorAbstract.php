@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\PsAor;
 
 use Assert\Assertion;
@@ -82,9 +81,23 @@ abstract class PsAorAbstract
     public function __construct($sorceryId)
     {
         $this->setSorceryId($sorceryId);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PsAorDTO
@@ -196,7 +209,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setSorceryId($sorceryId)
+    public function setSorceryId($sorceryId)
     {
         Assertion::notNull($sorceryId);
         Assertion::maxLength($sorceryId, 40);
@@ -223,7 +236,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setDefaultExpiration($defaultExpiration = null)
+    public function setDefaultExpiration($defaultExpiration = null)
     {
         if (!is_null($defaultExpiration)) {
             if (!is_null($defaultExpiration)) {
@@ -253,7 +266,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setMaxContacts($maxContacts = null)
+    public function setMaxContacts($maxContacts = null)
     {
         if (!is_null($maxContacts)) {
             if (!is_null($maxContacts)) {
@@ -283,7 +296,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setMinimumExpiration($minimumExpiration = null)
+    public function setMinimumExpiration($minimumExpiration = null)
     {
         if (!is_null($minimumExpiration)) {
             if (!is_null($minimumExpiration)) {
@@ -313,7 +326,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setRemoveExisting($removeExisting = null)
+    public function setRemoveExisting($removeExisting = null)
     {
         if (!is_null($removeExisting)) {
         }
@@ -340,7 +353,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setAuthenticateQualify($authenticateQualify = null)
+    public function setAuthenticateQualify($authenticateQualify = null)
     {
         if (!is_null($authenticateQualify)) {
         }
@@ -367,7 +380,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setMaximumExpiration($maximumExpiration = null)
+    public function setMaximumExpiration($maximumExpiration = null)
     {
         if (!is_null($maximumExpiration)) {
             if (!is_null($maximumExpiration)) {
@@ -397,7 +410,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setSupportPath($supportPath = null)
+    public function setSupportPath($supportPath = null)
     {
         if (!is_null($supportPath)) {
         }
@@ -424,7 +437,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setContact($contact = null)
+    public function setContact($contact = null)
     {
         if (!is_null($contact)) {
             Assertion::maxLength($contact, 200);
@@ -452,7 +465,7 @@ abstract class PsAorAbstract
      *
      * @return self
      */
-    protected function setQualifyFrequency($qualifyFrequency = null)
+    public function setQualifyFrequency($qualifyFrequency = null)
     {
         if (!is_null($qualifyFrequency)) {
             if (!is_null($qualifyFrequency)) {

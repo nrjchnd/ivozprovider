@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PeerServer;
 
 use Assert\Assertion;
@@ -126,9 +125,23 @@ abstract class PeerServerAbstract
     public function __construct($authNeeded)
     {
         $this->setAuthNeeded($authNeeded);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PeerServerDTO
@@ -276,7 +289,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setIp($ip = null)
+    public function setIp($ip = null)
     {
         if (!is_null($ip)) {
             Assertion::maxLength($ip, 50);
@@ -304,7 +317,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setHostname($hostname = null)
+    public function setHostname($hostname = null)
     {
         if (!is_null($hostname)) {
             Assertion::maxLength($hostname, 64);
@@ -332,7 +345,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setPort($port = null)
+    public function setPort($port = null)
     {
         if (!is_null($port)) {
             if (!is_null($port)) {
@@ -363,7 +376,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setParams($params = null)
+    public function setParams($params = null)
     {
         if (!is_null($params)) {
             Assertion::maxLength($params, 64);
@@ -391,7 +404,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setUriScheme($uriScheme = null)
+    public function setUriScheme($uriScheme = null)
     {
         if (!is_null($uriScheme)) {
             Assertion::between(intval($uriScheme), 0, 1);
@@ -419,7 +432,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setTransport($transport = null)
+    public function setTransport($transport = null)
     {
         if (!is_null($transport)) {
             Assertion::between(intval($transport), 0, 1);
@@ -447,7 +460,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setStrip($strip = null)
+    public function setStrip($strip = null)
     {
         if (!is_null($strip)) {
             Assertion::between(intval($strip), 0, 1);
@@ -475,7 +488,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setPrefix($prefix = null)
+    public function setPrefix($prefix = null)
     {
         if (!is_null($prefix)) {
             Assertion::maxLength($prefix, 16);
@@ -503,7 +516,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setSendPAI($sendPAI = null)
+    public function setSendPAI($sendPAI = null)
     {
         if (!is_null($sendPAI)) {
             Assertion::between(intval($sendPAI), 0, 1);
@@ -531,7 +544,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setSendRPID($sendRPID = null)
+    public function setSendRPID($sendRPID = null)
     {
         if (!is_null($sendRPID)) {
             Assertion::between(intval($sendRPID), 0, 1);
@@ -559,7 +572,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setAuthNeeded($authNeeded)
+    public function setAuthNeeded($authNeeded)
     {
         Assertion::notNull($authNeeded);
 
@@ -585,7 +598,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setAuthUser($authUser = null)
+    public function setAuthUser($authUser = null)
     {
         if (!is_null($authUser)) {
             Assertion::maxLength($authUser, 64);
@@ -613,7 +626,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setAuthPassword($authPassword = null)
+    public function setAuthPassword($authPassword = null)
     {
         if (!is_null($authPassword)) {
             Assertion::maxLength($authPassword, 64);
@@ -641,7 +654,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setSipProxy($sipProxy = null)
+    public function setSipProxy($sipProxy = null)
     {
         if (!is_null($sipProxy)) {
             Assertion::maxLength($sipProxy, 128);
@@ -669,7 +682,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setOutboundProxy($outboundProxy = null)
+    public function setOutboundProxy($outboundProxy = null)
     {
         if (!is_null($outboundProxy)) {
             Assertion::maxLength($outboundProxy, 128);
@@ -697,7 +710,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setFromUser($fromUser = null)
+    public function setFromUser($fromUser = null)
     {
         if (!is_null($fromUser)) {
             Assertion::maxLength($fromUser, 64);
@@ -725,7 +738,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setFromDomain($fromDomain = null)
+    public function setFromDomain($fromDomain = null)
     {
         if (!is_null($fromDomain)) {
             Assertion::maxLength($fromDomain, 190);
@@ -753,7 +766,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract)
+    public function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract)
     {
         $this->peeringContract = $peeringContract;
 
@@ -777,7 +790,7 @@ abstract class PeerServerAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 

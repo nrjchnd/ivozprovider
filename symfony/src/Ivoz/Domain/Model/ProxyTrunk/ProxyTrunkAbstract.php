@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ProxyTrunk;
 
 use Assert\Assertion;
@@ -33,9 +32,23 @@ abstract class ProxyTrunkAbstract
     public function __construct($ip)
     {
         $this->setIp($ip);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ProxyTrunkDTO
@@ -115,7 +128,7 @@ abstract class ProxyTrunkAbstract
      *
      * @return self
      */
-    protected function setName($name = null)
+    public function setName($name = null)
     {
         if (!is_null($name)) {
             Assertion::maxLength($name, 100);
@@ -143,7 +156,7 @@ abstract class ProxyTrunkAbstract
      *
      * @return self
      */
-    protected function setIp($ip)
+    public function setIp($ip)
     {
         Assertion::notNull($ip);
         Assertion::maxLength($ip, 50);

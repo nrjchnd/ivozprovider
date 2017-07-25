@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersPresentity;
 
 use Assert\Assertion;
@@ -86,9 +85,23 @@ abstract class UsersPresentityAbstract
         $this->setBody($body);
         $this->setSender($sender);
         $this->setPriority($priority);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersPresentityDTO
@@ -195,7 +208,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setUsername($username)
+    public function setUsername($username)
     {
         Assertion::notNull($username);
         Assertion::maxLength($username, 64);
@@ -222,7 +235,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setDomain($domain)
+    public function setDomain($domain)
     {
         Assertion::notNull($domain);
         Assertion::maxLength($domain, 190);
@@ -249,7 +262,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setEvent($event)
+    public function setEvent($event)
     {
         Assertion::notNull($event);
         Assertion::maxLength($event, 64);
@@ -276,7 +289,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setEtag($etag)
+    public function setEtag($etag)
     {
         Assertion::notNull($etag);
         Assertion::maxLength($etag, 64);
@@ -303,7 +316,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setExpires($expires)
+    public function setExpires($expires)
     {
         Assertion::notNull($expires);
         Assertion::integerish($expires);
@@ -330,7 +343,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setReceivedTime($receivedTime)
+    public function setReceivedTime($receivedTime)
     {
         Assertion::notNull($receivedTime);
         Assertion::integerish($receivedTime);
@@ -357,7 +370,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setBody($body)
+    public function setBody($body)
     {
         Assertion::notNull($body);
 
@@ -383,7 +396,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setSender($sender)
+    public function setSender($sender)
     {
         Assertion::notNull($sender);
         Assertion::maxLength($sender, 128);
@@ -410,7 +423,7 @@ abstract class UsersPresentityAbstract
      *
      * @return self
      */
-    protected function setPriority($priority)
+    public function setPriority($priority)
     {
         Assertion::notNull($priority);
         Assertion::integerish($priority);

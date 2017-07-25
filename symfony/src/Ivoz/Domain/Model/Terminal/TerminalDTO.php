@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Terminal;
 
 use Core\Application\DataTransferObjectInterface;
@@ -82,6 +81,11 @@ class TerminalDTO implements DataTransferObjectInterface
     private $TerminalModel;
 
     /**
+     * @var array|null
+     */
+    private $astPsEndpoints = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -98,7 +102,8 @@ class TerminalDTO implements DataTransferObjectInterface
             'lastProvisionDate' => $this->getLastProvisionDate(),
             'id' => $this->getId(),
             'companyId' => $this->getCompanyId(),
-            'terminalModelId' => $this->getTerminalModelId()
+            'terminalModelId' => $this->getTerminalModelId(),
+            'astPsEndpointsId' => $this->getAstPsEndpointsId()
         ];
     }
 
@@ -109,6 +114,15 @@ class TerminalDTO implements DataTransferObjectInterface
     {
         $this->company = $transformer->transform('Ivoz\\Domain\\Model\\Company\\Company', $this->getCompanyId());
         $this->terminalModel = $transformer->transform('Ivoz\\Domain\\Model\\TerminalModel\\TerminalModel', $this->getTerminalModelId());
+        $items = $this->getAstPsEndpoints();
+        $this->astPsEndpoints = [];
+        foreach ($items as $item) {
+            $this->astPsEndpoints[] = $transformer->transform(
+                'Ast\\Domain\\Model\\PsEndpoint\\PsEndpoint',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -116,7 +130,10 @@ class TerminalDTO implements DataTransferObjectInterface
      */
     public function transformCollections(CollectionTransformerInterface $transformer)
     {
-
+        $this->astPsEndpoints = $transformer->transform(
+            'Ast\\Domain\\Model\\PsEndpoint\\PsEndpoint',
+            $this->astPsEndpoints
+        );
     }
 
     /**
@@ -373,6 +390,26 @@ class TerminalDTO implements DataTransferObjectInterface
     public function getTerminalModel()
     {
         return $this->TerminalModel;
+    }
+
+    /**
+     * @param array $astPsEndpoints
+     *
+     * @return TerminalDTO
+     */
+    public function setAstPsEndpoints($astPsEndpoints)
+    {
+        $this->astPsEndpoints = $astPsEndpoints;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAstPsEndpoints()
+    {
+        return $this->astPsEndpoints;
     }
 }
 

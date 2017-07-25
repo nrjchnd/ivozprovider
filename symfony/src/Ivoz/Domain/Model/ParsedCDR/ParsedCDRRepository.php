@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\ParsedCDR;
 
-interface ParsedCDRRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ParsedCDRRepository extends ObjectRepository {}
 

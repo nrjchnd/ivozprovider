@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Recording;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class Recording extends RecordingAbstract implements RecordingInterface
 
 
 }
+

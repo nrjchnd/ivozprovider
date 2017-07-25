@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\FriendsPattern;
 
 use Assert\Assertion;
@@ -39,9 +38,23 @@ abstract class FriendsPatternAbstract
     {
         $this->setName($name);
         $this->setRegExp($regExp);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return FriendsPatternDTO
@@ -125,7 +138,7 @@ abstract class FriendsPatternAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 50);
@@ -152,7 +165,7 @@ abstract class FriendsPatternAbstract
      *
      * @return self
      */
-    protected function setRegExp($regExp)
+    public function setRegExp($regExp)
     {
         Assertion::notNull($regExp);
         Assertion::maxLength($regExp, 255);
@@ -179,7 +192,7 @@ abstract class FriendsPatternAbstract
      *
      * @return self
      */
-    protected function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend)
+    public function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend)
     {
         $this->friend = $friend;
 

@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Locution;
 
-interface LocutionRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface LocutionRepository extends ObjectRepository {}
 

@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\ConferenceRoom;
 
-interface ConferenceRoomRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ConferenceRoomRepository extends ObjectRepository {}
 

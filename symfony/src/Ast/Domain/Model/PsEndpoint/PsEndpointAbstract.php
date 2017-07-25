@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\PsEndpoint;
 
 use Assert\Assertion;
@@ -145,9 +144,23 @@ abstract class PsEndpointAbstract
         $this->setAllow($allow);
         $this->setSubscribecontext($subscribecontext);
         $this->setOneHundredRel($oneHundredRel);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PsEndpointDTO
@@ -299,7 +312,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setSorceryId($sorceryId)
+    public function setSorceryId($sorceryId)
     {
         Assertion::notNull($sorceryId);
         Assertion::maxLength($sorceryId, 40);
@@ -326,7 +339,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setFromDomain($fromDomain = null)
+    public function setFromDomain($fromDomain = null)
     {
         if (!is_null($fromDomain)) {
             Assertion::maxLength($fromDomain, 190);
@@ -354,7 +367,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setAors($aors = null)
+    public function setAors($aors = null)
     {
         if (!is_null($aors)) {
             Assertion::maxLength($aors, 200);
@@ -382,7 +395,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setCallerid($callerid = null)
+    public function setCallerid($callerid = null)
     {
         if (!is_null($callerid)) {
             Assertion::maxLength($callerid, 100);
@@ -410,7 +423,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setContext($context)
+    public function setContext($context)
     {
         Assertion::notNull($context);
         Assertion::maxLength($context, 40);
@@ -437,7 +450,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setDisallow($disallow)
+    public function setDisallow($disallow)
     {
         Assertion::notNull($disallow);
         Assertion::maxLength($disallow, 200);
@@ -464,7 +477,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setAllow($allow)
+    public function setAllow($allow)
     {
         Assertion::notNull($allow);
         Assertion::maxLength($allow, 200);
@@ -491,7 +504,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setDirectMedia($directMedia = null)
+    public function setDirectMedia($directMedia = null)
     {
         if (!is_null($directMedia)) {
         }
@@ -518,7 +531,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setDirectMediaMethod($directMediaMethod = null)
+    public function setDirectMediaMethod($directMediaMethod = null)
     {
         if (!is_null($directMediaMethod)) {
         Assertion::choice($directMediaMethod, array (
@@ -550,7 +563,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setMailboxes($mailboxes = null)
+    public function setMailboxes($mailboxes = null)
     {
         if (!is_null($mailboxes)) {
             Assertion::maxLength($mailboxes, 100);
@@ -578,7 +591,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setPickupGroup($pickupGroup = null)
+    public function setPickupGroup($pickupGroup = null)
     {
         if (!is_null($pickupGroup)) {
             Assertion::maxLength($pickupGroup, 40);
@@ -606,7 +619,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setSendDiversion($sendDiversion = null)
+    public function setSendDiversion($sendDiversion = null)
     {
         if (!is_null($sendDiversion)) {
         }
@@ -633,7 +646,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setSendPai($sendPai = null)
+    public function setSendPai($sendPai = null)
     {
         if (!is_null($sendPai)) {
         }
@@ -660,7 +673,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setSubscribecontext($subscribecontext)
+    public function setSubscribecontext($subscribecontext)
     {
         Assertion::notNull($subscribecontext);
         Assertion::maxLength($subscribecontext, 40);
@@ -687,7 +700,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setOneHundredRel($oneHundredRel)
+    public function setOneHundredRel($oneHundredRel)
     {
         Assertion::notNull($oneHundredRel);
 
@@ -713,7 +726,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setOutboundProxy($outboundProxy = null)
+    public function setOutboundProxy($outboundProxy = null)
     {
         if (!is_null($outboundProxy)) {
             Assertion::maxLength($outboundProxy, 256);
@@ -741,7 +754,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setTrustIdInbound($trustIdInbound = null)
+    public function setTrustIdInbound($trustIdInbound = null)
     {
         if (!is_null($trustIdInbound)) {
         }
@@ -768,7 +781,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal = null)
+    public function setTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal = null)
     {
         $this->terminal = $terminal;
 
@@ -792,7 +805,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend = null)
+    public function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend = null)
     {
         $this->friend = $friend;
 
@@ -816,7 +829,7 @@ abstract class PsEndpointAbstract
      *
      * @return self
      */
-    protected function setRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount = null)
+    public function setRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount = null)
     {
         $this->retailAccount = $retailAccount;
 

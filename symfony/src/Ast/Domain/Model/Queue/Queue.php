@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\Queue;
 
 use Core\Application\DataTransferObjectInterface;
@@ -97,23 +96,6 @@ class Queue extends QueueAbstract implements QueueInterface
         ];
     }
 
-
-    /**
-     * Set id
-     *
-     * @param string $id
-     *
-     * @return self
-     */
-    protected function setId($id)
-    {
-        Assertion::notNull($id);
-        Assertion::maxLength($id, 128);
-
-        $this->id = $id;
-
-        return $this;
-    }
 
     /**
      * Get id

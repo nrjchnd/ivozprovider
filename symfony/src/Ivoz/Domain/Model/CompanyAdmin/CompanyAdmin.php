@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CompanyAdmin;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class CompanyAdmin extends CompanyAdminAbstract implements CompanyAdminInterface
 
 
 }
+

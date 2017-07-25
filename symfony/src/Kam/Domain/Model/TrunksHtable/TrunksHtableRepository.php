@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\TrunksHtable;
 
-interface TrunksHtableRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TrunksHtableRepository extends ObjectRepository {}
 

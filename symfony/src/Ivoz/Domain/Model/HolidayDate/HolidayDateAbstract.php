@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\HolidayDate;
 
 use Assert\Assertion;
@@ -44,9 +43,23 @@ abstract class HolidayDateAbstract
     {
         $this->setName($name);
         $this->setEventDate($eventDate);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return HolidayDateDTO
@@ -134,7 +147,7 @@ abstract class HolidayDateAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 50);
@@ -161,7 +174,7 @@ abstract class HolidayDateAbstract
      *
      * @return self
      */
-    protected function setEventDate($eventDate)
+    public function setEventDate($eventDate)
     {
         Assertion::notNull($eventDate);
 
@@ -187,7 +200,7 @@ abstract class HolidayDateAbstract
      *
      * @return self
      */
-    protected function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar)
+    public function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar)
     {
         $this->calendar = $calendar;
 
@@ -211,7 +224,7 @@ abstract class HolidayDateAbstract
      *
      * @return self
      */
-    protected function setLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $locution = null)
+    public function setLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $locution = null)
     {
         $this->locution = $locution;
 

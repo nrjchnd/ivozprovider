@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersAcc;
 
-interface UsersAccRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersAccRepository extends ObjectRepository {}
 

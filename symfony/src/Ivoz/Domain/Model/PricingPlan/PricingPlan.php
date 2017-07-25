@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PricingPlan;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class PricingPlan extends PricingPlanAbstract implements PricingPlanInterface
 
 
 }
+

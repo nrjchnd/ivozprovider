@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersDomainAttr;
 
-interface UsersDomainAttrRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersDomainAttrRepository extends ObjectRepository {}
 

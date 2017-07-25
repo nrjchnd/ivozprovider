@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\BrandOperator;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class BrandOperator extends BrandOperatorAbstract implements BrandOperatorInterf
 
 
 }
+

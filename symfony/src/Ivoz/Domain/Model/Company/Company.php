@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Company;
 
 use Core\Application\DataTransferObjectInterface;
@@ -13,23 +12,10 @@ class Company extends CompanyAbstract implements CompanyInterface
 {
     use CompanyTrait;
 
-    const EMPTY_DOMAIN_EXCEPTION = 2001;
-
-    /**
-     * Available Company Types
-     */
-    const VPBX      = 'vpbx';
-    const RETAIL    = "retail";
-
     /**
      * @var integer
      */
     protected $id;
-
-    /**
-     * @var ArrayCollection
-     */
-    protected $relPricingPlans;
 
     /**
      * @var ArrayCollection
@@ -59,12 +45,12 @@ class Company extends CompanyAbstract implements CompanyInterface
     /**
      * @var ArrayCollection
      */
-    protected $musicsOnHold;
+    protected $relPricingPlans;
 
     /**
      * @var ArrayCollection
      */
-    protected $countries;
+    protected $musicsOnHold;
 
     /**
      * @var ArrayCollection
@@ -75,6 +61,16 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @var ArrayCollection
      */
     protected $relFeatures;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $callACLPatterns;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $domains;
 
 
     /**
@@ -89,16 +85,17 @@ class Company extends CompanyAbstract implements CompanyInterface
     public function __construct()
     {
         parent::__construct(...func_get_args());
-        $this->relPricingPlans = new ArrayCollection();
         $this->extensions = new ArrayCollection();
         $this->ddis = new ArrayCollection();
         $this->friends = new ArrayCollection();
         $this->companyServices = new ArrayCollection();
         $this->terminals = new ArrayCollection();
+        $this->relPricingPlans = new ArrayCollection();
         $this->musicsOnHold = new ArrayCollection();
-        $this->countries = new ArrayCollection();
         $this->recordings = new ArrayCollection();
         $this->relFeatures = new ArrayCollection();
+        $this->callACLPatterns = new ArrayCollection();
+        $this->domains = new ArrayCollection();
     }
 
     public function __wakeup()
@@ -130,16 +127,17 @@ class Company extends CompanyAbstract implements CompanyInterface
         $self = parent::fromDTO($dto);
 
         return $self
-            ->replaceRelPricingPlans($dto->getRelPricingPlans())
             ->replaceExtensions($dto->getExtensions())
             ->replaceDdis($dto->getDdis())
             ->replaceFriends($dto->getFriends())
             ->replaceCompanyServices($dto->getCompanyServices())
             ->replaceTerminals($dto->getTerminals())
+            ->replaceRelPricingPlans($dto->getRelPricingPlans())
             ->replaceMusicsOnHold($dto->getMusicsOnHold())
-            ->replaceCountries($dto->getCountries())
             ->replaceRecordings($dto->getRecordings())
             ->replaceRelFeatures($dto->getRelFeatures())
+            ->replaceCallACLPatterns($dto->getCallACLPatterns())
+            ->replaceDomains($dto->getDomains())
         ;
     }
 
@@ -155,16 +153,17 @@ class Company extends CompanyAbstract implements CompanyInterface
         parent::updateFromDTO($dto);
 
         $this
-            ->replaceRelPricingPlans($dto->getRelPricingPlans())
             ->replaceExtensions($dto->getExtensions())
             ->replaceDdis($dto->getDdis())
             ->replaceFriends($dto->getFriends())
             ->replaceCompanyServices($dto->getCompanyServices())
             ->replaceTerminals($dto->getTerminals())
+            ->replaceRelPricingPlans($dto->getRelPricingPlans())
             ->replaceMusicsOnHold($dto->getMusicsOnHold())
-            ->replaceCountries($dto->getCountries())
             ->replaceRecordings($dto->getRecordings())
-            ->replaceRelFeatures($dto->getRelFeatures());
+            ->replaceRelFeatures($dto->getRelFeatures())
+            ->replaceCallACLPatterns($dto->getCallACLPatterns())
+            ->replaceDomains($dto->getDomains());
 
 
         return $this;
@@ -178,16 +177,17 @@ class Company extends CompanyAbstract implements CompanyInterface
         $dto = parent::toDTO();
         return $dto
             ->setId($this->getId())
-            ->setRelPricingPlans($this->getRelPricingPlans())
             ->setExtensions($this->getExtensions())
             ->setDdis($this->getDdis())
             ->setFriends($this->getFriends())
             ->setCompanyServices($this->getCompanyServices())
             ->setTerminals($this->getTerminals())
+            ->setRelPricingPlans($this->getRelPricingPlans())
             ->setMusicsOnHold($this->getMusicsOnHold())
-            ->setCountries($this->getCountries())
             ->setRecordings($this->getRecordings())
-            ->setRelFeatures($this->getRelFeatures());
+            ->setRelFeatures($this->getRelFeatures())
+            ->setCallACLPatterns($this->getCallACLPatterns())
+            ->setDomains($this->getDomains());
     }
 
     /**
@@ -212,85 +212,13 @@ class Company extends CompanyAbstract implements CompanyInterface
     }
 
     /**
-     * Add relPricingPlan
-     *
-     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterfaceInterface $relPricingPlan
-     *
-     * @return Company
-     */
-    protected function addRelPricingPlan(\Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterfaceInterface $relPricingPlan)
-    {
-        $this->relPricingPlans[] = $relPricingPlan;
-
-        return $this;
-    }
-
-    /**
-     * Remove relPricingPlan
-     *
-     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterfaceInterface $relPricingPlan
-     */
-    protected function removeRelPricingPlan(\Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterfaceInterface $relPricingPlan)
-    {
-        $this->relPricingPlans->removeElement($relPricingPlan);
-    }
-
-    /**
-     * Replace relPricingPlans
-     *
-     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterfaceInterface[] $relPricingPlans
-     * @return self
-     */
-    protected function replaceRelPricingPlans(array $relPricingPlans)
-    {
-        $updatedEntities = [];
-        $fallBackId = -1;
-        foreach ($relPricingPlans as $entity) {
-            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
-            $updatedEntities[$index] = $entity;
-            $entity->setCompany($this);
-        }
-        $updatedEntityKeys = array_keys($updatedEntities);
-
-        foreach ($this->relPricingPlans as $key => $entity) {
-            $identity = $entity->getId();
-            if (in_array($identity, $updatedEntityKeys)) {
-                $this->relPricingPlans[$key] = $updatedEntities[$identity];
-            } else {
-                $this->removeRelPricingPlan($key);
-            }
-            unset($updatedEntities[$identity]);
-        }
-
-        foreach ($updatedEntities as $entity) {
-            $this->addRelPricingPlan($entity);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get relPricingPlans
-     *
-     * @return array
-     */
-    public function getRelPricingPlans(Criteria $criteria = null)
-    {
-        if (!is_null($criteria)) {
-            return $this->relPricingPlans->matching($criteria)->toArray();
-        }
-
-        return $this->relPricingPlans->toArray();
-    }
-
-    /**
      * Add extension
      *
      * @param \Ivoz\Domain\Model\Extension\ExtensionInterface $extension
      *
      * @return Company
      */
-    protected function addExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension)
+    public function addExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension)
     {
         $this->extensions[] = $extension;
 
@@ -302,7 +230,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\Extension\ExtensionInterface $extension
      */
-    protected function removeExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension)
+    public function removeExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension)
     {
         $this->extensions->removeElement($extension);
     }
@@ -313,7 +241,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\Extension\ExtensionInterface[] $extensions
      * @return self
      */
-    protected function replaceExtensions(array $extensions)
+    public function replaceExtensions(array $extensions)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -362,7 +290,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @return Company
      */
-    protected function addDdi(\Ivoz\Domain\Model\DDI\DDIInterface $ddi)
+    public function addDdi(\Ivoz\Domain\Model\DDI\DDIInterface $ddi)
     {
         $this->ddis[] = $ddi;
 
@@ -374,7 +302,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\DDI\DDIInterface $ddi
      */
-    protected function removeDdi(\Ivoz\Domain\Model\DDI\DDIInterface $ddi)
+    public function removeDdi(\Ivoz\Domain\Model\DDI\DDIInterface $ddi)
     {
         $this->ddis->removeElement($ddi);
     }
@@ -385,7 +313,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\DDI\DDIInterface[] $ddis
      * @return self
      */
-    protected function replaceDdis(array $ddis)
+    public function replaceDdis(array $ddis)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -434,7 +362,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @return Company
      */
-    protected function addFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend)
+    public function addFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend)
     {
         $this->friends[] = $friend;
 
@@ -446,7 +374,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\Friend\FriendInterface $friend
      */
-    protected function removeFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend)
+    public function removeFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend)
     {
         $this->friends->removeElement($friend);
     }
@@ -457,7 +385,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\Friend\FriendInterface[] $friends
      * @return self
      */
-    protected function replaceFriends(array $friends)
+    public function replaceFriends(array $friends)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -506,7 +434,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @return Company
      */
-    protected function addCompanyService(\Ivoz\Domain\Model\CompanyService\CompanyServiceInterface $companyService)
+    public function addCompanyService(\Ivoz\Domain\Model\CompanyService\CompanyServiceInterface $companyService)
     {
         $this->companyServices[] = $companyService;
 
@@ -518,7 +446,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\CompanyService\CompanyServiceInterface $companyService
      */
-    protected function removeCompanyService(\Ivoz\Domain\Model\CompanyService\CompanyServiceInterface $companyService)
+    public function removeCompanyService(\Ivoz\Domain\Model\CompanyService\CompanyServiceInterface $companyService)
     {
         $this->companyServices->removeElement($companyService);
     }
@@ -529,7 +457,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\CompanyService\CompanyServiceInterface[] $companyServices
      * @return self
      */
-    protected function replaceCompanyServices(array $companyServices)
+    public function replaceCompanyServices(array $companyServices)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -578,7 +506,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @return Company
      */
-    protected function addTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal)
+    public function addTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal)
     {
         $this->terminals[] = $terminal;
 
@@ -590,7 +518,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\Terminal\TerminalInterface $terminal
      */
-    protected function removeTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal)
+    public function removeTerminal(\Ivoz\Domain\Model\Terminal\TerminalInterface $terminal)
     {
         $this->terminals->removeElement($terminal);
     }
@@ -601,7 +529,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\Terminal\TerminalInterface[] $terminals
      * @return self
      */
-    protected function replaceTerminals(array $terminals)
+    public function replaceTerminals(array $terminals)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -644,13 +572,85 @@ class Company extends CompanyAbstract implements CompanyInterface
     }
 
     /**
+     * Add relPricingPlan
+     *
+     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterface $relPricingPlan
+     *
+     * @return Company
+     */
+    public function addRelPricingPlan(\Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterface $relPricingPlan)
+    {
+        $this->relPricingPlans[] = $relPricingPlan;
+
+        return $this;
+    }
+
+    /**
+     * Remove relPricingPlan
+     *
+     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterface $relPricingPlan
+     */
+    public function removeRelPricingPlan(\Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterface $relPricingPlan)
+    {
+        $this->relPricingPlans->removeElement($relPricingPlan);
+    }
+
+    /**
+     * Replace relPricingPlans
+     *
+     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterface[] $relPricingPlans
+     * @return self
+     */
+    public function replaceRelPricingPlans(array $relPricingPlans)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($relPricingPlans as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->relPricingPlans as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->relPricingPlans[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeRelPricingPlan($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addRelPricingPlan($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get relPricingPlans
+     *
+     * @return array
+     */
+    public function getRelPricingPlans(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->relPricingPlans->matching($criteria)->toArray();
+        }
+
+        return $this->relPricingPlans->toArray();
+    }
+
+    /**
      * Add musicsOnHold
      *
      * @param \Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface $musicsOnHold
      *
      * @return Company
      */
-    protected function addMusicsOnHold(\Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface $musicsOnHold)
+    public function addMusicsOnHold(\Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface $musicsOnHold)
     {
         $this->musicsOnHold[] = $musicsOnHold;
 
@@ -662,7 +662,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface $musicsOnHold
      */
-    protected function removeMusicsOnHold(\Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface $musicsOnHold)
+    public function removeMusicsOnHold(\Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface $musicsOnHold)
     {
         $this->musicsOnHold->removeElement($musicsOnHold);
     }
@@ -673,7 +673,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\MusicOnHold\MusicOnHoldInterface[] $musicsOnHold
      * @return self
      */
-    protected function replaceMusicsOnHold(array $musicsOnHold)
+    public function replaceMusicsOnHold(array $musicsOnHold)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -716,85 +716,13 @@ class Company extends CompanyAbstract implements CompanyInterface
     }
 
     /**
-     * Add country
-     *
-     * @param \Ivoz\Domain\Model\Country\CountryInterface $country
-     *
-     * @return Company
-     */
-    protected function addCountry(\Ivoz\Domain\Model\Country\CountryInterface $country)
-    {
-        $this->countries[] = $country;
-
-        return $this;
-    }
-
-    /**
-     * Remove country
-     *
-     * @param \Ivoz\Domain\Model\Country\CountryInterface $country
-     */
-    protected function removeCountry(\Ivoz\Domain\Model\Country\CountryInterface $country)
-    {
-        $this->countries->removeElement($country);
-    }
-
-    /**
-     * Replace countries
-     *
-     * @param \Ivoz\Domain\Model\Country\CountryInterface[] $countries
-     * @return self
-     */
-    protected function replaceCountries(array $countries)
-    {
-        $updatedEntities = [];
-        $fallBackId = -1;
-        foreach ($countries as $entity) {
-            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
-            $updatedEntities[$index] = $entity;
-            $entity->setCompany($this);
-        }
-        $updatedEntityKeys = array_keys($updatedEntities);
-
-        foreach ($this->countries as $key => $entity) {
-            $identity = $entity->getId();
-            if (in_array($identity, $updatedEntityKeys)) {
-                $this->countries[$key] = $updatedEntities[$identity];
-            } else {
-                $this->removeCountry($key);
-            }
-            unset($updatedEntities[$identity]);
-        }
-
-        foreach ($updatedEntities as $entity) {
-            $this->addCountry($entity);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get countries
-     *
-     * @return array
-     */
-    public function getCountries(Criteria $criteria = null)
-    {
-        if (!is_null($criteria)) {
-            return $this->countries->matching($criteria)->toArray();
-        }
-
-        return $this->countries->toArray();
-    }
-
-    /**
      * Add recording
      *
      * @param \Ivoz\Domain\Model\Recording\RecordingInterface $recording
      *
      * @return Company
      */
-    protected function addRecording(\Ivoz\Domain\Model\Recording\RecordingInterface $recording)
+    public function addRecording(\Ivoz\Domain\Model\Recording\RecordingInterface $recording)
     {
         $this->recordings[] = $recording;
 
@@ -806,7 +734,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\Recording\RecordingInterface $recording
      */
-    protected function removeRecording(\Ivoz\Domain\Model\Recording\RecordingInterface $recording)
+    public function removeRecording(\Ivoz\Domain\Model\Recording\RecordingInterface $recording)
     {
         $this->recordings->removeElement($recording);
     }
@@ -817,7 +745,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\Recording\RecordingInterface[] $recordings
      * @return self
      */
-    protected function replaceRecordings(array $recordings)
+    public function replaceRecordings(array $recordings)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -866,7 +794,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @return Company
      */
-    protected function addRelFeature(\Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompanyInterface $relFeature)
+    public function addRelFeature(\Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompanyInterface $relFeature)
     {
         $this->relFeatures[] = $relFeature;
 
@@ -878,7 +806,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      *
      * @param \Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompanyInterface $relFeature
      */
-    protected function removeRelFeature(\Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompanyInterface $relFeature)
+    public function removeRelFeature(\Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompanyInterface $relFeature)
     {
         $this->relFeatures->removeElement($relFeature);
     }
@@ -889,7 +817,7 @@ class Company extends CompanyAbstract implements CompanyInterface
      * @param \Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompanyInterface[] $relFeatures
      * @return self
      */
-    protected function replaceRelFeatures(array $relFeatures)
+    public function replaceRelFeatures(array $relFeatures)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -931,5 +859,150 @@ class Company extends CompanyAbstract implements CompanyInterface
         return $this->relFeatures->toArray();
     }
 
+    /**
+     * Add callACLPattern
+     *
+     * @param \Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern
+     *
+     * @return Company
+     */
+    public function addCallACLPattern(\Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern)
+    {
+        $this->callACLPatterns[] = $callACLPattern;
+
+        return $this;
+    }
+
+    /**
+     * Remove callACLPattern
+     *
+     * @param \Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern
+     */
+    public function removeCallACLPattern(\Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern)
+    {
+        $this->callACLPatterns->removeElement($callACLPattern);
+    }
+
+    /**
+     * Replace callACLPatterns
+     *
+     * @param \Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface[] $callACLPatterns
+     * @return self
+     */
+    public function replaceCallACLPatterns(array $callACLPatterns)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($callACLPatterns as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->callACLPatterns as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->callACLPatterns[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeCallACLPattern($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addCallACLPattern($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get callACLPatterns
+     *
+     * @return array
+     */
+    public function getCallACLPatterns(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->callACLPatterns->matching($criteria)->toArray();
+        }
+
+        return $this->callACLPatterns->toArray();
+    }
+
+    /**
+     * Add domain
+     *
+     * @param \Ivoz\Domain\Model\Domain\DomainInterface $domain
+     *
+     * @return Company
+     */
+    public function addDomain(\Ivoz\Domain\Model\Domain\DomainInterface $domain)
+    {
+        $this->domains[] = $domain;
+
+        return $this;
+    }
+
+    /**
+     * Remove domain
+     *
+     * @param \Ivoz\Domain\Model\Domain\DomainInterface $domain
+     */
+    public function removeDomain(\Ivoz\Domain\Model\Domain\DomainInterface $domain)
+    {
+        $this->domains->removeElement($domain);
+    }
+
+    /**
+     * Replace domains
+     *
+     * @param \Ivoz\Domain\Model\Domain\DomainInterface[] $domains
+     * @return self
+     */
+    public function replaceDomains(array $domains)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($domains as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->domains as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->domains[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeDomain($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addDomain($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get domains
+     *
+     * @return array
+     */
+    public function getDomains(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->domains->matching($criteria)->toArray();
+        }
+
+        return $this->domains->toArray();
+    }
+
 
 }
+

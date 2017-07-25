@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\Musiconhold;
 
 use Assert\Assertion;
@@ -63,9 +62,23 @@ abstract class MusiconholdAbstract
     public function __construct($name)
     {
         $this->setName($name);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return MusiconholdDTO
@@ -169,7 +182,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 80);
@@ -196,7 +209,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setMode($mode = null)
+    public function setMode($mode = null)
     {
         if (!is_null($mode)) {
         }
@@ -223,7 +236,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setDirectory($directory = null)
+    public function setDirectory($directory = null)
     {
         if (!is_null($directory)) {
             Assertion::maxLength($directory, 255);
@@ -251,7 +264,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setApplication($application = null)
+    public function setApplication($application = null)
     {
         if (!is_null($application)) {
             Assertion::maxLength($application, 255);
@@ -279,7 +292,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setDigit($digit = null)
+    public function setDigit($digit = null)
     {
         if (!is_null($digit)) {
             Assertion::maxLength($digit, 1);
@@ -307,7 +320,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setSort($sort = null)
+    public function setSort($sort = null)
     {
         if (!is_null($sort)) {
             Assertion::maxLength($sort, 10);
@@ -335,7 +348,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setFormat($format = null)
+    public function setFormat($format = null)
     {
         if (!is_null($format)) {
             Assertion::maxLength($format, 10);
@@ -363,7 +376,7 @@ abstract class MusiconholdAbstract
      *
      * @return self
      */
-    protected function setStamp($stamp = null)
+    public function setStamp($stamp = null)
     {
         if (!is_null($stamp)) {
         }

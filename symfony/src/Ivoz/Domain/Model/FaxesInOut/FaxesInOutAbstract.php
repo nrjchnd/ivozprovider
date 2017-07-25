@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\FaxesInOut;
 
 use Assert\Assertion;
@@ -66,9 +65,23 @@ abstract class FaxesInOutAbstract
     {
         $this->setCalldate($calldate);
         $this->setFile($file);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return FaxesInOutDTO
@@ -189,7 +202,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setCalldate($calldate)
+    public function setCalldate($calldate)
     {
         Assertion::notNull($calldate);
 
@@ -215,7 +228,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setSrc($src = null)
+    public function setSrc($src = null)
     {
         if (!is_null($src)) {
             Assertion::maxLength($src, 128);
@@ -243,7 +256,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setDst($dst = null)
+    public function setDst($dst = null)
     {
         if (!is_null($dst)) {
             Assertion::maxLength($dst, 128);
@@ -271,7 +284,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setType($type = null)
+    public function setType($type = null)
     {
         if (!is_null($type)) {
             Assertion::maxLength($type, 20);
@@ -303,7 +316,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setPages($pages = null)
+    public function setPages($pages = null)
     {
         if (!is_null($pages)) {
             Assertion::maxLength($pages, 64);
@@ -331,7 +344,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setStatus($status = null)
+    public function setStatus($status = null)
     {
         if (!is_null($status)) {
         }
@@ -358,7 +371,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setFax(\Ivoz\Domain\Model\Fax\FaxInterface $fax)
+    public function setFax(\Ivoz\Domain\Model\Fax\FaxInterface $fax)
     {
         $this->fax = $fax;
 
@@ -382,7 +395,7 @@ abstract class FaxesInOutAbstract
      *
      * @return self
      */
-    protected function setFile(File $file)
+    public function setFile(File $file)
     {
         $this->file = $file;
 

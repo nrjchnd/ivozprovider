@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CompanyService;
 
 use Assert\Assertion;
@@ -38,9 +37,23 @@ abstract class CompanyServiceAbstract
     public function __construct($code)
     {
         $this->setCode($code);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return CompanyServiceDTO
@@ -124,7 +137,7 @@ abstract class CompanyServiceAbstract
      *
      * @return self
      */
-    protected function setCode($code)
+    public function setCode($code)
     {
         Assertion::notNull($code);
         Assertion::maxLength($code, 3);
@@ -151,7 +164,7 @@ abstract class CompanyServiceAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -175,7 +188,7 @@ abstract class CompanyServiceAbstract
      *
      * @return self
      */
-    protected function setService(\Ivoz\Domain\Model\Service\ServiceInterface $service)
+    public function setService(\Ivoz\Domain\Model\Service\ServiceInterface $service)
     {
         $this->service = $service;
 

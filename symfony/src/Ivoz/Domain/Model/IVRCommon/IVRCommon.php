@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\IVRCommon;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class IVRCommon extends IVRCommonAbstract implements IVRCommonInterface
 
 
 }
+

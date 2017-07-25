@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Service;
 
-interface ServiceRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ServiceRepository extends ObjectRepository {}
 

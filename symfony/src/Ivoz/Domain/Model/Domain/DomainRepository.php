@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Domain;
 
-interface DomainRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface DomainRepository extends ObjectRepository {}
 

@@ -13,6 +13,8 @@ interface EntityInterface
 {
     public function getId();
 
+    public function initChangelog();
+
     /**
      * Factory method
      * @param DataTransferObjectInterface $dto

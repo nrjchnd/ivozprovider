@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\FeaturesRelCompany;
 
-interface FeaturesRelCompanyRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface FeaturesRelCompanyRepository extends ObjectRepository {}
 

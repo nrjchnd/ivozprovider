@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\TransformationRulesetGroupsTrunk;
 
 use Assert\Assertion;
@@ -84,9 +83,23 @@ abstract class TransformationRulesetGroupsTrunkAbstract
         $this->setName($name);
         $this->setDescription($description);
         $this->setAutomatic($automatic);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TransformationRulesetGroupsTrunkDTO
@@ -202,7 +215,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 100);
@@ -229,7 +242,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setCallerIn($callerIn = null)
+    public function setCallerIn($callerIn = null)
     {
         if (!is_null($callerIn)) {
             if (!is_null($callerIn)) {
@@ -259,7 +272,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setCalleeIn($calleeIn = null)
+    public function setCalleeIn($calleeIn = null)
     {
         if (!is_null($calleeIn)) {
             if (!is_null($calleeIn)) {
@@ -289,7 +302,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setCallerOut($callerOut = null)
+    public function setCallerOut($callerOut = null)
     {
         if (!is_null($callerOut)) {
             if (!is_null($callerOut)) {
@@ -319,7 +332,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setCalleeOut($calleeOut = null)
+    public function setCalleeOut($calleeOut = null)
     {
         if (!is_null($calleeOut)) {
             if (!is_null($calleeOut)) {
@@ -349,7 +362,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 500);
@@ -376,7 +389,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setAutomatic($automatic)
+    public function setAutomatic($automatic)
     {
         Assertion::notNull($automatic);
         Assertion::between(intval($automatic), 0, 1);
@@ -403,7 +416,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setInternationalCode($internationalCode = null)
+    public function setInternationalCode($internationalCode = null)
     {
         if (!is_null($internationalCode)) {
             Assertion::maxLength($internationalCode, 10);
@@ -431,7 +444,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setNationalNumLength($nationalNumLength = null)
+    public function setNationalNumLength($nationalNumLength = null)
     {
         if (!is_null($nationalNumLength)) {
             if (!is_null($nationalNumLength)) {
@@ -462,7 +475,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -486,7 +499,7 @@ abstract class TransformationRulesetGroupsTrunkAbstract
      *
      * @return self
      */
-    protected function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
+    public function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
     {
         $this->country = $country;
 

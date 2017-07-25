@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Timezone;
 
-interface TimezoneRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TimezoneRepository extends ObjectRepository {}
 

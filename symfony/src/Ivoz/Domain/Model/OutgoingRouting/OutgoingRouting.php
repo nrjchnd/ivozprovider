@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\OutgoingRouting;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class OutgoingRouting extends OutgoingRoutingAbstract implements OutgoingRouting
 
 
 }
+

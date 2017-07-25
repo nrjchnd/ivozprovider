@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CallACLRelPattern;
 
 use Assert\Assertion;
@@ -45,9 +44,23 @@ abstract class CallACLRelPatternAbstract
     {
         $this->setPriority($priority);
         $this->setPolicy($policy);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return CallACLRelPatternDTO
@@ -135,7 +148,7 @@ abstract class CallACLRelPatternAbstract
      *
      * @return self
      */
-    protected function setPriority($priority)
+    public function setPriority($priority)
     {
         Assertion::notNull($priority);
         Assertion::integerish($priority);
@@ -162,7 +175,7 @@ abstract class CallACLRelPatternAbstract
      *
      * @return self
      */
-    protected function setPolicy($policy)
+    public function setPolicy($policy)
     {
         Assertion::notNull($policy);
         Assertion::maxLength($policy, 25);
@@ -193,7 +206,7 @@ abstract class CallACLRelPatternAbstract
      *
      * @return self
      */
-    protected function setCallACL(\Ivoz\Domain\Model\CallACL\CallACLInterface $callACL)
+    public function setCallACL(\Ivoz\Domain\Model\CallACL\CallACLInterface $callACL = null)
     {
         $this->callACL = $callACL;
 
@@ -217,7 +230,7 @@ abstract class CallACLRelPatternAbstract
      *
      * @return self
      */
-    protected function setCallACLPattern(\Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern)
+    public function setCallACLPattern(\Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern)
     {
         $this->callACLPattern = $callACLPattern;
 

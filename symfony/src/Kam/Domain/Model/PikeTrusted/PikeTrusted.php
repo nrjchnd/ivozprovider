@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\PikeTrusted;
 
 use Core\Application\DataTransferObjectInterface;

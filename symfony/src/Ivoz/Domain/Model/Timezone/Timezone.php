@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Timezone;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class Timezone extends TimezoneAbstract implements TimezoneInterface
 
 
 }
+

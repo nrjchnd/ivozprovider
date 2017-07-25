@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\CallACLRelPattern;
 
-interface CallACLRelPatternRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface CallACLRelPatternRepository extends ObjectRepository {}
 

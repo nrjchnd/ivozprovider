@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Extension;
 
-interface ExtensionRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ExtensionRepository extends ObjectRepository {}
 

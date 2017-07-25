@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\AccCdr;
 
 use Assert\Assertion;
@@ -203,9 +202,23 @@ abstract class AccCdrAbstract
         $this->setEndTime($endTime);
         $this->setDuration($duration);
         $this->setBounced($bounced);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return AccCdrDTO
@@ -409,7 +422,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setProxy($proxy = null)
+    public function setProxy($proxy = null)
     {
         if (!is_null($proxy)) {
             Assertion::maxLength($proxy, 64);
@@ -437,7 +450,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setStartTimeUtc($startTimeUtc)
+    public function setStartTimeUtc($startTimeUtc)
     {
         Assertion::notNull($startTimeUtc);
 
@@ -463,7 +476,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setEndTimeUtc($endTimeUtc)
+    public function setEndTimeUtc($endTimeUtc)
     {
         Assertion::notNull($endTimeUtc);
 
@@ -489,7 +502,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setStartTime($startTime)
+    public function setStartTime($startTime)
     {
         Assertion::notNull($startTime);
 
@@ -515,7 +528,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setEndTime($endTime)
+    public function setEndTime($endTime)
     {
         Assertion::notNull($endTime);
 
@@ -541,7 +554,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setDuration($duration)
+    public function setDuration($duration)
     {
         Assertion::notNull($duration);
         Assertion::numeric($duration);
@@ -568,7 +581,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setCaller($caller = null)
+    public function setCaller($caller = null)
     {
         if (!is_null($caller)) {
             Assertion::maxLength($caller, 128);
@@ -596,7 +609,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setCallee($callee = null)
+    public function setCallee($callee = null)
     {
         if (!is_null($callee)) {
             Assertion::maxLength($callee, 128);
@@ -624,7 +637,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setReferee($referee = null)
+    public function setReferee($referee = null)
     {
         if (!is_null($referee)) {
             Assertion::maxLength($referee, 128);
@@ -652,7 +665,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setReferrer($referrer = null)
+    public function setReferrer($referrer = null)
     {
         if (!is_null($referrer)) {
             Assertion::maxLength($referrer, 128);
@@ -680,7 +693,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setAsiden($asiden = null)
+    public function setAsiden($asiden = null)
     {
         if (!is_null($asiden)) {
             Assertion::maxLength($asiden, 64);
@@ -708,7 +721,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setAsaddress($asaddress = null)
+    public function setAsaddress($asaddress = null)
     {
         if (!is_null($asaddress)) {
             Assertion::maxLength($asaddress, 64);
@@ -736,7 +749,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setCallid($callid = null)
+    public function setCallid($callid = null)
     {
         if (!is_null($callid)) {
             Assertion::maxLength($callid, 255);
@@ -764,7 +777,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setCallidhash($callidhash = null)
+    public function setCallidhash($callidhash = null)
     {
         if (!is_null($callidhash)) {
             Assertion::maxLength($callidhash, 128);
@@ -792,7 +805,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setXcallid($xcallid = null)
+    public function setXcallid($xcallid = null)
     {
         if (!is_null($xcallid)) {
             Assertion::maxLength($xcallid, 255);
@@ -820,7 +833,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setParsed($parsed = null)
+    public function setParsed($parsed = null)
     {
         if (!is_null($parsed)) {
         }
@@ -847,7 +860,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setDiversion($diversion = null)
+    public function setDiversion($diversion = null)
     {
         if (!is_null($diversion)) {
             Assertion::maxLength($diversion, 64);
@@ -875,7 +888,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setPeeringcontractid($peeringcontractid = null)
+    public function setPeeringcontractid($peeringcontractid = null)
     {
         if (!is_null($peeringcontractid)) {
             Assertion::maxLength($peeringcontractid, 64);
@@ -903,7 +916,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setBounced($bounced)
+    public function setBounced($bounced)
     {
         Assertion::notNull($bounced);
 
@@ -929,7 +942,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setExternallyrated($externallyrated = null)
+    public function setExternallyrated($externallyrated = null)
     {
         if (!is_null($externallyrated)) {
             Assertion::between(intval($externallyrated), 0, 1);
@@ -957,7 +970,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setMetered($metered = null)
+    public function setMetered($metered = null)
     {
         if (!is_null($metered)) {
             Assertion::between(intval($metered), 0, 1);
@@ -985,7 +998,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setMeteringdate($meteringdate = null)
+    public function setMeteringdate($meteringdate = null)
     {
         if (!is_null($meteringdate)) {
         }
@@ -1012,7 +1025,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setPricingplanname($pricingplanname = null)
+    public function setPricingplanname($pricingplanname = null)
     {
         if (!is_null($pricingplanname)) {
             Assertion::maxLength($pricingplanname, 55);
@@ -1040,7 +1053,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setTargetpatternname($targetpatternname = null)
+    public function setTargetpatternname($targetpatternname = null)
     {
         if (!is_null($targetpatternname)) {
             Assertion::maxLength($targetpatternname, 55);
@@ -1068,7 +1081,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setPrice($price = null)
+    public function setPrice($price = null)
     {
         if (!is_null($price)) {
             if (!is_null($price)) {
@@ -1098,7 +1111,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setPricingplandetails($pricingplandetails = null)
+    public function setPricingplandetails($pricingplandetails = null)
     {
         if (!is_null($pricingplandetails)) {
             Assertion::maxLength($pricingplandetails, 65535);
@@ -1126,7 +1139,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setDirection($direction = null)
+    public function setDirection($direction = null)
     {
         if (!is_null($direction)) {
         }
@@ -1153,7 +1166,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setRemeteringdate($remeteringdate = null)
+    public function setRemeteringdate($remeteringdate = null)
     {
         if (!is_null($remeteringdate)) {
         }
@@ -1180,7 +1193,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setPricingPlan(\Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan = null)
+    public function setPricingPlan(\Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan = null)
     {
         $this->pricingPlan = $pricingPlan;
 
@@ -1204,7 +1217,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setTargetPattern(\Ivoz\Domain\Model\TargetPattern\TargetPatternInterface $targetPattern = null)
+    public function setTargetPattern(\Ivoz\Domain\Model\TargetPattern\TargetPatternInterface $targetPattern = null)
     {
         $this->targetPattern = $targetPattern;
 
@@ -1228,7 +1241,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setInvoice(\Ivoz\Domain\Model\Invoice\InvoiceInterface $invoice = null)
+    public function setInvoice(\Ivoz\Domain\Model\Invoice\InvoiceInterface $invoice = null)
     {
         $this->invoice = $invoice;
 
@@ -1252,7 +1265,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand = null)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand = null)
     {
         $this->brand = $brand;
 
@@ -1276,7 +1289,7 @@ abstract class AccCdrAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 

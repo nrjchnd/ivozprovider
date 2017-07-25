@@ -2,16 +2,36 @@
 
 namespace Ast\Domain\Model\PsAor;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface PsAorInterface
+interface PsAorInterface extends EntityInterface
 {
+    /**
+     * Set sorceryId
+     *
+     * @param string $sorceryId
+     *
+     * @return PsAorInterface
+     */
+    public function setSorceryId($sorceryId);
+
+
     /**
      * Get sorceryId
      *
      * @return string
      */
     public function getSorceryId();
+
+
+    /**
+     * Set defaultExpiration
+     *
+     * @param integer $defaultExpiration
+     *
+     * @return PsAorInterface
+     */
+    public function setDefaultExpiration($defaultExpiration = null);
 
 
     /**
@@ -23,11 +43,31 @@ interface PsAorInterface
 
 
     /**
+     * Set maxContacts
+     *
+     * @param integer $maxContacts
+     *
+     * @return PsAorInterface
+     */
+    public function setMaxContacts($maxContacts = null);
+
+
+    /**
      * Get maxContacts
      *
      * @return integer
      */
     public function getMaxContacts();
+
+
+    /**
+     * Set minimumExpiration
+     *
+     * @param integer $minimumExpiration
+     *
+     * @return PsAorInterface
+     */
+    public function setMinimumExpiration($minimumExpiration = null);
 
 
     /**
@@ -39,11 +79,31 @@ interface PsAorInterface
 
 
     /**
+     * Set removeExisting
+     *
+     * @param string $removeExisting
+     *
+     * @return PsAorInterface
+     */
+    public function setRemoveExisting($removeExisting = null);
+
+
+    /**
      * Get removeExisting
      *
      * @return string
      */
     public function getRemoveExisting();
+
+
+    /**
+     * Set authenticateQualify
+     *
+     * @param string $authenticateQualify
+     *
+     * @return PsAorInterface
+     */
+    public function setAuthenticateQualify($authenticateQualify = null);
 
 
     /**
@@ -55,11 +115,31 @@ interface PsAorInterface
 
 
     /**
+     * Set maximumExpiration
+     *
+     * @param integer $maximumExpiration
+     *
+     * @return PsAorInterface
+     */
+    public function setMaximumExpiration($maximumExpiration = null);
+
+
+    /**
      * Get maximumExpiration
      *
      * @return integer
      */
     public function getMaximumExpiration();
+
+
+    /**
+     * Set supportPath
+     *
+     * @param string $supportPath
+     *
+     * @return PsAorInterface
+     */
+    public function setSupportPath($supportPath = null);
 
 
     /**
@@ -71,11 +151,31 @@ interface PsAorInterface
 
 
     /**
+     * Set contact
+     *
+     * @param string $contact
+     *
+     * @return PsAorInterface
+     */
+    public function setContact($contact = null);
+
+
+    /**
      * Get contact
      *
      * @return string
      */
     public function getContact();
+
+
+    /**
+     * Set qualifyFrequency
+     *
+     * @param integer $qualifyFrequency
+     *
+     * @return PsAorInterface
+     */
+    public function setQualifyFrequency($qualifyFrequency = null);
 
 
     /**

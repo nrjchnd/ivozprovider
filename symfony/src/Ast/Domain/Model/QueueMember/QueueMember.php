@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\QueueMember;
 
 use Core\Application\DataTransferObjectInterface;
@@ -97,24 +96,6 @@ class QueueMember extends QueueMemberAbstract implements QueueMemberInterface
         ];
     }
 
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return self
-     */
-    protected function setId($id)
-    {
-        Assertion::notNull($id);
-        Assertion::integerish($id);
-        Assertion::greaterOrEqualThan($id, 0);
-
-        $this->id = $id;
-
-        return $this;
-    }
 
     /**
      * Get id

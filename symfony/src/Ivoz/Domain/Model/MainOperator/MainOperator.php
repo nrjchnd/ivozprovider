@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\MainOperator;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class MainOperator extends MainOperatorAbstract implements MainOperatorInterface
 
 
 }
+

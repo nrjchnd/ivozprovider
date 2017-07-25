@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Feature;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class Feature extends FeatureAbstract implements FeatureInterface
 
 
 }
+

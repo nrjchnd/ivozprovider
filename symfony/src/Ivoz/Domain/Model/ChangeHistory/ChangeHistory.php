@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ChangeHistory;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class ChangeHistory extends ChangeHistoryAbstract implements ChangeHistoryInterf
 
 
 }
+

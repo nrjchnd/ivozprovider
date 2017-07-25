@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Company;
 
 use Assert\Assertion;
@@ -56,11 +55,6 @@ abstract class CompanyAbstract
      * @var string
      */
     protected $province;
-
-    /**
-     * @var string
-     */
-    protected $country;
 
     /**
      * @column outbound_prefix
@@ -131,7 +125,7 @@ abstract class CompanyAbstract
     /**
      * @var \Ivoz\Domain\Model\Country\CountryInterface
      */
-    protected $countryCode;
+    protected $country;
 
     /**
      * @var \Ivoz\Domain\Model\DDI\DDIInterface
@@ -156,8 +150,7 @@ abstract class CompanyAbstract
         $postalAddress,
         $postalCode,
         $town,
-        $province,
-        $country
+        $province
     ) {
         $this->setType($type);
         $this->setName($name);
@@ -167,10 +160,23 @@ abstract class CompanyAbstract
         $this->setPostalCode($postalCode);
         $this->setTown($town);
         $this->setProvince($province);
-        $this->setCountry($country);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return CompanyDTO
@@ -200,8 +206,7 @@ abstract class CompanyAbstract
             $dto->getPostalAddress(),
             $dto->getPostalCode(),
             $dto->getTown(),
-            $dto->getProvince(),
-            $dto->getCountry());
+            $dto->getProvince());
 
         return $self
             ->setDomainUsers($dto->getDomainUsers())
@@ -218,7 +223,7 @@ abstract class CompanyAbstract
             ->setDefaultTimezone($dto->getDefaultTimezone())
             ->setBrand($dto->getBrand())
             ->setApplicationServer($dto->getApplicationServer())
-            ->setCountryCode($dto->getCountryCode())
+            ->setCountry($dto->getCountry())
             ->setOutgoingDDI($dto->getOutgoingDDI())
         ;
     }
@@ -244,7 +249,6 @@ abstract class CompanyAbstract
             ->setPostalCode($dto->getPostalCode())
             ->setTown($dto->getTown())
             ->setProvince($dto->getProvince())
-            ->setCountry($dto->getCountry())
             ->setOutboundPrefix($dto->getOutboundPrefix())
             ->setIpfilter($dto->getIpfilter())
             ->setOnDemandRecord($dto->getOnDemandRecord())
@@ -258,7 +262,7 @@ abstract class CompanyAbstract
             ->setDefaultTimezone($dto->getDefaultTimezone())
             ->setBrand($dto->getBrand())
             ->setApplicationServer($dto->getApplicationServer())
-            ->setCountryCode($dto->getCountryCode())
+            ->setCountry($dto->getCountry())
             ->setOutgoingDDI($dto->getOutgoingDDI());
 
 
@@ -280,7 +284,6 @@ abstract class CompanyAbstract
             ->setPostalCode($this->getPostalCode())
             ->setTown($this->getTown())
             ->setProvince($this->getProvince())
-            ->setCountry($this->getCountry())
             ->setOutboundPrefix($this->getOutboundPrefix())
             ->setIpfilter($this->getIpfilter())
             ->setOnDemandRecord($this->getOnDemandRecord())
@@ -294,7 +297,7 @@ abstract class CompanyAbstract
             ->setDefaultTimezoneId($this->getDefaultTimezone() ? $this->getDefaultTimezone()->getId() : null)
             ->setBrandId($this->getBrand() ? $this->getBrand()->getId() : null)
             ->setApplicationServerId($this->getApplicationServer() ? $this->getApplicationServer()->getId() : null)
-            ->setCountryCodeId($this->getCountryCode() ? $this->getCountryCode()->getId() : null)
+            ->setCountryId($this->getCountry() ? $this->getCountry()->getId() : null)
             ->setOutgoingDDIId($this->getOutgoingDDI() ? $this->getOutgoingDDI()->getId() : null);
     }
 
@@ -313,7 +316,6 @@ abstract class CompanyAbstract
             'postalCode' => $this->getPostalCode(),
             'town' => $this->getTown(),
             'province' => $this->getProvince(),
-            'country' => $this->getCountry(),
             'outboundPrefix' => $this->getOutboundPrefix(),
             'ipfilter' => $this->getIpfilter(),
             'onDemandRecord' => $this->getOnDemandRecord(),
@@ -327,7 +329,7 @@ abstract class CompanyAbstract
             'defaultTimezoneId' => $this->getDefaultTimezone() ? $this->getDefaultTimezone()->getId() : null,
             'brandId' => $this->getBrand() ? $this->getBrand()->getId() : null,
             'applicationServerId' => $this->getApplicationServer() ? $this->getApplicationServer()->getId() : null,
-            'countryCodeId' => $this->getCountryCode() ? $this->getCountryCode()->getId() : null,
+            'countryId' => $this->getCountry() ? $this->getCountry()->getId() : null,
             'outgoingDDIId' => $this->getOutgoingDDI() ? $this->getOutgoingDDI()->getId() : null
         ];
     }
@@ -342,7 +344,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setType($type)
+    public function setType($type)
     {
         Assertion::notNull($type);
         Assertion::maxLength($type, 25);
@@ -373,7 +375,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 80);
@@ -400,7 +402,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setDomainUsers($domainUsers = null)
+    public function setDomainUsers($domainUsers = null)
     {
         if (!is_null($domainUsers)) {
             Assertion::maxLength($domainUsers, 190);
@@ -428,7 +430,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setNif($nif)
+    public function setNif($nif)
     {
         Assertion::notNull($nif);
         Assertion::maxLength($nif, 25);
@@ -455,7 +457,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setExternalMaxCalls($externalMaxCalls)
+    public function setExternalMaxCalls($externalMaxCalls)
     {
         Assertion::notNull($externalMaxCalls);
         Assertion::integerish($externalMaxCalls);
@@ -483,7 +485,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setPostalAddress($postalAddress)
+    public function setPostalAddress($postalAddress)
     {
         Assertion::notNull($postalAddress);
         Assertion::maxLength($postalAddress, 255);
@@ -510,7 +512,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setPostalCode($postalCode)
+    public function setPostalCode($postalCode)
     {
         Assertion::notNull($postalCode);
         Assertion::maxLength($postalCode, 10);
@@ -537,7 +539,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setTown($town)
+    public function setTown($town)
     {
         Assertion::notNull($town);
         Assertion::maxLength($town, 255);
@@ -564,7 +566,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setProvince($province)
+    public function setProvince($province)
     {
         Assertion::notNull($province);
         Assertion::maxLength($province, 255);
@@ -585,40 +587,13 @@ abstract class CompanyAbstract
     }
 
     /**
-     * Set country
-     *
-     * @param string $country
-     *
-     * @return self
-     */
-    protected function setCountry($country)
-    {
-        Assertion::notNull($country);
-        Assertion::maxLength($country, 255);
-
-        $this->country = $country;
-
-        return $this;
-    }
-
-    /**
-     * Get country
-     *
-     * @return string
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
      * Set outboundPrefix
      *
      * @param string $outboundPrefix
      *
      * @return self
      */
-    protected function setOutboundPrefix($outboundPrefix = null)
+    public function setOutboundPrefix($outboundPrefix = null)
     {
         if (!is_null($outboundPrefix)) {
             Assertion::maxLength($outboundPrefix, 255);
@@ -646,7 +621,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setIpfilter($ipfilter = null)
+    public function setIpfilter($ipfilter = null)
     {
         if (!is_null($ipfilter)) {
             Assertion::between(intval($ipfilter), 0, 1);
@@ -674,7 +649,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setOnDemandRecord($onDemandRecord = null)
+    public function setOnDemandRecord($onDemandRecord = null)
     {
         if (!is_null($onDemandRecord)) {
             Assertion::between(intval($onDemandRecord), 0, 1);
@@ -702,7 +677,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setOnDemandRecordCode($onDemandRecordCode = null)
+    public function setOnDemandRecordCode($onDemandRecordCode = null)
     {
         if (!is_null($onDemandRecordCode)) {
             Assertion::maxLength($onDemandRecordCode, 3);
@@ -730,7 +705,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setAreaCode($areaCode = null)
+    public function setAreaCode($areaCode = null)
     {
         if (!is_null($areaCode)) {
             Assertion::maxLength($areaCode, 10);
@@ -758,7 +733,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setExternallyextraopts($externallyextraopts = null)
+    public function setExternallyextraopts($externallyextraopts = null)
     {
         if (!is_null($externallyextraopts)) {
             Assertion::maxLength($externallyextraopts, 65535);
@@ -786,7 +761,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setRecordingsLimitMB($recordingsLimitMB = null)
+    public function setRecordingsLimitMB($recordingsLimitMB = null)
     {
         if (!is_null($recordingsLimitMB)) {
             if (!is_null($recordingsLimitMB)) {
@@ -816,7 +791,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setRecordingsLimitEmail($recordingsLimitEmail = null)
+    public function setRecordingsLimitEmail($recordingsLimitEmail = null)
     {
         if (!is_null($recordingsLimitEmail)) {
             Assertion::maxLength($recordingsLimitEmail, 250);
@@ -844,7 +819,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
+    public function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
     {
         $this->language = $language;
 
@@ -868,7 +843,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setMediaRelaySets(\Ivoz\Domain\Model\MediaRelaySet\MediaRelaySetInterface $mediaRelaySets = null)
+    public function setMediaRelaySets(\Ivoz\Domain\Model\MediaRelaySet\MediaRelaySetInterface $mediaRelaySets = null)
     {
         $this->mediaRelaySets = $mediaRelaySets;
 
@@ -892,7 +867,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setDefaultTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $defaultTimezone = null)
+    public function setDefaultTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $defaultTimezone = null)
     {
         $this->defaultTimezone = $defaultTimezone;
 
@@ -940,7 +915,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setApplicationServer(\Ivoz\Domain\Model\ApplicationServer\ApplicationServerInterface $applicationServer = null)
+    public function setApplicationServer(\Ivoz\Domain\Model\ApplicationServer\ApplicationServerInterface $applicationServer = null)
     {
         $this->applicationServer = $applicationServer;
 
@@ -958,27 +933,27 @@ abstract class CompanyAbstract
     }
 
     /**
-     * Set countryCode
+     * Set country
      *
-     * @param \Ivoz\Domain\Model\Country\CountryInterface $countryCode
+     * @param \Ivoz\Domain\Model\Country\CountryInterface $country
      *
      * @return self
      */
-    protected function setCountryCode(\Ivoz\Domain\Model\Country\CountryInterface $countryCode = null)
+    public function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
     {
-        $this->countryCode = $countryCode;
+        $this->country = $country;
 
         return $this;
     }
 
     /**
-     * Get countryCode
+     * Get country
      *
      * @return \Ivoz\Domain\Model\Country\CountryInterface
      */
-    public function getCountryCode()
+    public function getCountry()
     {
-        return $this->countryCode;
+        return $this->country;
     }
 
     /**
@@ -988,7 +963,7 @@ abstract class CompanyAbstract
      *
      * @return self
      */
-    protected function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
+    public function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
     {
         $this->outgoingDDI = $outgoingDDI;
 

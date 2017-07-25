@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Schedule;
 
-interface ScheduleRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ScheduleRepository extends ObjectRepository {}
 

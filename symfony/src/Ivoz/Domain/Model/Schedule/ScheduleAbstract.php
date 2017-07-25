@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Schedule;
 
 use Assert\Assertion;
@@ -80,9 +79,23 @@ abstract class ScheduleAbstract
         $this->setName($name);
         $this->setTimeIn($timeIn);
         $this->setTimeout($timeout);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ScheduleDTO
@@ -198,7 +211,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 50);
@@ -225,7 +238,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setTimeIn($timeIn)
+    public function setTimeIn($timeIn)
     {
         Assertion::notNull($timeIn);
 
@@ -251,7 +264,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setTimeout($timeout)
+    public function setTimeout($timeout)
     {
         Assertion::notNull($timeout);
 
@@ -277,7 +290,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setMonday($monday = null)
+    public function setMonday($monday = null)
     {
         if (!is_null($monday)) {
             Assertion::between(intval($monday), 0, 1);
@@ -305,7 +318,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setTuesday($tuesday = null)
+    public function setTuesday($tuesday = null)
     {
         if (!is_null($tuesday)) {
             Assertion::between(intval($tuesday), 0, 1);
@@ -333,7 +346,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setWednesday($wednesday = null)
+    public function setWednesday($wednesday = null)
     {
         if (!is_null($wednesday)) {
             Assertion::between(intval($wednesday), 0, 1);
@@ -361,7 +374,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setThursday($thursday = null)
+    public function setThursday($thursday = null)
     {
         if (!is_null($thursday)) {
             Assertion::between(intval($thursday), 0, 1);
@@ -389,7 +402,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setFriday($friday = null)
+    public function setFriday($friday = null)
     {
         if (!is_null($friday)) {
             Assertion::between(intval($friday), 0, 1);
@@ -417,7 +430,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setSaturday($saturday = null)
+    public function setSaturday($saturday = null)
     {
         if (!is_null($saturday)) {
             Assertion::between(intval($saturday), 0, 1);
@@ -445,7 +458,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setSunday($sunday = null)
+    public function setSunday($sunday = null)
     {
         if (!is_null($sunday)) {
             Assertion::between(intval($sunday), 0, 1);
@@ -473,7 +486,7 @@ abstract class ScheduleAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 

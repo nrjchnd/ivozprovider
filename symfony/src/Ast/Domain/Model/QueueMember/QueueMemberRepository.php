@@ -2,5 +2,7 @@
 
 namespace Ast\Domain\Model\QueueMember;
 
-interface QueueMemberRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface QueueMemberRepository extends ObjectRepository {}
 

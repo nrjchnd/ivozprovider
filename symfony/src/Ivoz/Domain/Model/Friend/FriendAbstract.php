@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Friend;
 
 use Assert\Assertion;
@@ -164,9 +163,23 @@ abstract class FriendAbstract
         $this->setCalleridUpdateHeader($calleridUpdateHeader);
         $this->setUpdateCallerid($updateCallerid);
         $this->setDirectConnectivity($directConnectivity);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return FriendDTO
@@ -326,7 +339,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 65);
@@ -353,7 +366,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setDomain($domain = null)
+    public function setDomain($domain = null)
     {
         if (!is_null($domain)) {
             Assertion::maxLength($domain, 190);
@@ -381,7 +394,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 500);
@@ -408,7 +421,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setTransport($transport)
+    public function setTransport($transport)
     {
         Assertion::notNull($transport);
         Assertion::maxLength($transport, 25);
@@ -440,7 +453,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setIp($ip = null)
+    public function setIp($ip = null)
     {
         if (!is_null($ip)) {
             Assertion::maxLength($ip, 50);
@@ -468,7 +481,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setPort($port = null)
+    public function setPort($port = null)
     {
         if (!is_null($port)) {
             if (!is_null($port)) {
@@ -499,7 +512,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setAuthNeeded($authNeeded)
+    public function setAuthNeeded($authNeeded)
     {
         Assertion::notNull($authNeeded);
 
@@ -525,7 +538,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setPassword($password = null)
+    public function setPassword($password = null)
     {
         if (!is_null($password)) {
             Assertion::maxLength($password, 64);
@@ -553,7 +566,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setAreaCode($areaCode = null)
+    public function setAreaCode($areaCode = null)
     {
         if (!is_null($areaCode)) {
             Assertion::maxLength($areaCode, 10);
@@ -581,7 +594,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setPriority($priority)
+    public function setPriority($priority)
     {
         Assertion::notNull($priority);
         Assertion::integerish($priority);
@@ -608,7 +621,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setDisallow($disallow)
+    public function setDisallow($disallow)
     {
         Assertion::notNull($disallow);
         Assertion::maxLength($disallow, 200);
@@ -635,7 +648,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setAllow($allow)
+    public function setAllow($allow)
     {
         Assertion::notNull($allow);
         Assertion::maxLength($allow, 200);
@@ -662,7 +675,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setDirectMediaMethod($directMediaMethod)
+    public function setDirectMediaMethod($directMediaMethod)
     {
         Assertion::notNull($directMediaMethod);
         Assertion::choice($directMediaMethod, array (
@@ -692,7 +705,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setCalleridUpdateHeader($calleridUpdateHeader)
+    public function setCalleridUpdateHeader($calleridUpdateHeader)
     {
         Assertion::notNull($calleridUpdateHeader);
         Assertion::choice($calleridUpdateHeader, array (
@@ -722,7 +735,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setUpdateCallerid($updateCallerid)
+    public function setUpdateCallerid($updateCallerid)
     {
         Assertion::notNull($updateCallerid);
         Assertion::choice($updateCallerid, array (
@@ -752,7 +765,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setFromDomain($fromDomain = null)
+    public function setFromDomain($fromDomain = null)
     {
         if (!is_null($fromDomain)) {
             Assertion::maxLength($fromDomain, 190);
@@ -780,7 +793,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setDirectConnectivity($directConnectivity)
+    public function setDirectConnectivity($directConnectivity)
     {
         Assertion::notNull($directConnectivity);
         Assertion::choice($directConnectivity, array (
@@ -810,7 +823,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -834,7 +847,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
+    public function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
     {
         $this->country = $country;
 
@@ -858,7 +871,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setCallACL(\Ivoz\Domain\Model\CallACL\CallACLInterface $callACL = null)
+    public function setCallACL(\Ivoz\Domain\Model\CallACL\CallACLInterface $callACL = null)
     {
         $this->callACL = $callACL;
 
@@ -882,7 +895,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
+    public function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
     {
         $this->outgoingDDI = $outgoingDDI;
 
@@ -906,7 +919,7 @@ abstract class FriendAbstract
      *
      * @return self
      */
-    protected function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
+    public function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
     {
         $this->language = $language;
 

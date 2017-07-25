@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\PeerServer;
 
-interface PeerServerRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface PeerServerRepository extends ObjectRepository {}
 

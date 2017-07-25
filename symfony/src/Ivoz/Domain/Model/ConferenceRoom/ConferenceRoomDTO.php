@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ConferenceRoom;
 
 use Core\Application\DataTransferObjectInterface;

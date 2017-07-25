@@ -60,7 +60,7 @@ class GenerateEntitiesCommand extends ParentCommand
         $entityGenerator = new EntityGenerator();
         $entityGenerator->setGenerateAnnotations(false);
         $entityGenerator->setGenerateStubMethods(true);
-        $entityGenerator->setRegenerateEntityIfExists(false);
+        $entityGenerator->setRegenerateEntityIfExists(true);
         $entityGenerator->setUpdateEntityIfExists(true);
         $entityGenerator->setNumSpaces(4);
         $entityGenerator->setAnnotationPrefix('ORM\\');

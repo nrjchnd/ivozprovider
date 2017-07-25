@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersPresentity;
 
-interface UsersPresentityRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersPresentityRepository extends ObjectRepository {}
 

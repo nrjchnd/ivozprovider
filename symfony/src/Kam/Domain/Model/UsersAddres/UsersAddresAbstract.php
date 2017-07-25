@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersAddres;
 
 use Assert\Assertion;
@@ -62,9 +61,23 @@ abstract class UsersAddresAbstract
         $this->setSourceAddress($sourceAddress);
         $this->setMask($mask);
         $this->setPort($port);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersAddresDTO
@@ -164,7 +177,7 @@ abstract class UsersAddresAbstract
      *
      * @return self
      */
-    protected function setSourceAddress($sourceAddress)
+    public function setSourceAddress($sourceAddress)
     {
         Assertion::notNull($sourceAddress);
         Assertion::maxLength($sourceAddress, 100);
@@ -191,7 +204,7 @@ abstract class UsersAddresAbstract
      *
      * @return self
      */
-    protected function setIpAddr($ipAddr = null)
+    public function setIpAddr($ipAddr = null)
     {
         if (!is_null($ipAddr)) {
             Assertion::maxLength($ipAddr, 50);
@@ -219,7 +232,7 @@ abstract class UsersAddresAbstract
      *
      * @return self
      */
-    protected function setMask($mask)
+    public function setMask($mask)
     {
         Assertion::notNull($mask);
         Assertion::integerish($mask);
@@ -246,7 +259,7 @@ abstract class UsersAddresAbstract
      *
      * @return self
      */
-    protected function setPort($port)
+    public function setPort($port)
     {
         Assertion::notNull($port);
         Assertion::integerish($port);
@@ -273,7 +286,7 @@ abstract class UsersAddresAbstract
      *
      * @return self
      */
-    protected function setTag($tag = null)
+    public function setTag($tag = null)
     {
         if (!is_null($tag)) {
             Assertion::maxLength($tag, 64);
@@ -301,7 +314,7 @@ abstract class UsersAddresAbstract
      *
      * @return self
      */
-    protected function setDescription($description = null)
+    public function setDescription($description = null)
     {
         if (!is_null($description)) {
             Assertion::maxLength($description, 200);
@@ -329,7 +342,7 @@ abstract class UsersAddresAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 

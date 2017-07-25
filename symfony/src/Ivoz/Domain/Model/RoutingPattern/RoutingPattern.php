@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\RoutingPattern;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class RoutingPattern extends RoutingPatternAbstract implements RoutingPatternInt
 
 
 }
+

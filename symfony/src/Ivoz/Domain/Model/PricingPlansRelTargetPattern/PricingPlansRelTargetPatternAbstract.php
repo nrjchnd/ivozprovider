@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PricingPlansRelTargetPattern;
 
 use Assert\Assertion;
@@ -58,9 +57,23 @@ abstract class PricingPlansRelTargetPatternAbstract
         $this->setConnectionCharge($connectionCharge);
         $this->setPeriodTime($periodTime);
         $this->setPerPeriodCharge($perPeriodCharge);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PricingPlansRelTargetPatternDTO
@@ -156,7 +169,7 @@ abstract class PricingPlansRelTargetPatternAbstract
      *
      * @return self
      */
-    protected function setConnectionCharge($connectionCharge)
+    public function setConnectionCharge($connectionCharge)
     {
         Assertion::notNull($connectionCharge);
         Assertion::numeric($connectionCharge);
@@ -183,7 +196,7 @@ abstract class PricingPlansRelTargetPatternAbstract
      *
      * @return self
      */
-    protected function setPeriodTime($periodTime)
+    public function setPeriodTime($periodTime)
     {
         Assertion::notNull($periodTime);
         Assertion::integerish($periodTime);
@@ -210,7 +223,7 @@ abstract class PricingPlansRelTargetPatternAbstract
      *
      * @return self
      */
-    protected function setPerPeriodCharge($perPeriodCharge)
+    public function setPerPeriodCharge($perPeriodCharge)
     {
         Assertion::notNull($perPeriodCharge);
         Assertion::numeric($perPeriodCharge);
@@ -237,7 +250,7 @@ abstract class PricingPlansRelTargetPatternAbstract
      *
      * @return self
      */
-    protected function setPricingPlan(\Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan)
+    public function setPricingPlan(\Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan)
     {
         $this->pricingPlan = $pricingPlan;
 
@@ -261,7 +274,7 @@ abstract class PricingPlansRelTargetPatternAbstract
      *
      * @return self
      */
-    protected function setTargetPattern(\Ivoz\Domain\Model\TargetPattern\TargetPatternInterface $targetPattern)
+    public function setTargetPattern(\Ivoz\Domain\Model\TargetPattern\TargetPatternInterface $targetPattern)
     {
         $this->targetPattern = $targetPattern;
 
@@ -285,7 +298,7 @@ abstract class PricingPlansRelTargetPatternAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 

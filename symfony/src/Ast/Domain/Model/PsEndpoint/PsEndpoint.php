@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\PsEndpoint;
 
 use Core\Application\DataTransferObjectInterface;
@@ -9,7 +8,6 @@ use Core\Application\DataTransferObjectInterface;
  */
 class PsEndpoint extends PsEndpointAbstract implements PsEndpointInterface
 {
-    use PsEndpointTrait;
     /**
      * @var integer
      */

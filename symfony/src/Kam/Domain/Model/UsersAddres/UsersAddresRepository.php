@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersAddres;
 
-interface UsersAddresRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersAddresRepository extends ObjectRepository {}
 

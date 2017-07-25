@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\HuntGroup;
 
-interface HuntGroupRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface HuntGroupRepository extends ObjectRepository {}
 

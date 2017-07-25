@@ -7,11 +7,31 @@ use Core\Domain\Model\EntityInterface;
 interface LocutionInterface extends EntityInterface
 {
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return LocutionInterface
+     */
+    public function setName($name);
+
+
+    /**
      * Get name
      *
      * @return string
      */
     public function getName();
+
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return LocutionInterface
+     */
+    public function setStatus($status = null);
 
 
     /**
@@ -23,6 +43,16 @@ interface LocutionInterface extends EntityInterface
 
 
     /**
+     * Set company
+     *
+     * @param \Ivoz\Domain\Model\Company\CompanyInterface $company
+     *
+     * @return LocutionInterface
+     */
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company);
+
+
+    /**
      * Get company
      *
      * @return \Ivoz\Domain\Model\Company\CompanyInterface
@@ -31,11 +61,31 @@ interface LocutionInterface extends EntityInterface
 
 
     /**
+     * Set encodedFile
+     *
+     * @param EncodedFile $encodedFile
+     *
+     * @return LocutionInterface
+     */
+    public function setEncodedFile(EncodedFile $encodedFile);
+
+
+    /**
      * Get encodedFile
      *
      * @return EncodedFile
      */
     public function getEncodedFile();
+
+
+    /**
+     * Set originalFile
+     *
+     * @param OriginalFile $originalFile
+     *
+     * @return LocutionInterface
+     */
+    public function setOriginalFile(OriginalFile $originalFile);
 
 
     /**

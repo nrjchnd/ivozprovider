@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ConferenceRoom;
 
 use Assert\Assertion;
@@ -50,9 +49,23 @@ abstract class ConferenceRoomAbstract
         $this->setName($name);
         $this->setPinProtected($pinProtected);
         $this->setMaxMembers($maxMembers);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ConferenceRoomDTO
@@ -144,7 +157,7 @@ abstract class ConferenceRoomAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 50);
@@ -171,7 +184,7 @@ abstract class ConferenceRoomAbstract
      *
      * @return self
      */
-    protected function setPinProtected($pinProtected)
+    public function setPinProtected($pinProtected)
     {
         Assertion::notNull($pinProtected);
         Assertion::between(intval($pinProtected), 0, 1);
@@ -198,7 +211,7 @@ abstract class ConferenceRoomAbstract
      *
      * @return self
      */
-    protected function setPinCode($pinCode = null)
+    public function setPinCode($pinCode = null)
     {
         if (!is_null($pinCode)) {
             Assertion::maxLength($pinCode, 6);
@@ -226,7 +239,7 @@ abstract class ConferenceRoomAbstract
      *
      * @return self
      */
-    protected function setMaxMembers($maxMembers)
+    public function setMaxMembers($maxMembers)
     {
         Assertion::notNull($maxMembers);
         Assertion::between(intval($maxMembers), 0, 1);
@@ -253,7 +266,7 @@ abstract class ConferenceRoomAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 

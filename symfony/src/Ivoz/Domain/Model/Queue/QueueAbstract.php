@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Queue;
 
 use Assert\Assertion;
@@ -125,9 +124,23 @@ abstract class QueueAbstract
     public function __construct()
     {
 
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return QueueDTO
@@ -279,7 +292,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setName($name = null)
+    public function setName($name = null)
     {
         if (!is_null($name)) {
             Assertion::maxLength($name, 128);
@@ -307,7 +320,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setMaxWaitTime($maxWaitTime = null)
+    public function setMaxWaitTime($maxWaitTime = null)
     {
         if (!is_null($maxWaitTime)) {
             if (!is_null($maxWaitTime)) {
@@ -337,7 +350,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setTimeoutTargetType($timeoutTargetType = null)
+    public function setTimeoutTargetType($timeoutTargetType = null)
     {
         if (!is_null($timeoutTargetType)) {
             Assertion::maxLength($timeoutTargetType, 25);
@@ -370,7 +383,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setTimeoutNumberValue($timeoutNumberValue = null)
+    public function setTimeoutNumberValue($timeoutNumberValue = null)
     {
         if (!is_null($timeoutNumberValue)) {
             Assertion::maxLength($timeoutNumberValue, 25);
@@ -398,7 +411,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setMaxlen($maxlen = null)
+    public function setMaxlen($maxlen = null)
     {
         if (!is_null($maxlen)) {
             if (!is_null($maxlen)) {
@@ -428,7 +441,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setFullTargetType($fullTargetType = null)
+    public function setFullTargetType($fullTargetType = null)
     {
         if (!is_null($fullTargetType)) {
             Assertion::maxLength($fullTargetType, 25);
@@ -461,7 +474,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setFullNumberValue($fullNumberValue = null)
+    public function setFullNumberValue($fullNumberValue = null)
     {
         if (!is_null($fullNumberValue)) {
             Assertion::maxLength($fullNumberValue, 25);
@@ -489,7 +502,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setPeriodicAnnounceFrequency($periodicAnnounceFrequency = null)
+    public function setPeriodicAnnounceFrequency($periodicAnnounceFrequency = null)
     {
         if (!is_null($periodicAnnounceFrequency)) {
             if (!is_null($periodicAnnounceFrequency)) {
@@ -519,7 +532,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setMemberCallRest($memberCallRest = null)
+    public function setMemberCallRest($memberCallRest = null)
     {
         if (!is_null($memberCallRest)) {
             if (!is_null($memberCallRest)) {
@@ -549,7 +562,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setMemberCallTimeout($memberCallTimeout = null)
+    public function setMemberCallTimeout($memberCallTimeout = null)
     {
         if (!is_null($memberCallTimeout)) {
             if (!is_null($memberCallTimeout)) {
@@ -579,7 +592,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setStrategy($strategy = null)
+    public function setStrategy($strategy = null)
     {
         if (!is_null($strategy)) {
         }
@@ -606,7 +619,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setWeight($weight = null)
+    public function setWeight($weight = null)
     {
         if (!is_null($weight)) {
             if (!is_null($weight)) {
@@ -636,7 +649,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 
@@ -660,7 +673,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setPeriodicAnnounceLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $periodicAnnounceLocution = null)
+    public function setPeriodicAnnounceLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $periodicAnnounceLocution = null)
     {
         $this->periodicAnnounceLocution = $periodicAnnounceLocution;
 
@@ -684,7 +697,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setTimeoutLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $timeoutLocution = null)
+    public function setTimeoutLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $timeoutLocution = null)
     {
         $this->timeoutLocution = $timeoutLocution;
 
@@ -708,7 +721,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setTimeoutExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $timeoutExtension = null)
+    public function setTimeoutExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $timeoutExtension = null)
     {
         $this->timeoutExtension = $timeoutExtension;
 
@@ -732,7 +745,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setTimeoutVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $timeoutVoiceMailUser = null)
+    public function setTimeoutVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $timeoutVoiceMailUser = null)
     {
         $this->timeoutVoiceMailUser = $timeoutVoiceMailUser;
 
@@ -756,7 +769,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setFullLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $fullLocution = null)
+    public function setFullLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $fullLocution = null)
     {
         $this->fullLocution = $fullLocution;
 
@@ -780,7 +793,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setFullExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $fullExtension = null)
+    public function setFullExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $fullExtension = null)
     {
         $this->fullExtension = $fullExtension;
 
@@ -804,7 +817,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setFullVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $fullVoiceMailUser = null)
+    public function setFullVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $fullVoiceMailUser = null)
     {
         $this->fullVoiceMailUser = $fullVoiceMailUser;
 

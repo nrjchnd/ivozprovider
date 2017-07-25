@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\MusicOnHold;
 
-interface MusicOnHoldRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface MusicOnHoldRepository extends ObjectRepository {}
 

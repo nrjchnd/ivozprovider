@@ -2,16 +2,36 @@
 
 namespace Ast\Domain\Model\Musiconhold;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface MusiconholdInterface
+interface MusiconholdInterface extends EntityInterface
 {
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return MusiconholdInterface
+     */
+    public function setName($name);
+
+
     /**
      * Get name
      *
      * @return string
      */
     public function getName();
+
+
+    /**
+     * Set mode
+     *
+     * @param string $mode
+     *
+     * @return MusiconholdInterface
+     */
+    public function setMode($mode = null);
 
 
     /**
@@ -23,11 +43,31 @@ interface MusiconholdInterface
 
 
     /**
+     * Set directory
+     *
+     * @param string $directory
+     *
+     * @return MusiconholdInterface
+     */
+    public function setDirectory($directory = null);
+
+
+    /**
      * Get directory
      *
      * @return string
      */
     public function getDirectory();
+
+
+    /**
+     * Set application
+     *
+     * @param string $application
+     *
+     * @return MusiconholdInterface
+     */
+    public function setApplication($application = null);
 
 
     /**
@@ -39,11 +79,31 @@ interface MusiconholdInterface
 
 
     /**
+     * Set digit
+     *
+     * @param string $digit
+     *
+     * @return MusiconholdInterface
+     */
+    public function setDigit($digit = null);
+
+
+    /**
      * Get digit
      *
      * @return string
      */
     public function getDigit();
+
+
+    /**
+     * Set sort
+     *
+     * @param string $sort
+     *
+     * @return MusiconholdInterface
+     */
+    public function setSort($sort = null);
 
 
     /**
@@ -55,11 +115,31 @@ interface MusiconholdInterface
 
 
     /**
+     * Set format
+     *
+     * @param string $format
+     *
+     * @return MusiconholdInterface
+     */
+    public function setFormat($format = null);
+
+
+    /**
      * Get format
      *
      * @return string
      */
     public function getFormat();
+
+
+    /**
+     * Set stamp
+     *
+     * @param \DateTime $stamp
+     *
+     * @return MusiconholdInterface
+     */
+    public function setStamp($stamp = null);
 
 
     /**

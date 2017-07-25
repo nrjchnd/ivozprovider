@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CompanyAdmin;
 
 use Core\Application\DataTransferObjectInterface;

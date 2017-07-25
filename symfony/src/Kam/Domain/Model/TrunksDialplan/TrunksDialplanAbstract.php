@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\TrunksDialplan;
 
 use Assert\Assertion;
@@ -88,9 +87,23 @@ abstract class TrunksDialplanAbstract
         $this->setSubstExp($substExp);
         $this->setReplExp($replExp);
         $this->setAttrs($attrs);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TrunksDialplanDTO
@@ -198,7 +211,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setDpid($dpid)
+    public function setDpid($dpid)
     {
         Assertion::notNull($dpid);
         Assertion::integerish($dpid);
@@ -225,7 +238,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setPr($pr)
+    public function setPr($pr)
     {
         Assertion::notNull($pr);
         Assertion::integerish($pr);
@@ -252,7 +265,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setMatchOp($matchOp)
+    public function setMatchOp($matchOp)
     {
         Assertion::notNull($matchOp);
         Assertion::integerish($matchOp);
@@ -279,7 +292,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setMatchExp($matchExp)
+    public function setMatchExp($matchExp)
     {
         Assertion::notNull($matchExp);
         Assertion::maxLength($matchExp, 64);
@@ -306,7 +319,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setMatchLen($matchLen)
+    public function setMatchLen($matchLen)
     {
         Assertion::notNull($matchLen);
         Assertion::integerish($matchLen);
@@ -333,7 +346,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setSubstExp($substExp)
+    public function setSubstExp($substExp)
     {
         Assertion::notNull($substExp);
         Assertion::maxLength($substExp, 64);
@@ -360,7 +373,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setReplExp($replExp)
+    public function setReplExp($replExp)
     {
         Assertion::notNull($replExp);
         Assertion::maxLength($replExp, 64);
@@ -387,7 +400,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setAttrs($attrs)
+    public function setAttrs($attrs)
     {
         Assertion::notNull($attrs);
         Assertion::maxLength($attrs, 64);
@@ -414,7 +427,7 @@ abstract class TrunksDialplanAbstract
      *
      * @return self
      */
-    protected function setTransformationRulesetGroupsTrunk(\Ivoz\Domain\Model\TransformationRulesetGroupsTrunk\TransformationRulesetGroupsTrunkInterface $transformationRulesetGroupsTrunk)
+    public function setTransformationRulesetGroupsTrunk(\Ivoz\Domain\Model\TransformationRulesetGroupsTrunk\TransformationRulesetGroupsTrunkInterface $transformationRulesetGroupsTrunk)
     {
         $this->transformationRulesetGroupsTrunk = $transformationRulesetGroupsTrunk;
 

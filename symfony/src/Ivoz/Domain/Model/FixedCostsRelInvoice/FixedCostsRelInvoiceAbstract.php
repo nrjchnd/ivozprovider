@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\FixedCostsRelInvoice;
 
 use Assert\Assertion;
@@ -43,9 +42,23 @@ abstract class FixedCostsRelInvoiceAbstract
     public function __construct()
     {
 
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return FixedCostsRelInvoiceDTO
@@ -133,7 +146,7 @@ abstract class FixedCostsRelInvoiceAbstract
      *
      * @return self
      */
-    protected function setQuantity($quantity = null)
+    public function setQuantity($quantity = null)
     {
         if (!is_null($quantity)) {
             if (!is_null($quantity)) {
@@ -163,7 +176,7 @@ abstract class FixedCostsRelInvoiceAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -187,7 +200,7 @@ abstract class FixedCostsRelInvoiceAbstract
      *
      * @return self
      */
-    protected function setFixedCost(\Ivoz\Domain\Model\FixedCost\FixedCostInterface $fixedCost)
+    public function setFixedCost(\Ivoz\Domain\Model\FixedCost\FixedCostInterface $fixedCost)
     {
         $this->fixedCost = $fixedCost;
 
@@ -211,7 +224,7 @@ abstract class FixedCostsRelInvoiceAbstract
      *
      * @return self
      */
-    protected function setInvoice(\Ivoz\Domain\Model\Invoice\InvoiceInterface $invoice)
+    public function setInvoice(\Ivoz\Domain\Model\Invoice\InvoiceInterface $invoice)
     {
         $this->invoice = $invoice;
 

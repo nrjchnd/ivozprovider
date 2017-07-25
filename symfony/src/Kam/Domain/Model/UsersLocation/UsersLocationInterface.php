@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\UsersLocation;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface UsersLocationInterface
+interface UsersLocationInterface extends EntityInterface
 {
+    /**
+     * Set ruid
+     *
+     * @param string $ruid
+     *
+     * @return UsersLocationInterface
+     */
+    public function setRuid($ruid);
+
+
     /**
      * Get ruid
      *
      * @return string
      */
     public function getRuid();
+
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return UsersLocationInterface
+     */
+    public function setUsername($username);
 
 
     /**
@@ -23,11 +43,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set domain
+     *
+     * @param string $domain
+     *
+     * @return UsersLocationInterface
+     */
+    public function setDomain($domain = null);
+
+
+    /**
      * Get domain
      *
      * @return string
      */
     public function getDomain();
+
+
+    /**
+     * Set contact
+     *
+     * @param string $contact
+     *
+     * @return UsersLocationInterface
+     */
+    public function setContact($contact);
 
 
     /**
@@ -39,11 +79,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set received
+     *
+     * @param string $received
+     *
+     * @return UsersLocationInterface
+     */
+    public function setReceived($received = null);
+
+
+    /**
      * Get received
      *
      * @return string
      */
     public function getReceived();
+
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     *
+     * @return UsersLocationInterface
+     */
+    public function setPath($path = null);
 
 
     /**
@@ -55,11 +115,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set expires
+     *
+     * @param \DateTime $expires
+     *
+     * @return UsersLocationInterface
+     */
+    public function setExpires($expires);
+
+
+    /**
      * Get expires
      *
      * @return \DateTime
      */
     public function getExpires();
+
+
+    /**
+     * Set q
+     *
+     * @param float $q
+     *
+     * @return UsersLocationInterface
+     */
+    public function setQ($q);
 
 
     /**
@@ -71,11 +151,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set callid
+     *
+     * @param string $callid
+     *
+     * @return UsersLocationInterface
+     */
+    public function setCallid($callid);
+
+
+    /**
      * Get callid
      *
      * @return string
      */
     public function getCallid();
+
+
+    /**
+     * Set cseq
+     *
+     * @param integer $cseq
+     *
+     * @return UsersLocationInterface
+     */
+    public function setCseq($cseq);
 
 
     /**
@@ -87,11 +187,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set lastModified
+     *
+     * @param \DateTime $lastModified
+     *
+     * @return UsersLocationInterface
+     */
+    public function setLastModified($lastModified);
+
+
+    /**
      * Get lastModified
      *
      * @return \DateTime
      */
     public function getLastModified();
+
+
+    /**
+     * Set flags
+     *
+     * @param integer $flags
+     *
+     * @return UsersLocationInterface
+     */
+    public function setFlags($flags);
 
 
     /**
@@ -103,11 +223,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set cflags
+     *
+     * @param integer $cflags
+     *
+     * @return UsersLocationInterface
+     */
+    public function setCflags($cflags);
+
+
+    /**
      * Get cflags
      *
      * @return integer
      */
     public function getCflags();
+
+
+    /**
+     * Set userAgent
+     *
+     * @param string $userAgent
+     *
+     * @return UsersLocationInterface
+     */
+    public function setUserAgent($userAgent);
 
 
     /**
@@ -119,11 +259,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set socket
+     *
+     * @param string $socket
+     *
+     * @return UsersLocationInterface
+     */
+    public function setSocket($socket = null);
+
+
+    /**
      * Get socket
      *
      * @return string
      */
     public function getSocket();
+
+
+    /**
+     * Set methods
+     *
+     * @param integer $methods
+     *
+     * @return UsersLocationInterface
+     */
+    public function setMethods($methods = null);
 
 
     /**
@@ -135,11 +295,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set instance
+     *
+     * @param string $instance
+     *
+     * @return UsersLocationInterface
+     */
+    public function setInstance($instance = null);
+
+
+    /**
      * Get instance
      *
      * @return string
      */
     public function getInstance();
+
+
+    /**
+     * Set regId
+     *
+     * @param integer $regId
+     *
+     * @return UsersLocationInterface
+     */
+    public function setRegId($regId);
 
 
     /**
@@ -151,11 +331,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set serverId
+     *
+     * @param integer $serverId
+     *
+     * @return UsersLocationInterface
+     */
+    public function setServerId($serverId);
+
+
+    /**
      * Get serverId
      *
      * @return integer
      */
     public function getServerId();
+
+
+    /**
+     * Set connectionId
+     *
+     * @param integer $connectionId
+     *
+     * @return UsersLocationInterface
+     */
+    public function setConnectionId($connectionId);
 
 
     /**
@@ -167,11 +367,31 @@ interface UsersLocationInterface
 
 
     /**
+     * Set keepalive
+     *
+     * @param integer $keepalive
+     *
+     * @return UsersLocationInterface
+     */
+    public function setKeepalive($keepalive);
+
+
+    /**
      * Get keepalive
      *
      * @return integer
      */
     public function getKeepalive();
+
+
+    /**
+     * Set partition
+     *
+     * @param integer $partition
+     *
+     * @return UsersLocationInterface
+     */
+    public function setPartition($partition);
 
 
     /**

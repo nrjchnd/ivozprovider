@@ -72,7 +72,7 @@ doctrine:
       Ivoz\Domain\Model\PickUpGroup\PickUpGroupInterface: Ivoz\Domain\Model\PickUpGroup\PickUpGroup
       Ivoz\Domain\Model\PickUpRelUser\PickUpRelUserInterface: Ivoz\Domain\Model\PickUpRelUser\PickUpRelUser
       Ivoz\Domain\Model\PricingPlan\PricingPlanInterface: Ivoz\Domain\Model\PricingPlan\PricingPlan
-      Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlanRelCompanyInterface: Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlanRelCompany
+      Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompanyInterface: Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompany
       Ivoz\Domain\Model\PricingPlansRelTargetPattern\PricingPlansRelTargetPatternInterface: Ivoz\Domain\Model\PricingPlansRelTargetPattern\PricingPlansRelTargetPattern
       Ivoz\Domain\Model\ProxyTrunk\ProxyTrunkInterface: Ivoz\Domain\Model\ProxyTrunk\ProxyTrunk
       Ivoz\Domain\Model\ProxyUser\ProxyUserInterface: Ivoz\Domain\Model\ProxyUser\ProxyUser

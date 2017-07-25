@@ -2,5 +2,7 @@
 
 namespace Ast\Domain\Model\PsEndpoint;
 
-interface PsEndpointRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface PsEndpointRepository extends ObjectRepository {}
 

@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\CompanyAdmin\CheckValidity:
+    tags:
+      - { name: ivoz.lifecycle.company_admin.pre_persist, priority: 10 }
+    arguments:
+      $companyAdminRepository:
+        '@=service("doctrine.orm.entity_manager").getRepository("Ivoz\\Domain\\Model\\CompanyAdmin\\CompanyAdmin")'

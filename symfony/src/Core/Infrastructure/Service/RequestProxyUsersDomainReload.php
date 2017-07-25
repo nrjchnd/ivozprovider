@@ -1,10 +1,14 @@
 <?php
-namespace Ivoz\Domain\Service;
+namespace Core\Infrastructure\Service;
 
 use Core\Domain\Model\EntityInterface;
 use Core\Domain\Service\LifecycleEventHandlerInterface;
 use IvozProvider\Gearmand\Jobs\Xmlrpc;
 
+/**
+ * Class RequestProxyUsersDomainReload
+ * @package Core\Infrastructure\Service
+ */
 class RequestProxyUsersDomainReload implements LifecycleEventHandlerInterface
 {
     /**
@@ -23,7 +27,7 @@ class RequestProxyUsersDomainReload implements LifecycleEventHandlerInterface
         $this->xmlrpc = $xmlrpc;
     }
 
-    public function execute(EntityInterface $entity, callable $entityPersister)
+    public function execute(EntityInterface $entity)
     {
         try {
 

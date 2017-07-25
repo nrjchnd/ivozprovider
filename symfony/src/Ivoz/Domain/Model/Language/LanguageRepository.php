@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Language;
 
-interface LanguageRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface LanguageRepository extends ObjectRepository {}
 

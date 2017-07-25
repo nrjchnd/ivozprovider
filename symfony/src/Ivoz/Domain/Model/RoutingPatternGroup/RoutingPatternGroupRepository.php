@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\RoutingPatternGroup;
 
-interface RoutingPatternGroupRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface RoutingPatternGroupRepository extends ObjectRepository {}
 

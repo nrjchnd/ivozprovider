@@ -91,12 +91,6 @@ Ivoz\Domain\Model\Company\CompanyAbstract:
       length: 255
       options:
         fixed: false
-    country:
-      type: string
-      nullable: false
-      length: 255
-      options:
-        fixed: false
     outboundPrefix:
       type: string
       nullable: true
@@ -202,7 +196,7 @@ Ivoz\Domain\Model\Company\CompanyAbstract:
         applicationServerId:
           referencedColumnName: id
       orphanRemoval: false
-    countryCode:
+    country:
       targetEntity: \Ivoz\Domain\Model\Country\CountryInterface
       cascade: {  }
       fetch: LAZY

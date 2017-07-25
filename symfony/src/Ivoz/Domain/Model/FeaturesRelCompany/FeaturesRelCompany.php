@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\FeaturesRelCompany;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class FeaturesRelCompany extends FeaturesRelCompanyAbstract implements FeaturesR
 
 
 }
+

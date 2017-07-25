@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\FaxesInOut;
 
-interface FaxesInOutRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface FaxesInOutRepository extends ObjectRepository {}
 

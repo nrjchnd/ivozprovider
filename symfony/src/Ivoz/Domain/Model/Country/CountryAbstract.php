@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Country;
 
 use Assert\Assertion;
@@ -66,9 +65,23 @@ abstract class CountryAbstract
         $this->setNationalCC($nationalCC);
         $this->setName($name);
         $this->setZone($zone);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return CountryDTO
@@ -201,7 +214,7 @@ abstract class CountryAbstract
      *
      * @return self
      */
-    protected function setCode($code)
+    public function setCode($code)
     {
         Assertion::notNull($code);
         Assertion::maxLength($code, 100);
@@ -228,7 +241,7 @@ abstract class CountryAbstract
      *
      * @return self
      */
-    protected function setCallingCode($callingCode = null)
+    public function setCallingCode($callingCode = null)
     {
         if (!is_null($callingCode)) {
             if (!is_null($callingCode)) {
@@ -259,7 +272,7 @@ abstract class CountryAbstract
      *
      * @return self
      */
-    protected function setIntCode($intCode = null)
+    public function setIntCode($intCode = null)
     {
         if (!is_null($intCode)) {
             Assertion::maxLength($intCode, 5);
@@ -287,7 +300,7 @@ abstract class CountryAbstract
      *
      * @return self
      */
-    protected function setE164Pattern($e164Pattern = null)
+    public function setE164Pattern($e164Pattern = null)
     {
         if (!is_null($e164Pattern)) {
             Assertion::maxLength($e164Pattern, 250);
@@ -315,7 +328,7 @@ abstract class CountryAbstract
      *
      * @return self
      */
-    protected function setNationalCC($nationalCC)
+    public function setNationalCC($nationalCC)
     {
         Assertion::notNull($nationalCC);
         Assertion::between(intval($nationalCC), 0, 1);
@@ -342,7 +355,7 @@ abstract class CountryAbstract
      *
      * @return self
      */
-    protected function setName(Name $name)
+    public function setName(Name $name)
     {
         $this->name = $name;
 
@@ -366,7 +379,7 @@ abstract class CountryAbstract
      *
      * @return self
      */
-    protected function setZone(Zone $zone)
+    public function setZone(Zone $zone)
     {
         $this->zone = $zone;
 

@@ -7,6 +7,16 @@ use Core\Domain\Model\EntityInterface;
 interface EtagVersionInterface extends EntityInterface
 {
     /**
+     * Set table
+     *
+     * @param string $table
+     *
+     * @return EtagVersionInterface
+     */
+    public function setTable($table = null);
+
+
+    /**
      * Get table
      *
      * @return string
@@ -15,11 +25,31 @@ interface EtagVersionInterface extends EntityInterface
 
 
     /**
+     * Set etag
+     *
+     * @param string $etag
+     *
+     * @return EtagVersionInterface
+     */
+    public function setEtag($etag = null);
+
+
+    /**
      * Get etag
      *
      * @return string
      */
     public function getEtag();
+
+
+    /**
+     * Set lastChange
+     *
+     * @param \DateTime $lastChange
+     *
+     * @return EtagVersionInterface
+     */
+    public function setLastChange($lastChange = null);
 
 
     /**

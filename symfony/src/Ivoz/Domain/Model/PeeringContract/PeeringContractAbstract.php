@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PeeringContract;
 
 use Assert\Assertion;
@@ -49,9 +48,23 @@ abstract class PeeringContractAbstract
     {
         $this->setDescription($description);
         $this->setName($name);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PeeringContractDTO
@@ -143,7 +156,7 @@ abstract class PeeringContractAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 500);
@@ -170,7 +183,7 @@ abstract class PeeringContractAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 200);
@@ -197,7 +210,7 @@ abstract class PeeringContractAbstract
      *
      * @return self
      */
-    protected function setExternallyRated($externallyRated = null)
+    public function setExternallyRated($externallyRated = null)
     {
         if (!is_null($externallyRated)) {
             Assertion::between(intval($externallyRated), 0, 1);
@@ -225,7 +238,7 @@ abstract class PeeringContractAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -249,7 +262,7 @@ abstract class PeeringContractAbstract
      *
      * @return self
      */
-    protected function setTransformationRulesetGroupsTrunk(\Ivoz\Domain\Model\TransformationRulesetGroupsTrunk\TransformationRulesetGroupsTrunkInterface $transformationRulesetGroupsTrunk = null)
+    public function setTransformationRulesetGroupsTrunk(\Ivoz\Domain\Model\TransformationRulesetGroupsTrunk\TransformationRulesetGroupsTrunkInterface $transformationRulesetGroupsTrunk = null)
     {
         $this->transformationRulesetGroupsTrunk = $transformationRulesetGroupsTrunk;
 

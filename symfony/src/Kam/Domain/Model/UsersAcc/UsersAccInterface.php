@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\UsersAcc;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface UsersAccInterface
+interface UsersAccInterface extends EntityInterface
 {
+    /**
+     * Set method
+     *
+     * @param string $method
+     *
+     * @return UsersAccInterface
+     */
+    public function setMethod($method);
+
+
     /**
      * Get method
      *
      * @return string
      */
     public function getMethod();
+
+
+    /**
+     * Set fromTag
+     *
+     * @param string $fromTag
+     *
+     * @return UsersAccInterface
+     */
+    public function setFromTag($fromTag);
 
 
     /**
@@ -23,11 +43,31 @@ interface UsersAccInterface
 
 
     /**
+     * Set toTag
+     *
+     * @param string $toTag
+     *
+     * @return UsersAccInterface
+     */
+    public function setToTag($toTag);
+
+
+    /**
      * Get toTag
      *
      * @return string
      */
     public function getToTag();
+
+
+    /**
+     * Set callid
+     *
+     * @param string $callid
+     *
+     * @return UsersAccInterface
+     */
+    public function setCallid($callid);
 
 
     /**
@@ -39,11 +79,31 @@ interface UsersAccInterface
 
 
     /**
+     * Set sipCode
+     *
+     * @param string $sipCode
+     *
+     * @return UsersAccInterface
+     */
+    public function setSipCode($sipCode);
+
+
+    /**
      * Get sipCode
      *
      * @return string
      */
     public function getSipCode();
+
+
+    /**
+     * Set sipReason
+     *
+     * @param string $sipReason
+     *
+     * @return UsersAccInterface
+     */
+    public function setSipReason($sipReason);
 
 
     /**
@@ -55,11 +115,31 @@ interface UsersAccInterface
 
 
     /**
+     * Set srcIp
+     *
+     * @param string $srcIp
+     *
+     * @return UsersAccInterface
+     */
+    public function setSrcIp($srcIp = null);
+
+
+    /**
      * Get srcIp
      *
      * @return string
      */
     public function getSrcIp();
+
+
+    /**
+     * Set fromUser
+     *
+     * @param string $fromUser
+     *
+     * @return UsersAccInterface
+     */
+    public function setFromUser($fromUser = null);
 
 
     /**
@@ -71,11 +151,31 @@ interface UsersAccInterface
 
 
     /**
+     * Set fromDomain
+     *
+     * @param string $fromDomain
+     *
+     * @return UsersAccInterface
+     */
+    public function setFromDomain($fromDomain = null);
+
+
+    /**
      * Get fromDomain
      *
      * @return string
      */
     public function getFromDomain();
+
+
+    /**
+     * Set ruriUser
+     *
+     * @param string $ruriUser
+     *
+     * @return UsersAccInterface
+     */
+    public function setRuriUser($ruriUser = null);
 
 
     /**
@@ -87,11 +187,31 @@ interface UsersAccInterface
 
 
     /**
+     * Set ruriDomain
+     *
+     * @param string $ruriDomain
+     *
+     * @return UsersAccInterface
+     */
+    public function setRuriDomain($ruriDomain = null);
+
+
+    /**
      * Get ruriDomain
      *
      * @return string
      */
     public function getRuriDomain();
+
+
+    /**
+     * Set cseq
+     *
+     * @param integer $cseq
+     *
+     * @return UsersAccInterface
+     */
+    public function setCseq($cseq = null);
 
 
     /**
@@ -103,11 +223,31 @@ interface UsersAccInterface
 
 
     /**
+     * Set localtime
+     *
+     * @param \DateTime $localtime
+     *
+     * @return UsersAccInterface
+     */
+    public function setLocaltime($localtime);
+
+
+    /**
      * Get localtime
      *
      * @return \DateTime
      */
     public function getLocaltime();
+
+
+    /**
+     * Set utctime
+     *
+     * @param string $utctime
+     *
+     * @return UsersAccInterface
+     */
+    public function setUtctime($utctime = null);
 
 
     /**

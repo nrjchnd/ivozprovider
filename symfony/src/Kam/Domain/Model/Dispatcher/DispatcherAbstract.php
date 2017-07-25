@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\Dispatcher;
 
 use Assert\Assertion;
@@ -69,9 +68,23 @@ abstract class DispatcherAbstract
         $this->setPriority($priority);
         $this->setAttrs($attrs);
         $this->setDescription($description);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return DispatcherDTO
@@ -171,7 +184,7 @@ abstract class DispatcherAbstract
      *
      * @return self
      */
-    protected function setSetid($setid)
+    public function setSetid($setid)
     {
         Assertion::notNull($setid);
         Assertion::integerish($setid);
@@ -198,7 +211,7 @@ abstract class DispatcherAbstract
      *
      * @return self
      */
-    protected function setDestination($destination)
+    public function setDestination($destination)
     {
         Assertion::notNull($destination);
         Assertion::maxLength($destination, 192);
@@ -225,7 +238,7 @@ abstract class DispatcherAbstract
      *
      * @return self
      */
-    protected function setFlags($flags)
+    public function setFlags($flags)
     {
         Assertion::notNull($flags);
         Assertion::integerish($flags);
@@ -252,7 +265,7 @@ abstract class DispatcherAbstract
      *
      * @return self
      */
-    protected function setPriority($priority)
+    public function setPriority($priority)
     {
         Assertion::notNull($priority);
         Assertion::integerish($priority);
@@ -279,7 +292,7 @@ abstract class DispatcherAbstract
      *
      * @return self
      */
-    protected function setAttrs($attrs)
+    public function setAttrs($attrs)
     {
         Assertion::notNull($attrs);
         Assertion::maxLength($attrs, 128);
@@ -306,7 +319,7 @@ abstract class DispatcherAbstract
      *
      * @return self
      */
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         Assertion::notNull($description);
         Assertion::maxLength($description, 64);
@@ -333,7 +346,7 @@ abstract class DispatcherAbstract
      *
      * @return self
      */
-    protected function setApplicationServer(\Ivoz\Domain\Model\ApplicationServer\ApplicationServerInterface $applicationServer)
+    public function setApplicationServer(\Ivoz\Domain\Model\ApplicationServer\ApplicationServerInterface $applicationServer)
     {
         $this->applicationServer = $applicationServer;
 

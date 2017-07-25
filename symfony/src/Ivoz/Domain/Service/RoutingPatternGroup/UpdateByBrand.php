@@ -2,6 +2,7 @@
 namespace Ivoz\Domain\Service\RoutingPatternGroup;
 
 use Core\Domain\Model\EntityInterface;
+use Core\Domain\Service\EntityPersisterInterface;
 use Core\Domain\Service\LifecycleEventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Ivoz\Domain\Model\Brand\Brand;
@@ -15,12 +16,22 @@ use Ivoz\Domain\Model\RoutingPattern\RoutingPattern;
 use Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPattern;
 use Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPatternDTO;
 
+/**
+ * Class UpdateByBrand
+ * @package Ivoz\Domain\Service\RoutingPatternGroup
+ * @lifecycle brand.post_persist
+ */
 class UpdateByBrand implements LifecycleEventHandlerInterface
 {
     /**
      * @var EntityManagerInterface
      */
     protected $em;
+
+    /**
+     * @var EntityPersisterInterface
+     */
+    protected $entityPersister;
 
     /**
      * @var RoutingPatternGroupRepository
@@ -34,10 +45,12 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
 
     public function __construct(
         EntityManagerInterface $em,
+        EntityPersisterInterface $entityPersister,
         RoutingPatternGroupRepository $routingPatternGroupRepository,
         CountryRepository $countryRepository
     ) {
         $this->em = $em;
+        $this->entityPersister = $entityPersister;
         $this->routingPatternGroupRepository = $routingPatternGroupRepository;
         $this->countryRepository = $countryRepository;
     }
@@ -45,7 +58,7 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
     /**
      * @param Brand $entity
      */
-    public function execute(EntityInterface $entity, callable $entityPersister)
+    public function execute(EntityInterface $entity)
     {
         $isNew = $this->em->contains($entity);
         if (!$isNew) {
@@ -70,7 +83,7 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
                 ->setRegExp($country->getCallingCode())
                 ->setBrandId($entity->getId());
 
-            $entityPersister($routingPatternDto);
+            $this->entityPersister->persist($routingPatternDto);
 
             if (!$country->getZone()) {
                 continue;
@@ -91,7 +104,7 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
                     ->setName($country->getZone())
                     ->setBrandId($entity->getId());
 
-                $routingPatternGroup = $entityPersister($routingPatternGroupDto);
+                $routingPatternGroup = $this->entityPersister->persist($routingPatternGroupDto);
             }
 
             /**
@@ -102,7 +115,7 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
                 ->setRoutingPatternId($routingPattern->getId())
                 ->setRoutingPatternGroupid($routingPatternGroup->getId());
 
-            $entityPersister($routingPatternGroupsRelPatternDto);
+            $this->entityPersister->persist($routingPatternGroupsRelPatternDto);
         }
     }
 }

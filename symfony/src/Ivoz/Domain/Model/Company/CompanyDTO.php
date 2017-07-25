@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Company;
 
 use Core\Application\DataTransferObjectInterface;
@@ -55,11 +54,6 @@ class CompanyDTO implements DataTransferObjectInterface
      * @var string
      */
     private $province;
-
-    /**
-     * @var string
-     */
-    private $country;
 
     /**
      * @var string
@@ -134,7 +128,7 @@ class CompanyDTO implements DataTransferObjectInterface
     /**
      * @var mixed
      */
-    private $countryCodeId;
+    private $countryId;
 
     /**
      * @var mixed
@@ -169,12 +163,67 @@ class CompanyDTO implements DataTransferObjectInterface
     /**
      * @var mixed
      */
-    private $countryCode;
+    private $country;
 
     /**
      * @var mixed
      */
     private $outgoingDDI;
+
+    /**
+     * @var array|null
+     */
+    private $extensions = null;
+
+    /**
+     * @var array|null
+     */
+    private $ddis = null;
+
+    /**
+     * @var array|null
+     */
+    private $friends = null;
+
+    /**
+     * @var array|null
+     */
+    private $companyServices = null;
+
+    /**
+     * @var array|null
+     */
+    private $terminals = null;
+
+    /**
+     * @var array|null
+     */
+    private $relPricingPlans = null;
+
+    /**
+     * @var array|null
+     */
+    private $musicsOnHold = null;
+
+    /**
+     * @var array|null
+     */
+    private $recordings = null;
+
+    /**
+     * @var array|null
+     */
+    private $relFeatures = null;
+
+    /**
+     * @var array|null
+     */
+    private $callACLPatterns = null;
+
+    /**
+     * @var array|null
+     */
+    private $domains = null;
 
     /**
      * @return array
@@ -191,7 +240,6 @@ class CompanyDTO implements DataTransferObjectInterface
             'postalCode' => $this->getPostalCode(),
             'town' => $this->getTown(),
             'province' => $this->getProvince(),
-            'country' => $this->getCountry(),
             'outboundPrefix' => $this->getOutboundPrefix(),
             'ipfilter' => $this->getIpfilter(),
             'onDemandRecord' => $this->getOnDemandRecord(),
@@ -206,8 +254,19 @@ class CompanyDTO implements DataTransferObjectInterface
             'defaultTimezoneId' => $this->getDefaultTimezoneId(),
             'brandId' => $this->getBrandId(),
             'applicationServerId' => $this->getApplicationServerId(),
-            'countryCodeId' => $this->getCountryCodeId(),
-            'outgoingDDIId' => $this->getOutgoingDDIId()
+            'countryId' => $this->getCountryId(),
+            'outgoingDDIId' => $this->getOutgoingDDIId(),
+            'extensionsId' => $this->getExtensionsId(),
+            'ddisId' => $this->getDdisId(),
+            'friendsId' => $this->getFriendsId(),
+            'companyServicesId' => $this->getCompanyServicesId(),
+            'terminalsId' => $this->getTerminalsId(),
+            'relPricingPlansId' => $this->getRelPricingPlansId(),
+            'musicsOnHoldId' => $this->getMusicsOnHoldId(),
+            'recordingsId' => $this->getRecordingsId(),
+            'relFeaturesId' => $this->getRelFeaturesId(),
+            'callACLPatternsId' => $this->getCallACLPatternsId(),
+            'domainsId' => $this->getDomainsId()
         ];
     }
 
@@ -221,8 +280,107 @@ class CompanyDTO implements DataTransferObjectInterface
         $this->defaultTimezone = $transformer->transform('Ivoz\\Domain\\Model\\Timezone\\Timezone', $this->getDefaultTimezoneId());
         $this->brand = $transformer->transform('Ivoz\\Domain\\Model\\Brand\\Brand', $this->getBrandId());
         $this->applicationServer = $transformer->transform('Ivoz\\Domain\\Model\\ApplicationServer\\ApplicationServer', $this->getApplicationServerId());
-        $this->countryCode = $transformer->transform('Ivoz\\Domain\\Model\\Country\\Country', $this->getCountryCodeId());
+        $this->country = $transformer->transform('Ivoz\\Domain\\Model\\Country\\Country', $this->getCountryId());
         $this->outgoingDDI = $transformer->transform('Ivoz\\Domain\\Model\\DDI\\DDI', $this->getOutgoingDDIId());
+        $items = $this->getExtensions();
+        $this->extensions = [];
+        foreach ($items as $item) {
+            $this->extensions[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\Extension\\Extension',
+                $item
+            );
+        }
+
+        $items = $this->getDdis();
+        $this->ddis = [];
+        foreach ($items as $item) {
+            $this->ddis[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\DDI\\DDI',
+                $item
+            );
+        }
+
+        $items = $this->getFriends();
+        $this->friends = [];
+        foreach ($items as $item) {
+            $this->friends[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\Friend\\Friend',
+                $item
+            );
+        }
+
+        $items = $this->getCompanyServices();
+        $this->companyServices = [];
+        foreach ($items as $item) {
+            $this->companyServices[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\CompanyService\\CompanyService',
+                $item
+            );
+        }
+
+        $items = $this->getTerminals();
+        $this->terminals = [];
+        foreach ($items as $item) {
+            $this->terminals[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\Terminal\\Terminal',
+                $item
+            );
+        }
+
+        $items = $this->getRelPricingPlans();
+        $this->relPricingPlans = [];
+        foreach ($items as $item) {
+            $this->relPricingPlans[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\PricingPlansRelCompany\\PricingPlansRelCompany',
+                $item
+            );
+        }
+
+        $items = $this->getMusicsOnHold();
+        $this->musicsOnHold = [];
+        foreach ($items as $item) {
+            $this->musicsOnHold[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\MusicOnHold\\MusicOnHold',
+                $item
+            );
+        }
+
+        $items = $this->getRecordings();
+        $this->recordings = [];
+        foreach ($items as $item) {
+            $this->recordings[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\Recording\\Recording',
+                $item
+            );
+        }
+
+        $items = $this->getRelFeatures();
+        $this->relFeatures = [];
+        foreach ($items as $item) {
+            $this->relFeatures[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\FeaturesRelCompany\\FeaturesRelCompany',
+                $item
+            );
+        }
+
+        $items = $this->getCallACLPatterns();
+        $this->callACLPatterns = [];
+        foreach ($items as $item) {
+            $this->callACLPatterns[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\CallACLPattern\\CallACLPattern',
+                $item
+            );
+        }
+
+        $items = $this->getDomains();
+        $this->domains = [];
+        foreach ($items as $item) {
+            $this->domains[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\Domain\\Domain',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -230,7 +388,50 @@ class CompanyDTO implements DataTransferObjectInterface
      */
     public function transformCollections(CollectionTransformerInterface $transformer)
     {
-
+        $this->extensions = $transformer->transform(
+            'Ivoz\\Domain\\Model\\Extension\\Extension',
+            $this->extensions
+        );
+        $this->ddis = $transformer->transform(
+            'Ivoz\\Domain\\Model\\DDI\\DDI',
+            $this->ddis
+        );
+        $this->friends = $transformer->transform(
+            'Ivoz\\Domain\\Model\\Friend\\Friend',
+            $this->friends
+        );
+        $this->companyServices = $transformer->transform(
+            'Ivoz\\Domain\\Model\\CompanyService\\CompanyService',
+            $this->companyServices
+        );
+        $this->terminals = $transformer->transform(
+            'Ivoz\\Domain\\Model\\Terminal\\Terminal',
+            $this->terminals
+        );
+        $this->relPricingPlans = $transformer->transform(
+            'Ivoz\\Domain\\Model\\PricingPlansRelCompany\\PricingPlansRelCompany',
+            $this->relPricingPlans
+        );
+        $this->musicsOnHold = $transformer->transform(
+            'Ivoz\\Domain\\Model\\MusicOnHold\\MusicOnHold',
+            $this->musicsOnHold
+        );
+        $this->recordings = $transformer->transform(
+            'Ivoz\\Domain\\Model\\Recording\\Recording',
+            $this->recordings
+        );
+        $this->relFeatures = $transformer->transform(
+            'Ivoz\\Domain\\Model\\FeaturesRelCompany\\FeaturesRelCompany',
+            $this->relFeatures
+        );
+        $this->callACLPatterns = $transformer->transform(
+            'Ivoz\\Domain\\Model\\CallACLPattern\\CallACLPattern',
+            $this->callACLPatterns
+        );
+        $this->domains = $transformer->transform(
+            'Ivoz\\Domain\\Model\\Domain\\Domain',
+            $this->domains
+        );
     }
 
     /**
@@ -271,18 +472,6 @@ class CompanyDTO implements DataTransferObjectInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $domainUsers
-     *
-     * @return CompanyDTO
-     */
-    public function setDomainUsers($domainUsers = null)
-    {
-        $this->domainUsers = $domainUsers;
-
-        return $this;
     }
 
     /**
@@ -411,26 +600,6 @@ class CompanyDTO implements DataTransferObjectInterface
     public function getProvince()
     {
         return $this->province;
-    }
-
-    /**
-     * @param string $country
-     *
-     * @return CompanyDTO
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCountry()
-    {
-        return $this->country;
     }
 
     /**
@@ -754,13 +923,13 @@ class CompanyDTO implements DataTransferObjectInterface
     }
 
     /**
-     * @param integer $countryCodeId
+     * @param integer $countryId
      *
      * @return CompanyDTO
      */
-    public function setCountryCodeId($countryCodeId)
+    public function setCountryId($countryId)
     {
-        $this->countryCodeId = $countryCodeId;
+        $this->countryId = $countryId;
 
         return $this;
     }
@@ -768,17 +937,17 @@ class CompanyDTO implements DataTransferObjectInterface
     /**
      * @return integer
      */
-    public function getCountryCodeId()
+    public function getCountryId()
     {
-        return $this->countryCodeId;
+        return $this->countryId;
     }
 
     /**
      * @return \Ivoz\Domain\Model\Country\Country
      */
-    public function getCountryCode()
+    public function getCountry()
     {
-        return $this->countryCode;
+        return $this->country;
     }
 
     /**
@@ -807,6 +976,226 @@ class CompanyDTO implements DataTransferObjectInterface
     public function getOutgoingDDI()
     {
         return $this->outgoingDDI;
+    }
+
+    /**
+     * @param array $extensions
+     *
+     * @return CompanyDTO
+     */
+    public function setExtensions($extensions)
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * @param array $ddis
+     *
+     * @return CompanyDTO
+     */
+    public function setDdis($ddis)
+    {
+        $this->ddis = $ddis;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDdis()
+    {
+        return $this->ddis;
+    }
+
+    /**
+     * @param array $friends
+     *
+     * @return CompanyDTO
+     */
+    public function setFriends($friends)
+    {
+        $this->friends = $friends;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFriends()
+    {
+        return $this->friends;
+    }
+
+    /**
+     * @param array $companyServices
+     *
+     * @return CompanyDTO
+     */
+    public function setCompanyServices($companyServices)
+    {
+        $this->companyServices = $companyServices;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCompanyServices()
+    {
+        return $this->companyServices;
+    }
+
+    /**
+     * @param array $terminals
+     *
+     * @return CompanyDTO
+     */
+    public function setTerminals($terminals)
+    {
+        $this->terminals = $terminals;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTerminals()
+    {
+        return $this->terminals;
+    }
+
+    /**
+     * @param array $relPricingPlans
+     *
+     * @return CompanyDTO
+     */
+    public function setRelPricingPlans($relPricingPlans)
+    {
+        $this->relPricingPlans = $relPricingPlans;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelPricingPlans()
+    {
+        return $this->relPricingPlans;
+    }
+
+    /**
+     * @param array $musicsOnHold
+     *
+     * @return CompanyDTO
+     */
+    public function setMusicsOnHold($musicsOnHold)
+    {
+        $this->musicsOnHold = $musicsOnHold;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMusicsOnHold()
+    {
+        return $this->musicsOnHold;
+    }
+
+    /**
+     * @param array $recordings
+     *
+     * @return CompanyDTO
+     */
+    public function setRecordings($recordings)
+    {
+        $this->recordings = $recordings;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecordings()
+    {
+        return $this->recordings;
+    }
+
+    /**
+     * @param array $relFeatures
+     *
+     * @return CompanyDTO
+     */
+    public function setRelFeatures($relFeatures)
+    {
+        $this->relFeatures = $relFeatures;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelFeatures()
+    {
+        return $this->relFeatures;
+    }
+
+    /**
+     * @param array $callACLPatterns
+     *
+     * @return CompanyDTO
+     */
+    public function setCallACLPatterns($callACLPatterns)
+    {
+        $this->callACLPatterns = $callACLPatterns;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCallACLPatterns()
+    {
+        return $this->callACLPatterns;
+    }
+
+    /**
+     * @param array $domains
+     *
+     * @return CompanyDTO
+     */
+    public function setDomains($domains)
+    {
+        $this->domains = $domains;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDomains()
+    {
+        return $this->domains;
     }
 }
 

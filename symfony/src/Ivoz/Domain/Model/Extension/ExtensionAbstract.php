@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Extension;
 
 use Assert\Assertion;
@@ -79,9 +78,23 @@ abstract class ExtensionAbstract
     public function __construct($number)
     {
         $this->setNumber($number);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ExtensionDTO
@@ -197,7 +210,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setNumber($number)
+    public function setNumber($number)
     {
         Assertion::notNull($number);
         Assertion::maxLength($number, 10);
@@ -224,7 +237,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setRouteType($routeType = null)
+    public function setRouteType($routeType = null)
     {
         if (!is_null($routeType)) {
             Assertion::maxLength($routeType, 25);
@@ -262,7 +275,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setNumberValue($numberValue = null)
+    public function setNumberValue($numberValue = null)
     {
         if (!is_null($numberValue)) {
             Assertion::maxLength($numberValue, 25);
@@ -290,7 +303,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setFriendValue($friendValue = null)
+    public function setFriendValue($friendValue = null)
     {
         if (!is_null($friendValue)) {
             Assertion::maxLength($friendValue, 25);
@@ -318,7 +331,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -342,7 +355,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setIVRCommon(\Ivoz\Domain\Model\IVRCommon\IVRCommonInterface $iVRCommon = null)
+    public function setIVRCommon(\Ivoz\Domain\Model\IVRCommon\IVRCommonInterface $iVRCommon = null)
     {
         $this->IVRCommon = $iVRCommon;
 
@@ -366,7 +379,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setIVRCustom(\Ivoz\Domain\Model\IVRCustom\IVRCustomInterface $iVRCustom = null)
+    public function setIVRCustom(\Ivoz\Domain\Model\IVRCustom\IVRCustomInterface $iVRCustom = null)
     {
         $this->IVRCustom = $iVRCustom;
 
@@ -390,7 +403,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup = null)
+    public function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup = null)
     {
         $this->huntGroup = $huntGroup;
 
@@ -414,7 +427,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setConferenceRoom(\Ivoz\Domain\Model\ConferenceRoom\ConferenceRoomInterface $conferenceRoom = null)
+    public function setConferenceRoom(\Ivoz\Domain\Model\ConferenceRoom\ConferenceRoomInterface $conferenceRoom = null)
     {
         $this->conferenceRoom = $conferenceRoom;
 
@@ -438,7 +451,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setUser(\Ivoz\Domain\Model\User\UserInterface $user = null)
+    public function setUser(\Ivoz\Domain\Model\User\UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -462,7 +475,7 @@ abstract class ExtensionAbstract
      *
      * @return self
      */
-    protected function setQueue(\Ivoz\Domain\Model\Queue\QueueInterface $queue = null)
+    public function setQueue(\Ivoz\Domain\Model\Queue\QueueInterface $queue = null)
     {
         $this->queue = $queue;
 

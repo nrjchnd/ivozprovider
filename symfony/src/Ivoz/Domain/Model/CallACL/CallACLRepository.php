@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\CallACL;
 
-interface CallACLRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface CallACLRepository extends ObjectRepository {}
 

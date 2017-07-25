@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Fax;
 
 use Assert\Assertion;
@@ -49,9 +48,23 @@ abstract class FaxAbstract
     {
         $this->setName($name);
         $this->setSendByEmail($sendByEmail);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return FaxDTO
@@ -143,7 +156,7 @@ abstract class FaxAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 50);
@@ -170,7 +183,7 @@ abstract class FaxAbstract
      *
      * @return self
      */
-    protected function setEmail($email = null)
+    public function setEmail($email = null)
     {
         if (!is_null($email)) {
             Assertion::maxLength($email, 255);
@@ -198,7 +211,7 @@ abstract class FaxAbstract
      *
      * @return self
      */
-    protected function setSendByEmail($sendByEmail)
+    public function setSendByEmail($sendByEmail)
     {
         Assertion::notNull($sendByEmail);
         Assertion::between(intval($sendByEmail), 0, 1);
@@ -225,7 +238,7 @@ abstract class FaxAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 
@@ -249,7 +262,7 @@ abstract class FaxAbstract
      *
      * @return self
      */
-    protected function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
+    public function setOutgoingDDI(\Ivoz\Domain\Model\DDI\DDIInterface $outgoingDDI = null)
     {
         $this->outgoingDDI = $outgoingDDI;
 

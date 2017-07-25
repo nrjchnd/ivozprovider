@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\IVRCustom;
 
-interface IVRCustomRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface IVRCustomRepository extends ObjectRepository {}
 

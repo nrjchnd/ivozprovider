@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\TrunksDomainAttr;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface TrunksDomainAttrInterface
+interface TrunksDomainAttrInterface extends EntityInterface
 {
+    /**
+     * Set did
+     *
+     * @param string $did
+     *
+     * @return TrunksDomainAttrInterface
+     */
+    public function setDid($did);
+
+
     /**
      * Get did
      *
      * @return string
      */
     public function getDid();
+
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return TrunksDomainAttrInterface
+     */
+    public function setName($name);
 
 
     /**
@@ -23,6 +43,16 @@ interface TrunksDomainAttrInterface
 
 
     /**
+     * Set type
+     *
+     * @param integer $type
+     *
+     * @return TrunksDomainAttrInterface
+     */
+    public function setType($type);
+
+
+    /**
      * Get type
      *
      * @return integer
@@ -31,11 +61,31 @@ interface TrunksDomainAttrInterface
 
 
     /**
+     * Set value
+     *
+     * @param string $value
+     *
+     * @return TrunksDomainAttrInterface
+     */
+    public function setValue($value);
+
+
+    /**
      * Get value
      *
      * @return string
      */
     public function getValue();
+
+
+    /**
+     * Set lastModified
+     *
+     * @param \DateTime $lastModified
+     *
+     * @return TrunksDomainAttrInterface
+     */
+    public function setLastModified($lastModified);
 
 
     /**

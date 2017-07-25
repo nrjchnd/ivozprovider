@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\UsersHtable;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface UsersHtableInterface
+interface UsersHtableInterface extends EntityInterface
 {
+    /**
+     * Set keyName
+     *
+     * @param string $keyName
+     *
+     * @return UsersHtableInterface
+     */
+    public function setKeyName($keyName);
+
+
     /**
      * Get keyName
      *
      * @return string
      */
     public function getKeyName();
+
+
+    /**
+     * Set keyType
+     *
+     * @param integer $keyType
+     *
+     * @return UsersHtableInterface
+     */
+    public function setKeyType($keyType);
 
 
     /**
@@ -23,6 +43,16 @@ interface UsersHtableInterface
 
 
     /**
+     * Set valueType
+     *
+     * @param integer $valueType
+     *
+     * @return UsersHtableInterface
+     */
+    public function setValueType($valueType);
+
+
+    /**
      * Get valueType
      *
      * @return integer
@@ -31,11 +61,31 @@ interface UsersHtableInterface
 
 
     /**
+     * Set keyValue
+     *
+     * @param string $keyValue
+     *
+     * @return UsersHtableInterface
+     */
+    public function setKeyValue($keyValue);
+
+
+    /**
      * Get keyValue
      *
      * @return string
      */
     public function getKeyValue();
+
+
+    /**
+     * Set expires
+     *
+     * @param integer $expires
+     *
+     * @return UsersHtableInterface
+     */
+    public function setExpires($expires);
 
 
     /**

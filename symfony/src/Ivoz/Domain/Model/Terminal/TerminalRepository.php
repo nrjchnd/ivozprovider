@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Terminal;
 
-interface TerminalRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TerminalRepository extends ObjectRepository {}
 

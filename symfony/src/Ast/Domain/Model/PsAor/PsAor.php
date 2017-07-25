@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\PsAor;
 
 use Core\Application\DataTransferObjectInterface;
@@ -96,24 +95,6 @@ class PsAor extends PsAorAbstract implements PsAorInterface
         ];
     }
 
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return self
-     */
-    protected function setId($id)
-    {
-        Assertion::notNull($id);
-        Assertion::integerish($id);
-        Assertion::greaterOrEqualThan($id, 0);
-
-        $this->id = $id;
-
-        return $this;
-    }
 
     /**
      * Get id

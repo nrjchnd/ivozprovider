@@ -25,6 +25,16 @@ interface FeaturesRelBrandInterface extends EntityInterface
 
 
     /**
+     * Set feature
+     *
+     * @param \Ivoz\Domain\Model\Feature\FeatureInterface $feature
+     *
+     * @return FeaturesRelBrandInterface
+     */
+    public function setFeature(\Ivoz\Domain\Model\Feature\FeatureInterface $feature);
+
+
+    /**
      * Get feature
      *
      * @return \Ivoz\Domain\Model\Feature\FeatureInterface

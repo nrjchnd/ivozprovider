@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\TrunksDomainAttr;
 
 use Assert\Assertion;
@@ -58,9 +57,23 @@ abstract class TrunksDomainAttrAbstract
         $this->setType($type);
         $this->setValue($value);
         $this->setLastModified($lastModified);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TrunksDomainAttrDTO
@@ -151,7 +164,7 @@ abstract class TrunksDomainAttrAbstract
      *
      * @return self
      */
-    protected function setDid($did)
+    public function setDid($did)
     {
         Assertion::notNull($did);
         Assertion::maxLength($did, 190);
@@ -178,7 +191,7 @@ abstract class TrunksDomainAttrAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 32);
@@ -205,7 +218,7 @@ abstract class TrunksDomainAttrAbstract
      *
      * @return self
      */
-    protected function setType($type)
+    public function setType($type)
     {
         Assertion::notNull($type);
         Assertion::integerish($type);
@@ -233,7 +246,7 @@ abstract class TrunksDomainAttrAbstract
      *
      * @return self
      */
-    protected function setValue($value)
+    public function setValue($value)
     {
         Assertion::notNull($value);
         Assertion::maxLength($value, 255);
@@ -260,7 +273,7 @@ abstract class TrunksDomainAttrAbstract
      *
      * @return self
      */
-    protected function setLastModified($lastModified)
+    public function setLastModified($lastModified)
     {
         Assertion::notNull($lastModified);
 

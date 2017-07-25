@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\HuntGroup;
 
 use Core\Application\DataTransferObjectInterface;

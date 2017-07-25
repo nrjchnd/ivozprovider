@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CallACL;
 
 use Core\Application\DataTransferObjectInterface;
@@ -12,6 +11,7 @@ use Doctrine\Common\Collections\Criteria;
 class CallACL extends CallACLAbstract implements CallACLInterface
 {
     use CallACLTrait;
+
     /**
      * @var integer
      */
@@ -128,7 +128,7 @@ class CallACL extends CallACLAbstract implements CallACLInterface
      *
      * @return CallACL
      */
-    protected function addRelPattern(\Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPatternInterface $relPattern)
+    public function addRelPattern(\Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPatternInterface $relPattern)
     {
         $this->relPatterns[] = $relPattern;
 
@@ -140,7 +140,7 @@ class CallACL extends CallACLAbstract implements CallACLInterface
      *
      * @param \Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPatternInterface $relPattern
      */
-    protected function removeRelPattern(\Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPatternInterface $relPattern)
+    public function removeRelPattern(\Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPatternInterface $relPattern)
     {
         $this->relPatterns->removeElement($relPattern);
     }
@@ -151,7 +151,7 @@ class CallACL extends CallACLAbstract implements CallACLInterface
      * @param \Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPatternInterface[] $relPatterns
      * @return self
      */
-    protected function replaceRelPatterns(array $relPatterns)
+    public function replaceRelPatterns(array $relPatterns)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -195,3 +195,4 @@ class CallACL extends CallACLAbstract implements CallACLInterface
 
 
 }
+

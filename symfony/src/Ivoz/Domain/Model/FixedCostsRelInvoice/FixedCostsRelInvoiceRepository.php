@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\FixedCostsRelInvoice;
 
-interface FixedCostsRelInvoiceRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface FixedCostsRelInvoiceRepository extends ObjectRepository {}
 

@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Company;
 
-interface CompanyRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface CompanyRepository extends ObjectRepository {}
 

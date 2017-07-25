@@ -1,8 +1,9 @@
 <?php
-
 namespace Ivoz\Domain\Model\Terminal;
 
 use Core\Application\DataTransferObjectInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Terminal
@@ -13,6 +14,11 @@ class Terminal extends TerminalAbstract implements TerminalInterface
      * @var integer
      */
     protected $id;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $astPsEndpoints;
 
 
     /**
@@ -27,7 +33,7 @@ class Terminal extends TerminalAbstract implements TerminalInterface
     public function __construct()
     {
         parent::__construct(...func_get_args());
-
+        $this->astPsEndpoints = new ArrayCollection();
     }
 
     public function __wakeup()
@@ -58,7 +64,9 @@ class Terminal extends TerminalAbstract implements TerminalInterface
          */
         $self = parent::fromDTO($dto);
 
-        return $self;
+        return $self
+            ->replaceAstPsEndpoints($dto->getAstPsEndpoints())
+        ;
     }
 
     /**
@@ -72,7 +80,10 @@ class Terminal extends TerminalAbstract implements TerminalInterface
          */
         parent::updateFromDTO($dto);
 
-        
+        $this
+            ->replaceAstPsEndpoints($dto->getAstPsEndpoints());
+
+
         return $this;
     }
 
@@ -83,7 +94,8 @@ class Terminal extends TerminalAbstract implements TerminalInterface
     {
         $dto = parent::toDTO();
         return $dto
-            ->setId($this->getId());
+            ->setId($this->getId())
+            ->setAstPsEndpoints($this->getAstPsEndpoints());
     }
 
     /**
@@ -107,5 +119,78 @@ class Terminal extends TerminalAbstract implements TerminalInterface
         return $this->id;
     }
 
+    /**
+     * Add astPsEndpoint
+     *
+     * @param \Ast\Domain\Model\PsEndpoint\PsEndpointInterface $astPsEndpoint
+     *
+     * @return Terminal
+     */
+    public function addAstPsEndpoint(\Ast\Domain\Model\PsEndpoint\PsEndpointInterface $astPsEndpoint)
+    {
+        $this->astPsEndpoints[] = $astPsEndpoint;
+
+        return $this;
+    }
+
+    /**
+     * Remove astPsEndpoint
+     *
+     * @param \Ast\Domain\Model\PsEndpoint\PsEndpointInterface $astPsEndpoint
+     */
+    public function removeAstPsEndpoint(\Ast\Domain\Model\PsEndpoint\PsEndpointInterface $astPsEndpoint)
+    {
+        $this->astPsEndpoints->removeElement($astPsEndpoint);
+    }
+
+    /**
+     * Replace astPsEndpoints
+     *
+     * @param \Ast\Domain\Model\PsEndpoint\PsEndpointInterface[] $astPsEndpoints
+     * @return self
+     */
+    public function replaceAstPsEndpoints(array $astPsEndpoints)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($astPsEndpoints as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setTerminal($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->astPsEndpoints as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->astPsEndpoints[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeAstPsEndpoint($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addAstPsEndpoint($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get astPsEndpoints
+     *
+     * @return array
+     */
+    public function getAstPsEndpoints(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->astPsEndpoints->matching($criteria)->toArray();
+        }
+
+        return $this->astPsEndpoints->toArray();
+    }
+
 
 }
+

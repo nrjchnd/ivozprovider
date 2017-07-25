@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Brand;
 
 use Core\Application\DataTransferObjectInterface;
@@ -12,6 +11,7 @@ use Doctrine\Common\Collections\Criteria;
 class Brand extends BrandAbstract implements BrandInterface
 {
     use BrandTrait;
+
     /**
      * @var integer
      */
@@ -58,6 +58,12 @@ class Brand extends BrandAbstract implements BrandInterface
     protected $genericMusicsOnHold;
 
     /**
+     * @var ArrayCollection
+     */
+    protected $genericCallACLPatterns;
+
+
+    /**
      * Changelog tracking purpose
      * @var array
      */
@@ -77,6 +83,7 @@ class Brand extends BrandAbstract implements BrandInterface
         $this->domains = new ArrayCollection();
         $this->retailAccounts = new ArrayCollection();
         $this->genericMusicsOnHold = new ArrayCollection();
+        $this->genericCallACLPatterns = new ArrayCollection();
     }
 
     public function __wakeup()
@@ -115,6 +122,8 @@ class Brand extends BrandAbstract implements BrandInterface
             ->replaceRelFeatures($dto->getRelFeatures())
             ->replaceDomains($dto->getDomains())
             ->replaceRetailAccounts($dto->getRetailAccounts())
+            ->replaceGenericMusicsOnHold($dto->getGenericMusicsOnHold())
+            ->replaceGenericCallACLPatterns($dto->getGenericCallACLPatterns())
         ;
     }
 
@@ -136,7 +145,9 @@ class Brand extends BrandAbstract implements BrandInterface
             ->replaceUrls($dto->getUrls())
             ->replaceRelFeatures($dto->getRelFeatures())
             ->replaceDomains($dto->getDomains())
-            ->replaceRetailAccounts($dto->getRetailAccounts());
+            ->replaceRetailAccounts($dto->getRetailAccounts())
+            ->replaceGenericMusicsOnHold($dto->getGenericMusicsOnHold())
+            ->replaceGenericCallACLPatterns($dto->getGenericCallACLPatterns());
 
 
         return $this;
@@ -156,7 +167,9 @@ class Brand extends BrandAbstract implements BrandInterface
             ->setUrls($this->getUrls())
             ->setRelFeatures($this->getRelFeatures())
             ->setDomains($this->getDomains())
-            ->setRetailAccounts($this->getRetailAccounts());
+            ->setRetailAccounts($this->getRetailAccounts())
+            ->setGenericMusicsOnHold($this->getGenericMusicsOnHold())
+            ->setGenericCallACLPatterns($this->getGenericCallACLPatterns());
     }
 
     /**
@@ -187,7 +200,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function addCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->companies[] = $company;
 
@@ -199,7 +212,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\Company\CompanyInterface $company
      */
-    protected function removeCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function removeCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->companies->removeElement($company);
     }
@@ -210,7 +223,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\Company\CompanyInterface[] $companies
      * @return self
      */
-    protected function replaceCompanies(array $companies)
+    public function replaceCompanies(array $companies)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -259,7 +272,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addOperator(\Ivoz\Domain\Model\BrandOperator\BrandOperatorInterface $operator)
+    public function addOperator(\Ivoz\Domain\Model\BrandOperator\BrandOperatorInterface $operator)
     {
         $this->operators[] = $operator;
 
@@ -271,7 +284,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\BrandOperator\BrandOperatorInterface $operator
      */
-    protected function removeOperator(\Ivoz\Domain\Model\BrandOperator\BrandOperatorInterface $operator)
+    public function removeOperator(\Ivoz\Domain\Model\BrandOperator\BrandOperatorInterface $operator)
     {
         $this->operators->removeElement($operator);
     }
@@ -282,7 +295,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\BrandOperator\BrandOperatorInterface[] $operators
      * @return self
      */
-    protected function replaceOperators(array $operators)
+    public function replaceOperators(array $operators)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -331,7 +344,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addService(\Ivoz\Domain\Model\BrandService\BrandServiceInterface $service)
+    public function addService(\Ivoz\Domain\Model\BrandService\BrandServiceInterface $service)
     {
         $this->services[] = $service;
 
@@ -343,7 +356,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\BrandService\BrandServiceInterface $service
      */
-    protected function removeService(\Ivoz\Domain\Model\BrandService\BrandServiceInterface $service)
+    public function removeService(\Ivoz\Domain\Model\BrandService\BrandServiceInterface $service)
     {
         $this->services->removeElement($service);
     }
@@ -354,7 +367,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\BrandService\BrandServiceInterface[] $services
      * @return self
      */
-    protected function replaceServices(array $services)
+    public function replaceServices(array $services)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -403,7 +416,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addUrl(\Ivoz\Domain\Model\BrandURL\BrandURLInterface $url)
+    public function addUrl(\Ivoz\Domain\Model\BrandURL\BrandURLInterface $url)
     {
         $this->urls[] = $url;
 
@@ -415,7 +428,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\BrandURL\BrandURLInterface $url
      */
-    protected function removeUrl(\Ivoz\Domain\Model\BrandURL\BrandURLInterface $url)
+    public function removeUrl(\Ivoz\Domain\Model\BrandURL\BrandURLInterface $url)
     {
         $this->urls->removeElement($url);
     }
@@ -426,7 +439,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\BrandURL\BrandURLInterface[] $urls
      * @return self
      */
-    protected function replaceUrls(array $urls)
+    public function replaceUrls(array $urls)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -475,7 +488,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addRelFeature(\Ivoz\Domain\Model\FeaturesRelBrand\FeaturesRelBrandInterface $relFeature)
+    public function addRelFeature(\Ivoz\Domain\Model\FeaturesRelBrand\FeaturesRelBrandInterface $relFeature)
     {
         $this->relFeatures[] = $relFeature;
 
@@ -487,7 +500,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\FeaturesRelBrand\FeaturesRelBrandInterface $relFeature
      */
-    protected function removeRelFeature(\Ivoz\Domain\Model\FeaturesRelBrand\FeaturesRelBrandInterface $relFeature)
+    public function removeRelFeature(\Ivoz\Domain\Model\FeaturesRelBrand\FeaturesRelBrandInterface $relFeature)
     {
         $this->relFeatures->removeElement($relFeature);
     }
@@ -498,7 +511,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\FeaturesRelBrand\FeaturesRelBrandInterface[] $relFeatures
      * @return self
      */
-    protected function replaceRelFeatures(array $relFeatures)
+    public function replaceRelFeatures(array $relFeatures)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -547,7 +560,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addDomain(\Ivoz\Domain\Model\Domain\DomainInterface $domain)
+    public function addDomain(\Ivoz\Domain\Model\Domain\DomainInterface $domain)
     {
         $this->domains[] = $domain;
 
@@ -559,7 +572,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\Domain\DomainInterface $domain
      */
-    protected function removeDomain(\Ivoz\Domain\Model\Domain\DomainInterface $domain)
+    public function removeDomain(\Ivoz\Domain\Model\Domain\DomainInterface $domain)
     {
         $this->domains->removeElement($domain);
     }
@@ -570,7 +583,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\Domain\DomainInterface[] $domains
      * @return self
      */
-    protected function replaceDomains(array $domains)
+    public function replaceDomains(array $domains)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -619,7 +632,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount)
+    public function addRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount)
     {
         $this->retailAccounts[] = $retailAccount;
 
@@ -631,7 +644,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount
      */
-    protected function removeRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount)
+    public function removeRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount)
     {
         $this->retailAccounts->removeElement($retailAccount);
     }
@@ -642,7 +655,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\RetailAccount\RetailAccountInterface[] $retailAccounts
      * @return self
      */
-    protected function replaceRetailAccounts(array $retailAccounts)
+    public function replaceRetailAccounts(array $retailAccounts)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -684,8 +697,6 @@ class Brand extends BrandAbstract implements BrandInterface
         return $this->retailAccounts->toArray();
     }
 
-
-
     /**
      * Add genericMusicsOnHold
      *
@@ -693,7 +704,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @return Brand
      */
-    protected function addGenericMusicsOnHold(\Ivoz\Domain\Model\GenericMusicOnHold\GenericMusicOnHoldInterface $genericMusicsOnHold)
+    public function addGenericMusicsOnHold(\Ivoz\Domain\Model\GenericMusicOnHold\GenericMusicOnHoldInterface $genericMusicsOnHold)
     {
         $this->genericMusicsOnHold[] = $genericMusicsOnHold;
 
@@ -705,7 +716,7 @@ class Brand extends BrandAbstract implements BrandInterface
      *
      * @param \Ivoz\Domain\Model\GenericMusicOnHold\GenericMusicOnHoldInterface $genericMusicsOnHold
      */
-    protected function removeGenericMusicsOnHold(\Ivoz\Domain\Model\GenericMusicOnHold\GenericMusicOnHoldInterface $genericMusicsOnHold)
+    public function removeGenericMusicsOnHold(\Ivoz\Domain\Model\GenericMusicOnHold\GenericMusicOnHoldInterface $genericMusicsOnHold)
     {
         $this->genericMusicsOnHold->removeElement($genericMusicsOnHold);
     }
@@ -716,7 +727,7 @@ class Brand extends BrandAbstract implements BrandInterface
      * @param \Ivoz\Domain\Model\GenericMusicOnHold\GenericMusicOnHoldInterface[] $genericMusicsOnHold
      * @return self
      */
-    protected function replaceGenericMusicsOnHold(array $genericMusicsOnHold)
+    public function replaceGenericMusicsOnHold(array $genericMusicsOnHold)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -758,5 +769,78 @@ class Brand extends BrandAbstract implements BrandInterface
         return $this->genericMusicsOnHold->toArray();
     }
 
+    /**
+     * Add genericCallACLPattern
+     *
+     * @param \Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPatternInterface $genericCallACLPattern
+     *
+     * @return Brand
+     */
+    public function addGenericCallACLPattern(\Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPatternInterface $genericCallACLPattern)
+    {
+        $this->genericCallACLPatterns[] = $genericCallACLPattern;
+
+        return $this;
+    }
+
+    /**
+     * Remove genericCallACLPattern
+     *
+     * @param \Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPatternInterface $genericCallACLPattern
+     */
+    public function removeGenericCallACLPattern(\Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPatternInterface $genericCallACLPattern)
+    {
+        $this->genericCallACLPatterns->removeElement($genericCallACLPattern);
+    }
+
+    /**
+     * Replace genericCallACLPatterns
+     *
+     * @param \Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPatternInterface[] $genericCallACLPatterns
+     * @return self
+     */
+    public function replaceGenericCallACLPatterns(array $genericCallACLPatterns)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($genericCallACLPatterns as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setBrand($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->genericCallACLPatterns as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->genericCallACLPatterns[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeGenericCallACLPattern($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addGenericCallACLPattern($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get genericCallACLPatterns
+     *
+     * @return array
+     */
+    public function getGenericCallACLPatterns(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->genericCallACLPatterns->matching($criteria)->toArray();
+        }
+
+        return $this->genericCallACLPatterns->toArray();
+    }
+
 
 }
+

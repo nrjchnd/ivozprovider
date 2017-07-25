@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ExternalCallFilterBlackList;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class ExternalCallFilterBlackList extends ExternalCallFilterBlackListAbstract im
 
 
 }
+

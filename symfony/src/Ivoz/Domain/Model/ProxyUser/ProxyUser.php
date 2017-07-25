@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ProxyUser;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class ProxyUser extends ProxyUserAbstract implements ProxyUserInterface
 
 
 }
+

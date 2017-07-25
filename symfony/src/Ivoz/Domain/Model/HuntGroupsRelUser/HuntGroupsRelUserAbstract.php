@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\HuntGroupsRelUser;
 
 use Assert\Assertion;
@@ -43,9 +42,23 @@ abstract class HuntGroupsRelUserAbstract
     public function __construct()
     {
 
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return HuntGroupsRelUserDTO
@@ -133,7 +146,7 @@ abstract class HuntGroupsRelUserAbstract
      *
      * @return self
      */
-    protected function setTimeoutTime($timeoutTime = null)
+    public function setTimeoutTime($timeoutTime = null)
     {
         if (!is_null($timeoutTime)) {
             if (!is_null($timeoutTime)) {
@@ -163,7 +176,7 @@ abstract class HuntGroupsRelUserAbstract
      *
      * @return self
      */
-    protected function setPriority($priority = null)
+    public function setPriority($priority = null)
     {
         if (!is_null($priority)) {
             if (!is_null($priority)) {
@@ -193,7 +206,7 @@ abstract class HuntGroupsRelUserAbstract
      *
      * @return self
      */
-    protected function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup)
+    public function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup)
     {
         $this->huntGroup = $huntGroup;
 
@@ -217,7 +230,7 @@ abstract class HuntGroupsRelUserAbstract
      *
      * @return self
      */
-    protected function setUser(\Ivoz\Domain\Model\User\UserInterface $user)
+    public function setUser(\Ivoz\Domain\Model\User\UserInterface $user)
     {
         $this->user = $user;
 

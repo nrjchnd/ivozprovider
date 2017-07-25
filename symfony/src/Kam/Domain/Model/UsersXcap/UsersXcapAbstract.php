@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersXcap;
 
 use Assert\Assertion;
@@ -80,9 +79,23 @@ abstract class UsersXcapAbstract
         $this->setSource($source);
         $this->setDocUri($docUri);
         $this->setPort($port);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersXcapDTO
@@ -185,7 +198,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setUsername($username)
+    public function setUsername($username)
     {
         Assertion::notNull($username);
         Assertion::maxLength($username, 64);
@@ -212,7 +225,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setDomain($domain)
+    public function setDomain($domain)
     {
         Assertion::notNull($domain);
         Assertion::maxLength($domain, 190);
@@ -239,7 +252,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setDoc($doc)
+    public function setDoc($doc)
     {
         Assertion::notNull($doc);
 
@@ -265,7 +278,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setDocType($docType)
+    public function setDocType($docType)
     {
         Assertion::notNull($docType);
         Assertion::integerish($docType);
@@ -292,7 +305,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setEtag($etag)
+    public function setEtag($etag)
     {
         Assertion::notNull($etag);
         Assertion::maxLength($etag, 64);
@@ -319,7 +332,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setSource($source)
+    public function setSource($source)
     {
         Assertion::notNull($source);
         Assertion::integerish($source);
@@ -346,7 +359,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setDocUri($docUri)
+    public function setDocUri($docUri)
     {
         Assertion::notNull($docUri);
         Assertion::maxLength($docUri, 255);
@@ -373,7 +386,7 @@ abstract class UsersXcapAbstract
      *
      * @return self
      */
-    protected function setPort($port)
+    public function setPort($port)
     {
         Assertion::notNull($port);
         Assertion::integerish($port);

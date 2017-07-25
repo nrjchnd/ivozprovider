@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\IVRCustomEntry;
 
 use Core\Application\DataTransferObjectInterface;

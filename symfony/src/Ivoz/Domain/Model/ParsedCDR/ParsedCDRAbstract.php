@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ParsedCDR;
 
 use Assert\Assertion;
@@ -158,9 +157,23 @@ abstract class ParsedCDRAbstract
     public function __construct($calldate)
     {
         $this->setCalldate($calldate);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ParsedCDRDTO
@@ -340,7 +353,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setStatId($statId = null)
+    public function setStatId($statId = null)
     {
         if (!is_null($statId)) {
             if (!is_null($statId)) {
@@ -371,7 +384,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setXstatId($xstatId = null)
+    public function setXstatId($xstatId = null)
     {
         if (!is_null($xstatId)) {
             if (!is_null($xstatId)) {
@@ -402,7 +415,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setStatType($statType = null)
+    public function setStatType($statType = null)
     {
         if (!is_null($statType)) {
             Assertion::maxLength($statType, 256);
@@ -430,7 +443,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setInitialLeg($initialLeg = null)
+    public function setInitialLeg($initialLeg = null)
     {
         if (!is_null($initialLeg)) {
             Assertion::maxLength($initialLeg, 255);
@@ -458,7 +471,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setInitialLegHash($initialLegHash = null)
+    public function setInitialLegHash($initialLegHash = null)
     {
         if (!is_null($initialLegHash)) {
             Assertion::maxLength($initialLegHash, 128);
@@ -486,7 +499,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setCid($cid = null)
+    public function setCid($cid = null)
     {
         if (!is_null($cid)) {
             Assertion::maxLength($cid, 255);
@@ -514,7 +527,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setCidHash($cidHash = null)
+    public function setCidHash($cidHash = null)
     {
         if (!is_null($cidHash)) {
             Assertion::maxLength($cidHash, 128);
@@ -542,7 +555,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setXcid($xcid = null)
+    public function setXcid($xcid = null)
     {
         if (!is_null($xcid)) {
             Assertion::maxLength($xcid, 255);
@@ -570,7 +583,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setXcidHash($xcidHash = null)
+    public function setXcidHash($xcidHash = null)
     {
         if (!is_null($xcidHash)) {
             Assertion::maxLength($xcidHash, 128);
@@ -598,7 +611,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setProxies($proxies = null)
+    public function setProxies($proxies = null)
     {
         if (!is_null($proxies)) {
             Assertion::maxLength($proxies, 32);
@@ -626,7 +639,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setType($type = null)
+    public function setType($type = null)
     {
         if (!is_null($type)) {
             Assertion::maxLength($type, 32);
@@ -654,7 +667,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setSubtype($subtype = null)
+    public function setSubtype($subtype = null)
     {
         if (!is_null($subtype)) {
             Assertion::maxLength($subtype, 64);
@@ -682,7 +695,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setCalldate($calldate)
+    public function setCalldate($calldate)
     {
         Assertion::notNull($calldate);
 
@@ -708,7 +721,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setDuration($duration = null)
+    public function setDuration($duration = null)
     {
         if (!is_null($duration)) {
             if (!is_null($duration)) {
@@ -739,7 +752,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setAParty($aParty = null)
+    public function setAParty($aParty = null)
     {
         if (!is_null($aParty)) {
             Assertion::maxLength($aParty, 128);
@@ -767,7 +780,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setBParty($bParty = null)
+    public function setBParty($bParty = null)
     {
         if (!is_null($bParty)) {
             Assertion::maxLength($bParty, 128);
@@ -795,7 +808,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setCaller($caller = null)
+    public function setCaller($caller = null)
     {
         if (!is_null($caller)) {
             Assertion::maxLength($caller, 128);
@@ -823,7 +836,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setCallee($callee = null)
+    public function setCallee($callee = null)
     {
         if (!is_null($callee)) {
             Assertion::maxLength($callee, 128);
@@ -851,7 +864,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setXCaller($xCaller = null)
+    public function setXCaller($xCaller = null)
     {
         if (!is_null($xCaller)) {
             Assertion::maxLength($xCaller, 128);
@@ -879,7 +892,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setXCallee($xCallee = null)
+    public function setXCallee($xCallee = null)
     {
         if (!is_null($xCallee)) {
             Assertion::maxLength($xCallee, 128);
@@ -907,7 +920,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setInitialReferrer($initialReferrer = null)
+    public function setInitialReferrer($initialReferrer = null)
     {
         if (!is_null($initialReferrer)) {
             Assertion::maxLength($initialReferrer, 128);
@@ -935,7 +948,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setReferrer($referrer = null)
+    public function setReferrer($referrer = null)
     {
         if (!is_null($referrer)) {
             Assertion::maxLength($referrer, 128);
@@ -963,7 +976,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setReferee($referee = null)
+    public function setReferee($referee = null)
     {
         if (!is_null($referee)) {
             Assertion::maxLength($referee, 128);
@@ -991,7 +1004,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setLastForwarder($lastForwarder = null)
+    public function setLastForwarder($lastForwarder = null)
     {
         if (!is_null($lastForwarder)) {
             Assertion::maxLength($lastForwarder, 32);
@@ -1019,7 +1032,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand = null)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand = null)
     {
         $this->brand = $brand;
 
@@ -1043,7 +1056,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -1067,7 +1080,7 @@ abstract class ParsedCDRAbstract
      *
      * @return self
      */
-    protected function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract = null)
+    public function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract = null)
     {
         $this->peeringContract = $peeringContract;
 

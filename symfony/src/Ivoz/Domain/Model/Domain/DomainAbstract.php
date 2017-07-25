@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Domain;
 
 use Assert\Assertion;
@@ -55,9 +54,23 @@ abstract class DomainAbstract
         $this->setDomain($domain);
         $this->setScope($scope);
         $this->setPointsTo($pointsTo);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return DomainDTO
@@ -153,7 +166,7 @@ abstract class DomainAbstract
      *
      * @return self
      */
-    protected function setDomain($domain)
+    public function setDomain($domain)
     {
         Assertion::notNull($domain);
         Assertion::maxLength($domain, 190);
@@ -180,7 +193,7 @@ abstract class DomainAbstract
      *
      * @return self
      */
-    protected function setScope($scope)
+    public function setScope($scope)
     {
         Assertion::notNull($scope);
 
@@ -206,7 +219,7 @@ abstract class DomainAbstract
      *
      * @return self
      */
-    protected function setPointsTo($pointsTo)
+    public function setPointsTo($pointsTo)
     {
         Assertion::notNull($pointsTo);
 
@@ -232,7 +245,7 @@ abstract class DomainAbstract
      *
      * @return self
      */
-    protected function setDescription($description = null)
+    public function setDescription($description = null)
     {
         if (!is_null($description)) {
             Assertion::maxLength($description, 500);
@@ -260,7 +273,7 @@ abstract class DomainAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 

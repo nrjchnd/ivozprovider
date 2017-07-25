@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CallForwardSetting;
 
 use Assert\Assertion;
@@ -73,9 +72,23 @@ abstract class CallForwardSettingAbstract
         $this->setCallForwardType($callForwardType);
         $this->setTargetType($targetType);
         $this->setNoAnswerTimeout($noAnswerTimeout);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return CallForwardSettingDTO
@@ -179,7 +192,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setCallTypeFilter($callTypeFilter)
+    public function setCallTypeFilter($callTypeFilter)
     {
         Assertion::notNull($callTypeFilter);
         Assertion::maxLength($callTypeFilter, 25);
@@ -211,7 +224,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setCallForwardType($callForwardType)
+    public function setCallForwardType($callForwardType)
     {
         Assertion::notNull($callForwardType);
         Assertion::maxLength($callForwardType, 25);
@@ -244,7 +257,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setTargetType($targetType)
+    public function setTargetType($targetType)
     {
         Assertion::notNull($targetType);
         Assertion::maxLength($targetType, 25);
@@ -276,7 +289,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setNumberValue($numberValue = null)
+    public function setNumberValue($numberValue = null)
     {
         if (!is_null($numberValue)) {
             Assertion::maxLength($numberValue, 25);
@@ -304,7 +317,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setNoAnswerTimeout($noAnswerTimeout)
+    public function setNoAnswerTimeout($noAnswerTimeout)
     {
         Assertion::notNull($noAnswerTimeout);
         Assertion::integerish($noAnswerTimeout);
@@ -331,7 +344,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setUser(\Ivoz\Domain\Model\User\UserInterface $user)
+    public function setUser(\Ivoz\Domain\Model\User\UserInterface $user)
     {
         $this->user = $user;
 
@@ -355,7 +368,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension = null)
+    public function setExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $extension = null)
     {
         $this->extension = $extension;
 
@@ -379,7 +392,7 @@ abstract class CallForwardSettingAbstract
      *
      * @return self
      */
-    protected function setVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $voiceMailUser = null)
+    public function setVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $voiceMailUser = null)
     {
         $this->voiceMailUser = $voiceMailUser;
 

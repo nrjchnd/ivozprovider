@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\AccCdr;
 
-interface AccCdrRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface AccCdrRepository extends ObjectRepository {}
 

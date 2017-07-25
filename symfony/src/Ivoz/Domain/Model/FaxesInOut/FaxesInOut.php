@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\FaxesInOut;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class FaxesInOut extends FaxesInOutAbstract implements FaxesInOutInterface
 
 
 }
+

@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\RetailAccount;
 
-interface RetailAccountRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface RetailAccountRepository extends ObjectRepository {}
 

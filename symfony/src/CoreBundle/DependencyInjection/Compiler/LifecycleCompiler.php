@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Core\Infrastructure\Model\Lifecycle\HandlerChain;
+use Core\Infrastructure\Domain\Model\Lifecycle\HandlerChain;
 
 class LifecycleCompiler implements CompilerPassInterface
 {
@@ -21,7 +21,7 @@ class LifecycleCompiler implements CompilerPassInterface
 
         // check if the primary service is defined
         if (!$container->has(HandlerChain::class)) {
-            return;
+            throw new \Exception('HandlerChain must be registered service');
         }
 
         $events = $this->getLifecycleServices();

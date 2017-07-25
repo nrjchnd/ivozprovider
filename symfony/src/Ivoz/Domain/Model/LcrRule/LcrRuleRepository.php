@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\LcrRule;
 
-interface LcrRuleRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface LcrRuleRepository extends ObjectRepository {}
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ApplicationServer;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class ApplicationServer extends ApplicationServerAbstract implements Application
 
 
 }
+

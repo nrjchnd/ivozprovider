@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\TrunksUacreg;
 
-interface TrunksUacregRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TrunksUacregRepository extends ObjectRepository {}
 

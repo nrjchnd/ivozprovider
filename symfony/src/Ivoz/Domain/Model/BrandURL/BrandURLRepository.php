@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\BrandURL;
 
-interface BrandURLRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface BrandURLRepository extends ObjectRepository {}
 

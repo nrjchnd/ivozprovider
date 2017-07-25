@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersLocationAttr;
 
 use Assert\Assertion;
@@ -70,9 +69,23 @@ abstract class UsersLocationAttrAbstract
         $this->setAtype($atype);
         $this->setAvalue($avalue);
         $this->setLastModified($lastModified);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersLocationAttrDTO
@@ -172,7 +185,7 @@ abstract class UsersLocationAttrAbstract
      *
      * @return self
      */
-    protected function setRuid($ruid)
+    public function setRuid($ruid)
     {
         Assertion::notNull($ruid);
         Assertion::maxLength($ruid, 64);
@@ -199,7 +212,7 @@ abstract class UsersLocationAttrAbstract
      *
      * @return self
      */
-    protected function setUsername($username)
+    public function setUsername($username)
     {
         Assertion::notNull($username);
         Assertion::maxLength($username, 64);
@@ -226,7 +239,7 @@ abstract class UsersLocationAttrAbstract
      *
      * @return self
      */
-    protected function setDomain($domain = null)
+    public function setDomain($domain = null)
     {
         if (!is_null($domain)) {
             Assertion::maxLength($domain, 190);
@@ -254,7 +267,7 @@ abstract class UsersLocationAttrAbstract
      *
      * @return self
      */
-    protected function setAname($aname)
+    public function setAname($aname)
     {
         Assertion::notNull($aname);
         Assertion::maxLength($aname, 64);
@@ -281,7 +294,7 @@ abstract class UsersLocationAttrAbstract
      *
      * @return self
      */
-    protected function setAtype($atype)
+    public function setAtype($atype)
     {
         Assertion::notNull($atype);
         Assertion::integerish($atype);
@@ -308,7 +321,7 @@ abstract class UsersLocationAttrAbstract
      *
      * @return self
      */
-    protected function setAvalue($avalue)
+    public function setAvalue($avalue)
     {
         Assertion::notNull($avalue);
         Assertion::maxLength($avalue, 255);
@@ -335,7 +348,7 @@ abstract class UsersLocationAttrAbstract
      *
      * @return self
      */
-    protected function setLastModified($lastModified)
+    public function setLastModified($lastModified)
     {
         Assertion::notNull($lastModified);
 

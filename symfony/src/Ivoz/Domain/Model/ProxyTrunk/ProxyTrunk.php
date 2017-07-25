@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ProxyTrunk;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class ProxyTrunk extends ProxyTrunkAbstract implements ProxyTrunkInterface
 
 
 }
+

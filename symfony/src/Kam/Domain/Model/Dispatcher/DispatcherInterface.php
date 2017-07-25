@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\Dispatcher;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface DispatcherInterface
+interface DispatcherInterface extends EntityInterface
 {
+    /**
+     * Set setid
+     *
+     * @param integer $setid
+     *
+     * @return DispatcherInterface
+     */
+    public function setSetid($setid);
+
+
     /**
      * Get setid
      *
      * @return integer
      */
     public function getSetid();
+
+
+    /**
+     * Set destination
+     *
+     * @param string $destination
+     *
+     * @return DispatcherInterface
+     */
+    public function setDestination($destination);
 
 
     /**
@@ -23,11 +43,31 @@ interface DispatcherInterface
 
 
     /**
+     * Set flags
+     *
+     * @param integer $flags
+     *
+     * @return DispatcherInterface
+     */
+    public function setFlags($flags);
+
+
+    /**
      * Get flags
      *
      * @return integer
      */
     public function getFlags();
+
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     *
+     * @return DispatcherInterface
+     */
+    public function setPriority($priority);
 
 
     /**
@@ -39,6 +79,16 @@ interface DispatcherInterface
 
 
     /**
+     * Set attrs
+     *
+     * @param string $attrs
+     *
+     * @return DispatcherInterface
+     */
+    public function setAttrs($attrs);
+
+
+    /**
      * Get attrs
      *
      * @return string
@@ -47,11 +97,31 @@ interface DispatcherInterface
 
 
     /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return DispatcherInterface
+     */
+    public function setDescription($description);
+
+
+    /**
      * Get description
      *
      * @return string
      */
     public function getDescription();
+
+
+    /**
+     * Set applicationServer
+     *
+     * @param \Ivoz\Domain\Model\ApplicationServer\ApplicationServerInterface $applicationServer
+     *
+     * @return DispatcherInterface
+     */
+    public function setApplicationServer(\Ivoz\Domain\Model\ApplicationServer\ApplicationServerInterface $applicationServer);
 
 
     /**

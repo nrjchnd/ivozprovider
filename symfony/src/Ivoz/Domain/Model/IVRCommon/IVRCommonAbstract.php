@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\IVRCommon;
 
 use Assert\Assertion;
@@ -117,9 +116,23 @@ abstract class IVRCommonAbstract
         $this->setName($name);
         $this->setTimeout($timeout);
         $this->setMaxDigits($maxDigits);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return IVRCommonDTO
@@ -263,7 +276,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 50);
@@ -290,7 +303,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setBlackListRegExp($blackListRegExp = null)
+    public function setBlackListRegExp($blackListRegExp = null)
     {
         if (!is_null($blackListRegExp)) {
             Assertion::maxLength($blackListRegExp, 255);
@@ -318,7 +331,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setTimeout($timeout)
+    public function setTimeout($timeout)
     {
         Assertion::notNull($timeout);
         Assertion::integerish($timeout);
@@ -346,7 +359,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setMaxDigits($maxDigits)
+    public function setMaxDigits($maxDigits)
     {
         Assertion::notNull($maxDigits);
         Assertion::integerish($maxDigits);
@@ -374,7 +387,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setNoAnswerTimeout($noAnswerTimeout = null)
+    public function setNoAnswerTimeout($noAnswerTimeout = null)
     {
         if (!is_null($noAnswerTimeout)) {
             if (!is_null($noAnswerTimeout)) {
@@ -404,7 +417,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setTimeoutTargetType($timeoutTargetType = null)
+    public function setTimeoutTargetType($timeoutTargetType = null)
     {
         if (!is_null($timeoutTargetType)) {
             Assertion::maxLength($timeoutTargetType, 25);
@@ -437,7 +450,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setTimeoutNumberValue($timeoutNumberValue = null)
+    public function setTimeoutNumberValue($timeoutNumberValue = null)
     {
         if (!is_null($timeoutNumberValue)) {
             Assertion::maxLength($timeoutNumberValue, 25);
@@ -465,7 +478,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setErrorTargetType($errorTargetType = null)
+    public function setErrorTargetType($errorTargetType = null)
     {
         if (!is_null($errorTargetType)) {
             Assertion::maxLength($errorTargetType, 25);
@@ -498,7 +511,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setErrorNumberValue($errorNumberValue = null)
+    public function setErrorNumberValue($errorNumberValue = null)
     {
         if (!is_null($errorNumberValue)) {
             Assertion::maxLength($errorNumberValue, 25);
@@ -526,7 +539,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 
@@ -550,7 +563,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setWelcomeLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $welcomeLocution = null)
+    public function setWelcomeLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $welcomeLocution = null)
     {
         $this->welcomeLocution = $welcomeLocution;
 
@@ -574,7 +587,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setNoAnswerLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $noAnswerLocution = null)
+    public function setNoAnswerLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $noAnswerLocution = null)
     {
         $this->noAnswerLocution = $noAnswerLocution;
 
@@ -598,7 +611,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setErrorLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $errorLocution = null)
+    public function setErrorLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $errorLocution = null)
     {
         $this->errorLocution = $errorLocution;
 
@@ -622,7 +635,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setSuccessLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $successLocution = null)
+    public function setSuccessLocution(\Ivoz\Domain\Model\Locution\LocutionInterface $successLocution = null)
     {
         $this->successLocution = $successLocution;
 
@@ -646,7 +659,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setTimeoutExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $timeoutExtension = null)
+    public function setTimeoutExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $timeoutExtension = null)
     {
         $this->timeoutExtension = $timeoutExtension;
 
@@ -670,7 +683,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setErrorExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $errorExtension = null)
+    public function setErrorExtension(\Ivoz\Domain\Model\Extension\ExtensionInterface $errorExtension = null)
     {
         $this->errorExtension = $errorExtension;
 
@@ -694,7 +707,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setTimeoutVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $timeoutVoiceMailUser = null)
+    public function setTimeoutVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $timeoutVoiceMailUser = null)
     {
         $this->timeoutVoiceMailUser = $timeoutVoiceMailUser;
 
@@ -718,7 +731,7 @@ abstract class IVRCommonAbstract
      *
      * @return self
      */
-    protected function setErrorVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $errorVoiceMailUser = null)
+    public function setErrorVoiceMailUser(\Ivoz\Domain\Model\User\UserInterface $errorVoiceMailUser = null)
     {
         $this->errorVoiceMailUser = $errorVoiceMailUser;
 

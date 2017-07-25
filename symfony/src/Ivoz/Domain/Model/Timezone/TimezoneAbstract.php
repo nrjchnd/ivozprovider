@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Timezone;
 
 use Assert\Assertion;
@@ -44,9 +43,23 @@ abstract class TimezoneAbstract
     {
         $this->setTz($tz);
         $this->setLabel($label);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TimezoneDTO
@@ -151,7 +164,7 @@ abstract class TimezoneAbstract
      *
      * @return self
      */
-    protected function setTz($tz)
+    public function setTz($tz)
     {
         Assertion::notNull($tz);
         Assertion::maxLength($tz, 255);
@@ -178,7 +191,7 @@ abstract class TimezoneAbstract
      *
      * @return self
      */
-    protected function setComment($comment = null)
+    public function setComment($comment = null)
     {
         if (!is_null($comment)) {
             Assertion::maxLength($comment, 150);
@@ -206,7 +219,7 @@ abstract class TimezoneAbstract
      *
      * @return self
      */
-    protected function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
+    public function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
     {
         $this->country = $country;
 
@@ -230,7 +243,7 @@ abstract class TimezoneAbstract
      *
      * @return self
      */
-    protected function setLabel(Label $label)
+    public function setLabel(Label $label)
     {
         $this->label = $label;
 

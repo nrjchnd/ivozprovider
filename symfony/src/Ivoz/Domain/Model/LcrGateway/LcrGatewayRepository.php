@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\LcrGateway;
 
-interface LcrGatewayRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface LcrGatewayRepository extends ObjectRepository {}
 

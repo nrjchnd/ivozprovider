@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\Queue;
 
 use Assert\Assertion;
@@ -76,9 +75,23 @@ abstract class QueueAbstract
     {
         $this->setAutopause($autopause);
         $this->setRinginuse($ringinuse);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return QueueDTO
@@ -190,7 +203,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setPeriodicAnnounce($periodicAnnounce = null)
+    public function setPeriodicAnnounce($periodicAnnounce = null)
     {
         if (!is_null($periodicAnnounce)) {
             Assertion::maxLength($periodicAnnounce, 128);
@@ -218,7 +231,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setPeriodicAnnounceFrequency($periodicAnnounceFrequency = null)
+    public function setPeriodicAnnounceFrequency($periodicAnnounceFrequency = null)
     {
         if (!is_null($periodicAnnounceFrequency)) {
             if (!is_null($periodicAnnounceFrequency)) {
@@ -248,7 +261,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setTimeout($timeout = null)
+    public function setTimeout($timeout = null)
     {
         if (!is_null($timeout)) {
             if (!is_null($timeout)) {
@@ -278,7 +291,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setAutopause($autopause)
+    public function setAutopause($autopause)
     {
         Assertion::notNull($autopause);
 
@@ -304,7 +317,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setRinginuse($ringinuse)
+    public function setRinginuse($ringinuse)
     {
         Assertion::notNull($ringinuse);
 
@@ -330,7 +343,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setWrapuptime($wrapuptime = null)
+    public function setWrapuptime($wrapuptime = null)
     {
         if (!is_null($wrapuptime)) {
             if (!is_null($wrapuptime)) {
@@ -360,7 +373,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setMaxlen($maxlen = null)
+    public function setMaxlen($maxlen = null)
     {
         if (!is_null($maxlen)) {
             if (!is_null($maxlen)) {
@@ -390,7 +403,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setStrategy($strategy = null)
+    public function setStrategy($strategy = null)
     {
         if (!is_null($strategy)) {
         }
@@ -417,7 +430,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setWeight($weight = null)
+    public function setWeight($weight = null)
     {
         if (!is_null($weight)) {
             if (!is_null($weight)) {
@@ -447,7 +460,7 @@ abstract class QueueAbstract
      *
      * @return self
      */
-    protected function setQueue(\Ivoz\Domain\Model\Queue\QueueInterface $queue)
+    public function setQueue(\Ivoz\Domain\Model\Queue\QueueInterface $queue)
     {
         $this->queue = $queue;
 

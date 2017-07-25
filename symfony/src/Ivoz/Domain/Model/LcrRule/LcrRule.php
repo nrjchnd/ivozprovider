@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\LcrRule;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class LcrRule extends LcrRuleAbstract implements LcrRuleInterface
 
 
 }
+

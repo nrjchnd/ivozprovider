@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\Voicemail;
 
 use Assert\Assertion;
@@ -196,9 +195,23 @@ abstract class VoicemailAbstract
     {
         $this->setContext($context);
         $this->setMailbox($mailbox);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return VoicemailDTO
@@ -406,7 +419,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setContext($context)
+    public function setContext($context)
     {
         Assertion::notNull($context);
         Assertion::maxLength($context, 80);
@@ -433,7 +446,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setMailbox($mailbox)
+    public function setMailbox($mailbox)
     {
         Assertion::notNull($mailbox);
         Assertion::maxLength($mailbox, 80);
@@ -460,7 +473,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setPassword($password = null)
+    public function setPassword($password = null)
     {
         if (!is_null($password)) {
             Assertion::maxLength($password, 80);
@@ -488,7 +501,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setFullname($fullname = null)
+    public function setFullname($fullname = null)
     {
         if (!is_null($fullname)) {
             Assertion::maxLength($fullname, 80);
@@ -516,7 +529,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setAlias($alias = null)
+    public function setAlias($alias = null)
     {
         if (!is_null($alias)) {
             Assertion::maxLength($alias, 80);
@@ -544,7 +557,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setEmail($email = null)
+    public function setEmail($email = null)
     {
         if (!is_null($email)) {
             Assertion::maxLength($email, 80);
@@ -572,7 +585,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setPager($pager = null)
+    public function setPager($pager = null)
     {
         if (!is_null($pager)) {
             Assertion::maxLength($pager, 80);
@@ -600,7 +613,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setAttach($attach = null)
+    public function setAttach($attach = null)
     {
         if (!is_null($attach)) {
         }
@@ -627,7 +640,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setAttachfmt($attachfmt = null)
+    public function setAttachfmt($attachfmt = null)
     {
         if (!is_null($attachfmt)) {
             Assertion::maxLength($attachfmt, 10);
@@ -655,7 +668,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setServeremail($serveremail = null)
+    public function setServeremail($serveremail = null)
     {
         if (!is_null($serveremail)) {
             Assertion::maxLength($serveremail, 80);
@@ -683,7 +696,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setLanguage($language = null)
+    public function setLanguage($language = null)
     {
         if (!is_null($language)) {
             Assertion::maxLength($language, 20);
@@ -711,7 +724,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setTz($tz = null)
+    public function setTz($tz = null)
     {
         if (!is_null($tz)) {
             Assertion::maxLength($tz, 30);
@@ -739,7 +752,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setDeleteVoicemail($deleteVoicemail = null)
+    public function setDeleteVoicemail($deleteVoicemail = null)
     {
         if (!is_null($deleteVoicemail)) {
         }
@@ -766,7 +779,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setSaycid($saycid = null)
+    public function setSaycid($saycid = null)
     {
         if (!is_null($saycid)) {
         }
@@ -793,7 +806,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setSendVoicemail($sendVoicemail = null)
+    public function setSendVoicemail($sendVoicemail = null)
     {
         if (!is_null($sendVoicemail)) {
         }
@@ -820,7 +833,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setReview($review = null)
+    public function setReview($review = null)
     {
         if (!is_null($review)) {
         }
@@ -847,7 +860,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setTempgreetwarn($tempgreetwarn = null)
+    public function setTempgreetwarn($tempgreetwarn = null)
     {
         if (!is_null($tempgreetwarn)) {
         }
@@ -874,7 +887,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setOperator($operator = null)
+    public function setOperator($operator = null)
     {
         if (!is_null($operator)) {
         }
@@ -901,7 +914,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setEnvelope($envelope = null)
+    public function setEnvelope($envelope = null)
     {
         if (!is_null($envelope)) {
         }
@@ -928,7 +941,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setSayduration($sayduration = null)
+    public function setSayduration($sayduration = null)
     {
         if (!is_null($sayduration)) {
             if (!is_null($sayduration)) {
@@ -958,7 +971,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setForcename($forcename = null)
+    public function setForcename($forcename = null)
     {
         if (!is_null($forcename)) {
         }
@@ -985,7 +998,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setForcegreetings($forcegreetings = null)
+    public function setForcegreetings($forcegreetings = null)
     {
         if (!is_null($forcegreetings)) {
         }
@@ -1012,7 +1025,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setCallback($callback = null)
+    public function setCallback($callback = null)
     {
         if (!is_null($callback)) {
             Assertion::maxLength($callback, 80);
@@ -1040,7 +1053,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setDialout($dialout = null)
+    public function setDialout($dialout = null)
     {
         if (!is_null($dialout)) {
             Assertion::maxLength($dialout, 80);
@@ -1068,7 +1081,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setExitcontext($exitcontext = null)
+    public function setExitcontext($exitcontext = null)
     {
         if (!is_null($exitcontext)) {
             Assertion::maxLength($exitcontext, 80);
@@ -1096,7 +1109,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setMaxmsg($maxmsg = null)
+    public function setMaxmsg($maxmsg = null)
     {
         if (!is_null($maxmsg)) {
             if (!is_null($maxmsg)) {
@@ -1126,7 +1139,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setVolgain($volgain = null)
+    public function setVolgain($volgain = null)
     {
         if (!is_null($volgain)) {
             if (!is_null($volgain)) {
@@ -1156,7 +1169,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setImapuser($imapuser = null)
+    public function setImapuser($imapuser = null)
     {
         if (!is_null($imapuser)) {
             Assertion::maxLength($imapuser, 80);
@@ -1184,7 +1197,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setImappassword($imappassword = null)
+    public function setImappassword($imappassword = null)
     {
         if (!is_null($imappassword)) {
             Assertion::maxLength($imappassword, 80);
@@ -1212,7 +1225,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setImapserver($imapserver = null)
+    public function setImapserver($imapserver = null)
     {
         if (!is_null($imapserver)) {
             Assertion::maxLength($imapserver, 80);
@@ -1240,7 +1253,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setImapport($imapport = null)
+    public function setImapport($imapport = null)
     {
         if (!is_null($imapport)) {
             Assertion::maxLength($imapport, 8);
@@ -1268,7 +1281,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setImapflags($imapflags = null)
+    public function setImapflags($imapflags = null)
     {
         if (!is_null($imapflags)) {
             Assertion::maxLength($imapflags, 80);
@@ -1296,7 +1309,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setStamp($stamp = null)
+    public function setStamp($stamp = null)
     {
         if (!is_null($stamp)) {
         }
@@ -1323,7 +1336,7 @@ abstract class VoicemailAbstract
      *
      * @return self
      */
-    protected function setUser(\Ivoz\Domain\Model\User\UserInterface $user = null)
+    public function setUser(\Ivoz\Domain\Model\User\UserInterface $user = null)
     {
         $this->user = $user;
 

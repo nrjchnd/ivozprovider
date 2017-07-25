@@ -7,6 +7,16 @@ use Core\Domain\Model\EntityInterface;
 interface BrandServiceInterface extends EntityInterface
 {
     /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return BrandServiceInterface
+     */
+    public function setCode($code);
+
+
+    /**
      * Get code
      *
      * @return string
@@ -30,6 +40,16 @@ interface BrandServiceInterface extends EntityInterface
      * @return \Ivoz\Domain\Model\Brand\BrandInterface
      */
     public function getBrand();
+
+
+    /**
+     * Set service
+     *
+     * @param \Ivoz\Domain\Model\Service\ServiceInterface $service
+     *
+     * @return BrandServiceInterface
+     */
+    public function setService(\Ivoz\Domain\Model\Service\ServiceInterface $service);
 
 
     /**

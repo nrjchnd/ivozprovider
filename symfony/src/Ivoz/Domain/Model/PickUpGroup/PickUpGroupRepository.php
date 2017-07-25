@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\PickUpGroup;
 
-interface PickUpGroupRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface PickUpGroupRepository extends ObjectRepository {}
 

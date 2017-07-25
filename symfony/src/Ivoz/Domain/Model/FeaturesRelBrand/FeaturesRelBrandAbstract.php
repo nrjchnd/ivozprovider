@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\FeaturesRelBrand;
 
 use Assert\Assertion;
@@ -33,9 +32,23 @@ abstract class FeaturesRelBrandAbstract
     public function __construct()
     {
 
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return FeaturesRelBrandDTO
@@ -139,7 +152,7 @@ abstract class FeaturesRelBrandAbstract
      *
      * @return self
      */
-    protected function setFeature(\Ivoz\Domain\Model\Feature\FeatureInterface $feature)
+    public function setFeature(\Ivoz\Domain\Model\Feature\FeatureInterface $feature)
     {
         $this->feature = $feature;
 

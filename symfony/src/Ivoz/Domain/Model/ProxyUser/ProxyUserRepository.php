@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\ProxyUser;
 
-interface ProxyUserRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ProxyUserRepository extends ObjectRepository {}
 

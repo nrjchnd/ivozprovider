@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\UsersAddres;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface UsersAddresInterface
+interface UsersAddresInterface extends EntityInterface
 {
+    /**
+     * Set sourceAddress
+     *
+     * @param string $sourceAddress
+     *
+     * @return UsersAddresInterface
+     */
+    public function setSourceAddress($sourceAddress);
+
+
     /**
      * Get sourceAddress
      *
      * @return string
      */
     public function getSourceAddress();
+
+
+    /**
+     * Set ipAddr
+     *
+     * @param string $ipAddr
+     *
+     * @return UsersAddresInterface
+     */
+    public function setIpAddr($ipAddr = null);
 
 
     /**
@@ -23,11 +43,31 @@ interface UsersAddresInterface
 
 
     /**
+     * Set mask
+     *
+     * @param integer $mask
+     *
+     * @return UsersAddresInterface
+     */
+    public function setMask($mask);
+
+
+    /**
      * Get mask
      *
      * @return integer
      */
     public function getMask();
+
+
+    /**
+     * Set port
+     *
+     * @param integer $port
+     *
+     * @return UsersAddresInterface
+     */
+    public function setPort($port);
 
 
     /**
@@ -39,6 +79,16 @@ interface UsersAddresInterface
 
 
     /**
+     * Set tag
+     *
+     * @param string $tag
+     *
+     * @return UsersAddresInterface
+     */
+    public function setTag($tag = null);
+
+
+    /**
      * Get tag
      *
      * @return string
@@ -47,11 +97,31 @@ interface UsersAddresInterface
 
 
     /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return UsersAddresInterface
+     */
+    public function setDescription($description = null);
+
+
+    /**
      * Get description
      *
      * @return string
      */
     public function getDescription();
+
+
+    /**
+     * Set company
+     *
+     * @param \Ivoz\Domain\Model\Company\CompanyInterface $company
+     *
+     * @return UsersAddresInterface
+     */
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company);
 
 
     /**

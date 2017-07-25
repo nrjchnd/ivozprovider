@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ChangeHistory;
 
 use Assert\Assertion;
@@ -76,9 +75,23 @@ abstract class ChangeHistoryAbstract
         $this->setTable($table);
         $this->setObjid($objid);
         $this->setField($field);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ChangeHistoryDTO
@@ -182,7 +195,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setUser($user)
+    public function setUser($user)
     {
         Assertion::notNull($user);
         Assertion::maxLength($user, 50);
@@ -209,7 +222,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setDate($date)
+    public function setDate($date)
     {
         Assertion::notNull($date);
 
@@ -235,7 +248,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setAction($action)
+    public function setAction($action)
     {
         Assertion::notNull($action);
         Assertion::maxLength($action, 15);
@@ -262,7 +275,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setTable($table)
+    public function setTable($table)
     {
         Assertion::notNull($table);
         Assertion::maxLength($table, 50);
@@ -289,7 +302,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setObjid($objid)
+    public function setObjid($objid)
     {
         Assertion::notNull($objid);
         Assertion::integerish($objid);
@@ -317,7 +330,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setField($field)
+    public function setField($field)
     {
         Assertion::notNull($field);
         Assertion::maxLength($field, 50);
@@ -344,7 +357,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setOldValue($oldValue = null)
+    public function setOldValue($oldValue = null)
     {
         if (!is_null($oldValue)) {
             Assertion::maxLength($oldValue, 250);
@@ -372,7 +385,7 @@ abstract class ChangeHistoryAbstract
      *
      * @return self
      */
-    protected function setNewValue($newValue = null)
+    public function setNewValue($newValue = null)
     {
         if (!is_null($newValue)) {
             Assertion::maxLength($newValue, 250);

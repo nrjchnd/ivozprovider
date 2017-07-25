@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\ExternalCallFilter;
 
-interface ExternalCallFilterRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface ExternalCallFilterRepository extends ObjectRepository {}
 

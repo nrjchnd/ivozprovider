@@ -7,7 +7,7 @@ interface ForeignKeyTransformerInterface
 {
     /**
      * @param string $entityName
-     * @param mixed $key
+     * @param DataTransferObjectInterface|mixed $key
      * @return EntityInterface
      */
     public function transform($entityName, $key);

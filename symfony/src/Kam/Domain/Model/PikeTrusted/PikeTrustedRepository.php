@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\PikeTrusted;
 
-interface PikeTrustedRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface PikeTrustedRepository extends ObjectRepository {}
 

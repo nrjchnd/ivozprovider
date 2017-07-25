@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\PikeTrusted;
 
 use Assert\Assertion;
@@ -56,9 +55,23 @@ abstract class PikeTrustedAbstract
     public function __construct($priority)
     {
         $this->setPriority($priority);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PikeTrustedDTO
@@ -154,7 +167,7 @@ abstract class PikeTrustedAbstract
      *
      * @return self
      */
-    protected function setSrcIp($srcIp = null)
+    public function setSrcIp($srcIp = null)
     {
         if (!is_null($srcIp)) {
             Assertion::maxLength($srcIp, 50);
@@ -182,7 +195,7 @@ abstract class PikeTrustedAbstract
      *
      * @return self
      */
-    protected function setProto($proto = null)
+    public function setProto($proto = null)
     {
         if (!is_null($proto)) {
             Assertion::maxLength($proto, 4);
@@ -210,7 +223,7 @@ abstract class PikeTrustedAbstract
      *
      * @return self
      */
-    protected function setFromPattern($fromPattern = null)
+    public function setFromPattern($fromPattern = null)
     {
         if (!is_null($fromPattern)) {
             Assertion::maxLength($fromPattern, 64);
@@ -238,7 +251,7 @@ abstract class PikeTrustedAbstract
      *
      * @return self
      */
-    protected function setRuriPattern($ruriPattern = null)
+    public function setRuriPattern($ruriPattern = null)
     {
         if (!is_null($ruriPattern)) {
             Assertion::maxLength($ruriPattern, 64);
@@ -266,7 +279,7 @@ abstract class PikeTrustedAbstract
      *
      * @return self
      */
-    protected function setTag($tag = null)
+    public function setTag($tag = null)
     {
         if (!is_null($tag)) {
             Assertion::maxLength($tag, 64);
@@ -294,7 +307,7 @@ abstract class PikeTrustedAbstract
      *
      * @return self
      */
-    protected function setPriority($priority)
+    public function setPriority($priority)
     {
         Assertion::notNull($priority);
         Assertion::integerish($priority);

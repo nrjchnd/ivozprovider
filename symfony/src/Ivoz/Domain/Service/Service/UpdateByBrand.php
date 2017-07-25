@@ -2,6 +2,7 @@
 namespace Ivoz\Domain\Service\Service;
 
 use Core\Domain\Model\EntityInterface;
+use Core\Domain\Service\EntityPersisterInterface;
 use Core\Domain\Service\LifecycleEventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Ivoz\Domain\Model\Brand\Brand;
@@ -17,22 +18,29 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
     protected $em;
 
     /**
+     * @var EntityPersisterInterface
+     */
+    protected $entityPersister;
+
+    /**
      * @var ServiceRepository
      */
     protected $serviceRepository;
 
     public function __construct(
         EntityManagerInterface $em,
+        EntityPersisterInterface $entityPersister,
         ServiceRepository $serviceRepository
     ) {
         $this->em = $em;
+        $this->entityPersister = $entityPersister;
         $this->serviceRepository = $serviceRepository;
     }
 
     /**
      * @param Brand $entity
      */
-    public function execute(EntityInterface $entity, callable $entityPersister)
+    public function execute(EntityInterface $entity)
     {
         $isNew = $this->em->contains($entity);
         if (!$isNew) {
@@ -52,7 +60,7 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
                 ->setCode($service->getDefaultCode())
                 ->setBrandId($entity->getId());
 
-            $entityPersister($brandServiceDto);
+            $this->entityPersister->persist($brandServiceDto);
         }
     }
 }

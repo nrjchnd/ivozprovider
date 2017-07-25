@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ExternalCallFilterRelCalendar;
 
 use Assert\Assertion;
@@ -33,9 +32,23 @@ abstract class ExternalCallFilterRelCalendarAbstract
     public function __construct()
     {
 
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ExternalCallFilterRelCalendarDTO
@@ -115,7 +128,7 @@ abstract class ExternalCallFilterRelCalendarAbstract
      *
      * @return self
      */
-    protected function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter)
+    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter)
     {
         $this->filter = $filter;
 
@@ -139,7 +152,7 @@ abstract class ExternalCallFilterRelCalendarAbstract
      *
      * @return self
      */
-    protected function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar)
+    public function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar)
     {
         $this->calendar = $calendar;
 

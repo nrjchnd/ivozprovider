@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\MainOperator;
 
-interface MainOperatorRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface MainOperatorRepository extends ObjectRepository {}
 

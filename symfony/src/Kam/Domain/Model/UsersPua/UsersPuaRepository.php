@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersPua;
 
-interface UsersPuaRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersPuaRepository extends ObjectRepository {}
 

@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\Calendar;
 
-interface CalendarRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface CalendarRepository extends ObjectRepository {}
 

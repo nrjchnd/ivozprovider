@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Invoice;
 
 use Assert\Assertion;
@@ -80,9 +79,23 @@ abstract class InvoiceAbstract
     {
         $this->setNumber($number);
         $this->setPdf($pdf);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return InvoiceDTO
@@ -215,7 +228,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setNumber($number)
+    public function setNumber($number)
     {
         Assertion::notNull($number);
         Assertion::maxLength($number, 30);
@@ -242,7 +255,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setInDate($inDate = null)
+    public function setInDate($inDate = null)
     {
         if (!is_null($inDate)) {
         }
@@ -269,7 +282,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setOutDate($outDate = null)
+    public function setOutDate($outDate = null)
     {
         if (!is_null($outDate)) {
         }
@@ -296,7 +309,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setTotal($total = null)
+    public function setTotal($total = null)
     {
         if (!is_null($total)) {
             if (!is_null($total)) {
@@ -326,7 +339,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setTaxRate($taxRate = null)
+    public function setTaxRate($taxRate = null)
     {
         if (!is_null($taxRate)) {
             if (!is_null($taxRate)) {
@@ -356,7 +369,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setTotalWithTax($totalWithTax = null)
+    public function setTotalWithTax($totalWithTax = null)
     {
         if (!is_null($totalWithTax)) {
             if (!is_null($totalWithTax)) {
@@ -386,7 +399,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setStatus($status = null)
+    public function setStatus($status = null)
     {
         if (!is_null($status)) {
             Assertion::maxLength($status, 25);
@@ -420,7 +433,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setInvoiceTemplate(\Ivoz\Domain\Model\InvoiceTemplate\InvoiceTemplateInterface $invoiceTemplate = null)
+    public function setInvoiceTemplate(\Ivoz\Domain\Model\InvoiceTemplate\InvoiceTemplateInterface $invoiceTemplate = null)
     {
         $this->invoiceTemplate = $invoiceTemplate;
 
@@ -444,7 +457,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -468,7 +481,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
     {
         $this->company = $company;
 
@@ -492,7 +505,7 @@ abstract class InvoiceAbstract
      *
      * @return self
      */
-    protected function setPdf(Pdf $pdf)
+    public function setPdf(Pdf $pdf)
     {
         $this->pdf = $pdf;
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersPua;
 
 use Assert\Assertion;
@@ -155,9 +154,23 @@ abstract class UsersPuaAbstract
         $this->setRemoteContact($remoteContact);
         $this->setVersion($version);
         $this->setExtraHeaders($extraHeaders);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersPuaDTO
@@ -301,7 +314,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setPresUri($presUri)
+    public function setPresUri($presUri)
     {
         Assertion::notNull($presUri);
         Assertion::maxLength($presUri, 128);
@@ -328,7 +341,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setPresId($presId)
+    public function setPresId($presId)
     {
         Assertion::notNull($presId);
         Assertion::maxLength($presId, 255);
@@ -355,7 +368,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setEvent($event)
+    public function setEvent($event)
     {
         Assertion::notNull($event);
         Assertion::integerish($event);
@@ -382,7 +395,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setExpires($expires)
+    public function setExpires($expires)
     {
         Assertion::notNull($expires);
         Assertion::integerish($expires);
@@ -409,7 +422,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setDesiredExpires($desiredExpires)
+    public function setDesiredExpires($desiredExpires)
     {
         Assertion::notNull($desiredExpires);
         Assertion::integerish($desiredExpires);
@@ -436,7 +449,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setFlag($flag)
+    public function setFlag($flag)
     {
         Assertion::notNull($flag);
         Assertion::integerish($flag);
@@ -463,7 +476,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setEtag($etag)
+    public function setEtag($etag)
     {
         Assertion::notNull($etag);
         Assertion::maxLength($etag, 64);
@@ -490,7 +503,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setTupleId($tupleId = null)
+    public function setTupleId($tupleId = null)
     {
         if (!is_null($tupleId)) {
             Assertion::maxLength($tupleId, 64);
@@ -518,7 +531,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setWatcherUri($watcherUri)
+    public function setWatcherUri($watcherUri)
     {
         Assertion::notNull($watcherUri);
         Assertion::maxLength($watcherUri, 128);
@@ -545,7 +558,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setCallId($callId)
+    public function setCallId($callId)
     {
         Assertion::notNull($callId);
         Assertion::maxLength($callId, 255);
@@ -572,7 +585,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setToTag($toTag)
+    public function setToTag($toTag)
     {
         Assertion::notNull($toTag);
         Assertion::maxLength($toTag, 64);
@@ -599,7 +612,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setFromTag($fromTag)
+    public function setFromTag($fromTag)
     {
         Assertion::notNull($fromTag);
         Assertion::maxLength($fromTag, 64);
@@ -626,7 +639,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setCseq($cseq)
+    public function setCseq($cseq)
     {
         Assertion::notNull($cseq);
         Assertion::integerish($cseq);
@@ -653,7 +666,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setRecordRoute($recordRoute = null)
+    public function setRecordRoute($recordRoute = null)
     {
         if (!is_null($recordRoute)) {
             Assertion::maxLength($recordRoute, 65535);
@@ -681,7 +694,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setContact($contact)
+    public function setContact($contact)
     {
         Assertion::notNull($contact);
         Assertion::maxLength($contact, 128);
@@ -708,7 +721,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setRemoteContact($remoteContact)
+    public function setRemoteContact($remoteContact)
     {
         Assertion::notNull($remoteContact);
         Assertion::maxLength($remoteContact, 128);
@@ -735,7 +748,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setVersion($version)
+    public function setVersion($version)
     {
         Assertion::notNull($version);
         Assertion::integerish($version);
@@ -762,7 +775,7 @@ abstract class UsersPuaAbstract
      *
      * @return self
      */
-    protected function setExtraHeaders($extraHeaders)
+    public function setExtraHeaders($extraHeaders)
     {
         Assertion::notNull($extraHeaders);
         Assertion::maxLength($extraHeaders, 65535);

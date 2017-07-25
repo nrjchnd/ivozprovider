@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\Recording;
 
-interface RecordingRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface RecordingRepository extends ObjectRepository {}
 

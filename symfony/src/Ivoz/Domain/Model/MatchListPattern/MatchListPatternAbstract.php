@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\MatchListPattern;
 
 use Assert\Assertion;
@@ -54,9 +53,23 @@ abstract class MatchListPatternAbstract
     public function __construct($type)
     {
         $this->setType($type);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return MatchListPatternDTO
@@ -152,7 +165,7 @@ abstract class MatchListPatternAbstract
      *
      * @return self
      */
-    protected function setDescription($description = null)
+    public function setDescription($description = null)
     {
         if (!is_null($description)) {
             Assertion::maxLength($description, 55);
@@ -180,7 +193,7 @@ abstract class MatchListPatternAbstract
      *
      * @return self
      */
-    protected function setType($type)
+    public function setType($type)
     {
         Assertion::notNull($type);
         Assertion::maxLength($type, 10);
@@ -211,7 +224,7 @@ abstract class MatchListPatternAbstract
      *
      * @return self
      */
-    protected function setRegexp($regexp = null)
+    public function setRegexp($regexp = null)
     {
         if (!is_null($regexp)) {
             Assertion::maxLength($regexp, 255);
@@ -239,7 +252,7 @@ abstract class MatchListPatternAbstract
      *
      * @return self
      */
-    protected function setNumbervalue($numbervalue = null)
+    public function setNumbervalue($numbervalue = null)
     {
         if (!is_null($numbervalue)) {
             Assertion::maxLength($numbervalue, 25);
@@ -267,7 +280,7 @@ abstract class MatchListPatternAbstract
      *
      * @return self
      */
-    protected function setMatchList(\Ivoz\Domain\Model\MatchList\MatchListInterface $matchList)
+    public function setMatchList(\Ivoz\Domain\Model\MatchList\MatchListInterface $matchList)
     {
         $this->matchList = $matchList;
 
@@ -291,7 +304,7 @@ abstract class MatchListPatternAbstract
      *
      * @return self
      */
-    protected function setMatchListPattern(\Ivoz\Domain\Model\Country\CountryInterface $matchListPattern = null)
+    public function setMatchListPattern(\Ivoz\Domain\Model\Country\CountryInterface $matchListPattern = null)
     {
         $this->MatchListPattern = $matchListPattern;
 

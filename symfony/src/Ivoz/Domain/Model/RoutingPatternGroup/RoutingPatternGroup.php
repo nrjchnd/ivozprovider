@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\RoutingPatternGroup;
 
 use Core\Application\DataTransferObjectInterface;
@@ -127,7 +126,7 @@ class RoutingPatternGroup extends RoutingPatternGroupAbstract implements Routing
      *
      * @return RoutingPatternGroup
      */
-    protected function addRelPattern(\Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPatternInterface $relPattern)
+    public function addRelPattern(\Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPatternInterface $relPattern)
     {
         $this->relPatterns[] = $relPattern;
 
@@ -139,7 +138,7 @@ class RoutingPatternGroup extends RoutingPatternGroupAbstract implements Routing
      *
      * @param \Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPatternInterface $relPattern
      */
-    protected function removeRelPattern(\Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPatternInterface $relPattern)
+    public function removeRelPattern(\Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPatternInterface $relPattern)
     {
         $this->relPatterns->removeElement($relPattern);
     }
@@ -150,7 +149,7 @@ class RoutingPatternGroup extends RoutingPatternGroupAbstract implements Routing
      * @param \Ivoz\Domain\Model\RoutingPatternGroupsRelPattern\RoutingPatternGroupsRelPatternInterface[] $relPatterns
      * @return self
      */
-    protected function replaceRelPatterns(array $relPatterns)
+    public function replaceRelPatterns(array $relPatterns)
     {
         $updatedEntities = [];
         $fallBackId = -1;
@@ -194,3 +193,4 @@ class RoutingPatternGroup extends RoutingPatternGroupAbstract implements Routing
 
 
 }
+

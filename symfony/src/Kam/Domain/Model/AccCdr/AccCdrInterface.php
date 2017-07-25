@@ -2,16 +2,36 @@
 
 namespace Kam\Domain\Model\AccCdr;
 
+use Core\Domain\Model\EntityInterface;
 
-
-interface AccCdrInterface
+interface AccCdrInterface extends EntityInterface
 {
+    /**
+     * Set proxy
+     *
+     * @param string $proxy
+     *
+     * @return AccCdrInterface
+     */
+    public function setProxy($proxy = null);
+
+
     /**
      * Get proxy
      *
      * @return string
      */
     public function getProxy();
+
+
+    /**
+     * Set startTimeUtc
+     *
+     * @param \DateTime $startTimeUtc
+     *
+     * @return AccCdrInterface
+     */
+    public function setStartTimeUtc($startTimeUtc);
 
 
     /**
@@ -23,11 +43,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set endTimeUtc
+     *
+     * @param \DateTime $endTimeUtc
+     *
+     * @return AccCdrInterface
+     */
+    public function setEndTimeUtc($endTimeUtc);
+
+
+    /**
      * Get endTimeUtc
      *
      * @return \DateTime
      */
     public function getEndTimeUtc();
+
+
+    /**
+     * Set startTime
+     *
+     * @param \DateTime $startTime
+     *
+     * @return AccCdrInterface
+     */
+    public function setStartTime($startTime);
 
 
     /**
@@ -39,11 +79,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set endTime
+     *
+     * @param \DateTime $endTime
+     *
+     * @return AccCdrInterface
+     */
+    public function setEndTime($endTime);
+
+
+    /**
      * Get endTime
      *
      * @return \DateTime
      */
     public function getEndTime();
+
+
+    /**
+     * Set duration
+     *
+     * @param float $duration
+     *
+     * @return AccCdrInterface
+     */
+    public function setDuration($duration);
 
 
     /**
@@ -55,11 +115,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set caller
+     *
+     * @param string $caller
+     *
+     * @return AccCdrInterface
+     */
+    public function setCaller($caller = null);
+
+
+    /**
      * Get caller
      *
      * @return string
      */
     public function getCaller();
+
+
+    /**
+     * Set callee
+     *
+     * @param string $callee
+     *
+     * @return AccCdrInterface
+     */
+    public function setCallee($callee = null);
 
 
     /**
@@ -71,11 +151,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set referee
+     *
+     * @param string $referee
+     *
+     * @return AccCdrInterface
+     */
+    public function setReferee($referee = null);
+
+
+    /**
      * Get referee
      *
      * @return string
      */
     public function getReferee();
+
+
+    /**
+     * Set referrer
+     *
+     * @param string $referrer
+     *
+     * @return AccCdrInterface
+     */
+    public function setReferrer($referrer = null);
 
 
     /**
@@ -87,11 +187,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set asiden
+     *
+     * @param string $asiden
+     *
+     * @return AccCdrInterface
+     */
+    public function setAsiden($asiden = null);
+
+
+    /**
      * Get asiden
      *
      * @return string
      */
     public function getAsiden();
+
+
+    /**
+     * Set asaddress
+     *
+     * @param string $asaddress
+     *
+     * @return AccCdrInterface
+     */
+    public function setAsaddress($asaddress = null);
 
 
     /**
@@ -103,11 +223,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set callid
+     *
+     * @param string $callid
+     *
+     * @return AccCdrInterface
+     */
+    public function setCallid($callid = null);
+
+
+    /**
      * Get callid
      *
      * @return string
      */
     public function getCallid();
+
+
+    /**
+     * Set callidhash
+     *
+     * @param string $callidhash
+     *
+     * @return AccCdrInterface
+     */
+    public function setCallidhash($callidhash = null);
 
 
     /**
@@ -119,11 +259,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set xcallid
+     *
+     * @param string $xcallid
+     *
+     * @return AccCdrInterface
+     */
+    public function setXcallid($xcallid = null);
+
+
+    /**
      * Get xcallid
      *
      * @return string
      */
     public function getXcallid();
+
+
+    /**
+     * Set parsed
+     *
+     * @param string $parsed
+     *
+     * @return AccCdrInterface
+     */
+    public function setParsed($parsed = null);
 
 
     /**
@@ -135,11 +295,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set diversion
+     *
+     * @param string $diversion
+     *
+     * @return AccCdrInterface
+     */
+    public function setDiversion($diversion = null);
+
+
+    /**
      * Get diversion
      *
      * @return string
      */
     public function getDiversion();
+
+
+    /**
+     * Set peeringcontractid
+     *
+     * @param string $peeringcontractid
+     *
+     * @return AccCdrInterface
+     */
+    public function setPeeringcontractid($peeringcontractid = null);
 
 
     /**
@@ -151,11 +331,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set bounced
+     *
+     * @param string $bounced
+     *
+     * @return AccCdrInterface
+     */
+    public function setBounced($bounced);
+
+
+    /**
      * Get bounced
      *
      * @return string
      */
     public function getBounced();
+
+
+    /**
+     * Set externallyrated
+     *
+     * @param boolean $externallyrated
+     *
+     * @return AccCdrInterface
+     */
+    public function setExternallyrated($externallyrated = null);
 
 
     /**
@@ -167,11 +367,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set metered
+     *
+     * @param boolean $metered
+     *
+     * @return AccCdrInterface
+     */
+    public function setMetered($metered = null);
+
+
+    /**
      * Get metered
      *
      * @return boolean
      */
     public function getMetered();
+
+
+    /**
+     * Set meteringdate
+     *
+     * @param \DateTime $meteringdate
+     *
+     * @return AccCdrInterface
+     */
+    public function setMeteringdate($meteringdate = null);
 
 
     /**
@@ -183,11 +403,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set pricingplanname
+     *
+     * @param string $pricingplanname
+     *
+     * @return AccCdrInterface
+     */
+    public function setPricingplanname($pricingplanname = null);
+
+
+    /**
      * Get pricingplanname
      *
      * @return string
      */
     public function getPricingplanname();
+
+
+    /**
+     * Set targetpatternname
+     *
+     * @param string $targetpatternname
+     *
+     * @return AccCdrInterface
+     */
+    public function setTargetpatternname($targetpatternname = null);
 
 
     /**
@@ -199,11 +439,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set price
+     *
+     * @param string $price
+     *
+     * @return AccCdrInterface
+     */
+    public function setPrice($price = null);
+
+
+    /**
      * Get price
      *
      * @return string
      */
     public function getPrice();
+
+
+    /**
+     * Set pricingplandetails
+     *
+     * @param string $pricingplandetails
+     *
+     * @return AccCdrInterface
+     */
+    public function setPricingplandetails($pricingplandetails = null);
 
 
     /**
@@ -215,11 +475,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set direction
+     *
+     * @param string $direction
+     *
+     * @return AccCdrInterface
+     */
+    public function setDirection($direction = null);
+
+
+    /**
      * Get direction
      *
      * @return string
      */
     public function getDirection();
+
+
+    /**
+     * Set remeteringdate
+     *
+     * @param \DateTime $remeteringdate
+     *
+     * @return AccCdrInterface
+     */
+    public function setRemeteringdate($remeteringdate = null);
 
 
     /**
@@ -231,11 +511,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set pricingPlan
+     *
+     * @param \Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan
+     *
+     * @return AccCdrInterface
+     */
+    public function setPricingPlan(\Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan = null);
+
+
+    /**
      * Get pricingPlan
      *
      * @return \Ivoz\Domain\Model\PricingPlan\PricingPlanInterface
      */
     public function getPricingPlan();
+
+
+    /**
+     * Set targetPattern
+     *
+     * @param \Ivoz\Domain\Model\TargetPattern\TargetPatternInterface $targetPattern
+     *
+     * @return AccCdrInterface
+     */
+    public function setTargetPattern(\Ivoz\Domain\Model\TargetPattern\TargetPatternInterface $targetPattern = null);
 
 
     /**
@@ -247,6 +547,16 @@ interface AccCdrInterface
 
 
     /**
+     * Set invoice
+     *
+     * @param \Ivoz\Domain\Model\Invoice\InvoiceInterface $invoice
+     *
+     * @return AccCdrInterface
+     */
+    public function setInvoice(\Ivoz\Domain\Model\Invoice\InvoiceInterface $invoice = null);
+
+
+    /**
      * Get invoice
      *
      * @return \Ivoz\Domain\Model\Invoice\InvoiceInterface
@@ -255,11 +565,31 @@ interface AccCdrInterface
 
 
     /**
+     * Set brand
+     *
+     * @param \Ivoz\Domain\Model\Brand\BrandInterface $brand
+     *
+     * @return AccCdrInterface
+     */
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand = null);
+
+
+    /**
      * Get brand
      *
      * @return \Ivoz\Domain\Model\Brand\BrandInterface
      */
     public function getBrand();
+
+
+    /**
+     * Set company
+     *
+     * @param \Ivoz\Domain\Model\Company\CompanyInterface $company
+     *
+     * @return AccCdrInterface
+     */
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null);
 
 
     /**

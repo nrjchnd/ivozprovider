@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\QueueMember;
 
 use Assert\Assertion;
@@ -61,9 +60,23 @@ abstract class QueueMemberAbstract
     {
         $this->setQueueName($queueName);
         $this->setInterface($interface);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return QueueMemberDTO
@@ -163,7 +176,7 @@ abstract class QueueMemberAbstract
      *
      * @return self
      */
-    protected function setQueueName($queueName)
+    public function setQueueName($queueName)
     {
         Assertion::notNull($queueName);
         Assertion::maxLength($queueName, 80);
@@ -190,7 +203,7 @@ abstract class QueueMemberAbstract
      *
      * @return self
      */
-    protected function setInterface($interface)
+    public function setInterface($interface)
     {
         Assertion::notNull($interface);
         Assertion::maxLength($interface, 80);
@@ -217,7 +230,7 @@ abstract class QueueMemberAbstract
      *
      * @return self
      */
-    protected function setMembername($membername = null)
+    public function setMembername($membername = null)
     {
         if (!is_null($membername)) {
             Assertion::maxLength($membername, 80);
@@ -245,7 +258,7 @@ abstract class QueueMemberAbstract
      *
      * @return self
      */
-    protected function setStateInterface($stateInterface = null)
+    public function setStateInterface($stateInterface = null)
     {
         if (!is_null($stateInterface)) {
             Assertion::maxLength($stateInterface, 80);
@@ -273,7 +286,7 @@ abstract class QueueMemberAbstract
      *
      * @return self
      */
-    protected function setPenalty($penalty = null)
+    public function setPenalty($penalty = null)
     {
         if (!is_null($penalty)) {
             if (!is_null($penalty)) {
@@ -303,7 +316,7 @@ abstract class QueueMemberAbstract
      *
      * @return self
      */
-    protected function setPaused($paused = null)
+    public function setPaused($paused = null)
     {
         if (!is_null($paused)) {
             if (!is_null($paused)) {
@@ -333,7 +346,7 @@ abstract class QueueMemberAbstract
      *
      * @return self
      */
-    protected function setQueueMember(\Ivoz\Domain\Model\QueueMember\QueueMemberInterface $queueMember = null)
+    public function setQueueMember(\Ivoz\Domain\Model\QueueMember\QueueMemberInterface $queueMember = null)
     {
         $this->queueMember = $queueMember;
 

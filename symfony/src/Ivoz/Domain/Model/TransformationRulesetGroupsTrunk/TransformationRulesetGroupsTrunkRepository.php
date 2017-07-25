@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\TransformationRulesetGroupsTrunk;
 
-interface TransformationRulesetGroupsTrunkRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TransformationRulesetGroupsTrunkRepository extends ObjectRepository {}
 

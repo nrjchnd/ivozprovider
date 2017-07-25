@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\MatchListPattern;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class MatchListPattern extends MatchListPatternAbstract implements MatchListPatt
 
 
 }
+

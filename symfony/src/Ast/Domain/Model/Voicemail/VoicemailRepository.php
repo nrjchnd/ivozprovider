@@ -2,5 +2,7 @@
 
 namespace Ast\Domain\Model\Voicemail;
 
-interface VoicemailRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface VoicemailRepository extends ObjectRepository {}
 

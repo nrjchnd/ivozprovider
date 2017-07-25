@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\IVRCustomEntry;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class IVRCustomEntry extends IVRCustomEntryAbstract implements IVRCustomEntryInt
 
 
 }
+

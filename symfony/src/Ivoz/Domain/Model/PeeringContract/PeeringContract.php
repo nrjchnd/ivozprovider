@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PeeringContract;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class PeeringContract extends PeeringContractAbstract implements PeeringContract
 
 
 }
+

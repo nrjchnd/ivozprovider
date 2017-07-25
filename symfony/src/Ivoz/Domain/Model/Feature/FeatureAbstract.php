@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Feature;
 
 use Assert\Assertion;
@@ -49,9 +48,23 @@ abstract class FeatureAbstract
         $this->setName($name);
         $this->setNameEn($nameEn);
         $this->setNameEs($nameEs);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return FeatureDTO
@@ -138,7 +151,7 @@ abstract class FeatureAbstract
      *
      * @return self
      */
-    protected function setIden($iden)
+    public function setIden($iden)
     {
         Assertion::notNull($iden);
         Assertion::maxLength($iden, 100);
@@ -165,7 +178,7 @@ abstract class FeatureAbstract
      *
      * @return self
      */
-    protected function setName($name)
+    public function setName($name)
     {
         Assertion::notNull($name);
         Assertion::maxLength($name, 50);
@@ -192,7 +205,7 @@ abstract class FeatureAbstract
      *
      * @return self
      */
-    protected function setNameEn($nameEn)
+    public function setNameEn($nameEn)
     {
         Assertion::notNull($nameEn);
         Assertion::maxLength($nameEn, 50);
@@ -219,7 +232,7 @@ abstract class FeatureAbstract
      *
      * @return self
      */
-    protected function setNameEs($nameEs)
+    public function setNameEs($nameEs)
     {
         Assertion::notNull($nameEs);
         Assertion::maxLength($nameEs, 50);

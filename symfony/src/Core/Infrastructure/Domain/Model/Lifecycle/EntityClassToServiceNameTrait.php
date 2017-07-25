@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Infrastructure\Model\Lifecycle;
+namespace Core\Infrastructure\Domain\Model\Lifecycle;
 
 use Doctrine\Common\Inflector\Inflector;
 

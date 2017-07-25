@@ -129,7 +129,7 @@ public function <methodName>(<criteriaArgument>);
     {
         $currentField = null;
         $isNullable = false;
-        $visibility = $type === 'get' ? 'public' : 'protected';
+        $visibility = 'public';
 
         if (array_key_exists($fieldName, $metadata->fieldMappings)) {
             $currentField = (object) $metadata->fieldMappings[$fieldName];
@@ -166,7 +166,6 @@ public function <methodName>(<criteriaArgument>);
             array_values($replacements),
             $parentResponse
         );
-
 
         return $response;
     }

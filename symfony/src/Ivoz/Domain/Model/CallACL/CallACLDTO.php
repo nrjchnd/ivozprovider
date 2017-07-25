@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CallACL;
 
 use Core\Application\DataTransferObjectInterface;
@@ -37,6 +36,11 @@ class CallACLDTO implements DataTransferObjectInterface
     private $company;
 
     /**
+     * @var array|null
+     */
+    private $relPatterns = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -45,7 +49,8 @@ class CallACLDTO implements DataTransferObjectInterface
             'name' => $this->getName(),
             'defaultPolicy' => $this->getDefaultPolicy(),
             'id' => $this->getId(),
-            'companyId' => $this->getCompanyId()
+            'companyId' => $this->getCompanyId(),
+            'relPatternsId' => $this->getRelPatternsId()
         ];
     }
 
@@ -55,6 +60,15 @@ class CallACLDTO implements DataTransferObjectInterface
     public function transformForeignKeys(ForeignKeyTransformerInterface $transformer)
     {
         $this->company = $transformer->transform('Ivoz\\Domain\\Model\\Company\\Company', $this->getCompanyId());
+        $items = $this->getRelPatterns();
+        $this->relPatterns = [];
+        foreach ($items as $item) {
+            $this->relPatterns[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\CallACLRelPattern\\CallACLRelPattern',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -62,7 +76,10 @@ class CallACLDTO implements DataTransferObjectInterface
      */
     public function transformCollections(CollectionTransformerInterface $transformer)
     {
-
+        $this->relPatterns = $transformer->transform(
+            'Ivoz\\Domain\\Model\\CallACLRelPattern\\CallACLRelPattern',
+            $this->relPatterns
+        );
     }
 
     /**
@@ -151,6 +168,26 @@ class CallACLDTO implements DataTransferObjectInterface
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * @param array $relPatterns
+     *
+     * @return CallACLDTO
+     */
+    public function setRelPatterns($relPatterns)
+    {
+        $this->relPatterns = $relPatterns;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelPatterns()
+    {
+        return $this->relPatterns;
     }
 }
 

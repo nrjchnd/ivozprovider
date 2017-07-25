@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\TrunksUacreg;
 
 use Assert\Assertion;
@@ -132,9 +131,23 @@ abstract class TrunksUacregAbstract
         $this->setFlags($flags);
         $this->setRegDelay($regDelay);
         $this->setMultiddi($multiddi);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TrunksUacregDTO
@@ -266,7 +279,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setLUuid($lUuid)
+    public function setLUuid($lUuid)
     {
         Assertion::notNull($lUuid);
         Assertion::maxLength($lUuid, 64);
@@ -293,7 +306,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setLUsername($lUsername)
+    public function setLUsername($lUsername)
     {
         Assertion::notNull($lUsername);
         Assertion::maxLength($lUsername, 64);
@@ -320,7 +333,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setLDomain($lDomain)
+    public function setLDomain($lDomain)
     {
         Assertion::notNull($lDomain);
         Assertion::maxLength($lDomain, 190);
@@ -347,7 +360,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setRUsername($rUsername)
+    public function setRUsername($rUsername)
     {
         Assertion::notNull($rUsername);
         Assertion::maxLength($rUsername, 64);
@@ -374,7 +387,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setRDomain($rDomain)
+    public function setRDomain($rDomain)
     {
         Assertion::notNull($rDomain);
         Assertion::maxLength($rDomain, 190);
@@ -401,7 +414,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setRealm($realm)
+    public function setRealm($realm)
     {
         Assertion::notNull($realm);
         Assertion::maxLength($realm, 64);
@@ -428,7 +441,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setAuthUsername($authUsername)
+    public function setAuthUsername($authUsername)
     {
         Assertion::notNull($authUsername);
         Assertion::maxLength($authUsername, 64);
@@ -455,7 +468,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setAuthPassword($authPassword)
+    public function setAuthPassword($authPassword)
     {
         Assertion::notNull($authPassword);
         Assertion::maxLength($authPassword, 64);
@@ -482,7 +495,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setAuthProxy($authProxy)
+    public function setAuthProxy($authProxy)
     {
         Assertion::notNull($authProxy);
         Assertion::maxLength($authProxy, 64);
@@ -509,7 +522,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setExpires($expires)
+    public function setExpires($expires)
     {
         Assertion::notNull($expires);
         Assertion::integerish($expires);
@@ -536,7 +549,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setFlags($flags)
+    public function setFlags($flags)
     {
         Assertion::notNull($flags);
         Assertion::integerish($flags);
@@ -563,7 +576,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setRegDelay($regDelay)
+    public function setRegDelay($regDelay)
     {
         Assertion::notNull($regDelay);
         Assertion::integerish($regDelay);
@@ -590,7 +603,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setMultiddi($multiddi)
+    public function setMultiddi($multiddi)
     {
         Assertion::notNull($multiddi);
         Assertion::between(intval($multiddi), 0, 1);
@@ -617,7 +630,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -641,7 +654,7 @@ abstract class TrunksUacregAbstract
      *
      * @return self
      */
-    protected function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract)
+    public function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract)
     {
         $this->peeringContract = $peeringContract;
 

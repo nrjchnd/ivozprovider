@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\FixedCost;
 
-interface FixedCostRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface FixedCostRepository extends ObjectRepository {}
 

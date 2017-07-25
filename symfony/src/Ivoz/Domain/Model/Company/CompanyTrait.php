@@ -13,6 +13,14 @@ use Doctrine\Common\Collections\Criteria;
 
 trait CompanyTrait
 {
+    protected static $EMPTY_DOMAIN_EXCEPTION = 2001;
+
+    /**
+     * Available Company Types
+     */
+    public static $VPBX      = 'vpbx';
+    public static $RETAIL    = "retail";
+
     /**
      *
      * @param string $exten
@@ -222,7 +230,7 @@ trait CompanyTrait
      * @return \IvozProvider\Model\Raw\Companies
      * @throws \Exception
      */
-    protected function setDomainUsers($domainUsers = null)
+    public function setDomainUsers($domainUsers = null)
     {
         /**
          * @var Company $this
@@ -231,8 +239,8 @@ trait CompanyTrait
             $domainUsers = trim($domainUsers);
         }
 
-        if ($this->getType() === Companies::VPBX && empty($data)) {
-            throw new \Exception("Domain can't be empty", self::EMPTY_DOMAIN_EXCEPTION);
+        if ($this->getType() === self::$VPBX && empty($data)) {
+            throw new \Exception("Domain can't be empty", self::$EMPTY_DOMAIN_EXCEPTION);
         }
 
         return parent::setDomainUsers($domainUsers);
@@ -246,7 +254,7 @@ trait CompanyTrait
         /**
          * @var Company $this
          */
-        if ($this->getType() === Companies::RETAIL) {
+        if ($this->getType() === self::$RETAIL) {
             // Retail Companies use Brand's Domain
             return $this->getBrand()->getDomainUsers();
         } else {

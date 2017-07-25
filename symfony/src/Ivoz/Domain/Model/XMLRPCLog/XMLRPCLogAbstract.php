@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\XMLRPCLog;
 
 use Assert\Assertion;
@@ -67,9 +66,23 @@ abstract class XMLRPCLogAbstract
         $this->setMethod($method);
         $this->setMapperName($mapperName);
         $this->setStartDate($startDate);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return XMLRPCLogDTO
@@ -169,7 +182,7 @@ abstract class XMLRPCLogAbstract
      *
      * @return self
      */
-    protected function setProxy($proxy)
+    public function setProxy($proxy)
     {
         Assertion::notNull($proxy);
         Assertion::maxLength($proxy, 10);
@@ -196,7 +209,7 @@ abstract class XMLRPCLogAbstract
      *
      * @return self
      */
-    protected function setModule($module)
+    public function setModule($module)
     {
         Assertion::notNull($module);
         Assertion::maxLength($module, 10);
@@ -223,7 +236,7 @@ abstract class XMLRPCLogAbstract
      *
      * @return self
      */
-    protected function setMethod($method)
+    public function setMethod($method)
     {
         Assertion::notNull($method);
         Assertion::maxLength($method, 10);
@@ -250,7 +263,7 @@ abstract class XMLRPCLogAbstract
      *
      * @return self
      */
-    protected function setMapperName($mapperName)
+    public function setMapperName($mapperName)
     {
         Assertion::notNull($mapperName);
         Assertion::maxLength($mapperName, 20);
@@ -277,7 +290,7 @@ abstract class XMLRPCLogAbstract
      *
      * @return self
      */
-    protected function setStartDate($startDate)
+    public function setStartDate($startDate)
     {
         Assertion::notNull($startDate);
 
@@ -303,7 +316,7 @@ abstract class XMLRPCLogAbstract
      *
      * @return self
      */
-    protected function setExecDate($execDate = null)
+    public function setExecDate($execDate = null)
     {
         if (!is_null($execDate)) {
         }
@@ -330,7 +343,7 @@ abstract class XMLRPCLogAbstract
      *
      * @return self
      */
-    protected function setFinishDate($finishDate = null)
+    public function setFinishDate($finishDate = null)
     {
         if (!is_null($finishDate)) {
         }

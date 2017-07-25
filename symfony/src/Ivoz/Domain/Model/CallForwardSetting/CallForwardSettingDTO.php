@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\CallForwardSetting;
 
 use Core\Application\DataTransferObjectInterface;

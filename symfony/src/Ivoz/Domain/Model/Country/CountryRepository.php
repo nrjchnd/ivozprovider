@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Country;
 
-interface CountryRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface CountryRepository extends ObjectRepository {}
 

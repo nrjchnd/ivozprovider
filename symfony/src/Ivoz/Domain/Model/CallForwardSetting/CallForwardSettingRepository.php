@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\CallForwardSetting;
 
-interface CallForwardSettingRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface CallForwardSettingRepository extends ObjectRepository {}
 

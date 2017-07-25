@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Service;
 
 use Assert\Assertion;
@@ -57,9 +56,23 @@ abstract class ServiceAbstract
         $this->setExtraArgs($extraArgs);
         $this->setName($name);
         $this->setDescription($description);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return ServiceDTO
@@ -183,7 +196,7 @@ abstract class ServiceAbstract
      *
      * @return self
      */
-    protected function setIden($iden)
+    public function setIden($iden)
     {
         Assertion::notNull($iden);
         Assertion::maxLength($iden, 50);
@@ -210,7 +223,7 @@ abstract class ServiceAbstract
      *
      * @return self
      */
-    protected function setDefaultCode($defaultCode)
+    public function setDefaultCode($defaultCode)
     {
         Assertion::notNull($defaultCode);
         Assertion::maxLength($defaultCode, 3);
@@ -237,7 +250,7 @@ abstract class ServiceAbstract
      *
      * @return self
      */
-    protected function setExtraArgs($extraArgs)
+    public function setExtraArgs($extraArgs)
     {
         Assertion::notNull($extraArgs);
         Assertion::between(intval($extraArgs), 0, 1);
@@ -264,7 +277,7 @@ abstract class ServiceAbstract
      *
      * @return self
      */
-    protected function setName(Name $name)
+    public function setName(Name $name)
     {
         $this->name = $name;
 
@@ -288,7 +301,7 @@ abstract class ServiceAbstract
      *
      * @return self
      */
-    protected function setDescription(Description $description)
+    public function setDescription(Description $description)
     {
         $this->description = $description;
 

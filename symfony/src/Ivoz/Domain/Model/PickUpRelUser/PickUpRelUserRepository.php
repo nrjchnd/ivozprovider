@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\PickUpRelUser;
 
-interface PickUpRelUserRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface PickUpRelUserRepository extends ObjectRepository {}
 

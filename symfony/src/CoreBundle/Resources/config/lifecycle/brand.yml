@@ -24,6 +24,8 @@ services:
     tags:
       - { name: ivoz.lifecycle.brand.post_persist, priority: 30 }
     arguments:
+      $entityPersister:
+        '@Core\Infrastructure\Domain\Service\DoctrineEntityPersister'
       $usersDomainAttrRepository:
         '@=service("doctrine.orm.entity_manager").getRepository("Kam\\Domain\\Model\\UsersDomainAttr\\UsersDomainAttr")'
 
@@ -36,20 +38,4 @@ services:
       $countryRepository:
         '@=service("doctrine.orm.entity_manager").getRepository("Ivoz\\Domain\\Model\\Country\\Country")'
 
-  Ivoz\Domain\Service\RequestProxyTrunksLcrReload:
-    tags:
-      - { name: ivoz.lifecycle.brand.post_persist, priority: 50 }
-        ## post_remove
-      - { name: ivoz.lifecycle.brand.post_remove, priority: 50 }
-    arguments:
-      $xmlrpc:
-        '@IvozProvider\Gearmand\Jobs\Xmlrpc'
-
-  Ivoz\Domain\Service\RequestProxyUsersDomainReload:
-    tags:
-      - { name: ivoz.lifecycle.brand.post_persist, priority: 51 }
-        ## post_remove
-      - { name: ivoz.lifecycle.brand.post_remove, priority: 51 }
-    arguments:
-      $xmlrpc:
-        '@IvozProvider\Gearmand\Jobs\Xmlrpc'
+  # services with priority 50 & 51 in lifecycle/xml_rpc.yml

@@ -7,11 +7,31 @@ use Core\Domain\Model\EntityInterface;
 interface CompanyAdminInterface extends EntityInterface
 {
     /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setUsername($username);
+
+
+    /**
      * Get username
      *
      * @return string
      */
     public function getUsername();
+
+
+    /**
+     * Set pass
+     *
+     * @param string $pass
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setPass($pass);
 
 
     /**
@@ -23,11 +43,31 @@ interface CompanyAdminInterface extends EntityInterface
 
 
     /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setEmail($email);
+
+
+    /**
      * Get email
      *
      * @return string
      */
     public function getEmail();
+
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setActive($active);
 
 
     /**
@@ -39,11 +79,31 @@ interface CompanyAdminInterface extends EntityInterface
 
 
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setName($name = null);
+
+
+    /**
      * Get name
      *
      * @return string
      */
     public function getName();
+
+
+    /**
+     * Set lastname
+     *
+     * @param string $lastname
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setLastname($lastname = null);
 
 
     /**
@@ -55,11 +115,31 @@ interface CompanyAdminInterface extends EntityInterface
 
 
     /**
+     * Set company
+     *
+     * @param \Ivoz\Domain\Model\Company\CompanyInterface $company
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company);
+
+
+    /**
      * Get company
      *
      * @return \Ivoz\Domain\Model\Company\CompanyInterface
      */
     public function getCompany();
+
+
+    /**
+     * Set timezone
+     *
+     * @param \Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone
+     *
+     * @return CompanyAdminInterface
+     */
+    public function setTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone = null);
 
 
     /**

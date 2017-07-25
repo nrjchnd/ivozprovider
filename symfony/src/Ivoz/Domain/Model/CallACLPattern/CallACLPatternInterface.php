@@ -7,6 +7,16 @@ use Core\Domain\Model\EntityInterface;
 interface CallACLPatternInterface extends EntityInterface
 {
     /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return CallACLPatternInterface
+     */
+    public function setName($name);
+
+
+    /**
      * Get name
      *
      * @return string
@@ -15,11 +25,31 @@ interface CallACLPatternInterface extends EntityInterface
 
 
     /**
+     * Set regExp
+     *
+     * @param string $regExp
+     *
+     * @return CallACLPatternInterface
+     */
+    public function setRegExp($regExp);
+
+
+    /**
      * Get regExp
      *
      * @return string
      */
     public function getRegExp();
+
+
+    /**
+     * Set company
+     *
+     * @param \Ivoz\Domain\Model\Company\CompanyInterface $company
+     *
+     * @return CallACLPatternInterface
+     */
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null);
 
 
     /**

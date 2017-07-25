@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\Rtpproxy;
 
 use Core\Application\DataTransferObjectInterface;

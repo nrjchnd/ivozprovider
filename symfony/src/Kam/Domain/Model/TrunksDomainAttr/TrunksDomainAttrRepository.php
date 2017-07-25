@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\TrunksDomainAttr;
 
-interface TrunksDomainAttrRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface TrunksDomainAttrRepository extends ObjectRepository {}
 

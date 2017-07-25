@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\TerminalManufacturer;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class TerminalManufacturer extends TerminalManufacturerAbstract implements Termi
 
 
 }
+

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\MainOperator;
 
 use Assert\Assertion;
@@ -62,9 +61,23 @@ abstract class MainOperatorAbstract
         $this->setPass($pass);
         $this->setEmail($email);
         $this->setActive($active);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return MainOperatorDTO
@@ -164,7 +177,7 @@ abstract class MainOperatorAbstract
      *
      * @return self
      */
-    protected function setUsername($username)
+    public function setUsername($username)
     {
         Assertion::notNull($username);
         Assertion::maxLength($username, 65);
@@ -191,7 +204,7 @@ abstract class MainOperatorAbstract
      *
      * @return self
      */
-    protected function setPass($pass)
+    public function setPass($pass)
     {
         Assertion::notNull($pass);
         Assertion::maxLength($pass, 80);
@@ -218,7 +231,7 @@ abstract class MainOperatorAbstract
      *
      * @return self
      */
-    protected function setEmail($email)
+    public function setEmail($email)
     {
         Assertion::notNull($email);
         Assertion::maxLength($email, 100);
@@ -245,7 +258,7 @@ abstract class MainOperatorAbstract
      *
      * @return self
      */
-    protected function setActive($active)
+    public function setActive($active)
     {
         Assertion::notNull($active);
         Assertion::between(intval($active), 0, 1);
@@ -272,7 +285,7 @@ abstract class MainOperatorAbstract
      *
      * @return self
      */
-    protected function setName($name = null)
+    public function setName($name = null)
     {
         if (!is_null($name)) {
             Assertion::maxLength($name, 100);
@@ -300,7 +313,7 @@ abstract class MainOperatorAbstract
      *
      * @return self
      */
-    protected function setLastname($lastname = null)
+    public function setLastname($lastname = null)
     {
         if (!is_null($lastname)) {
             Assertion::maxLength($lastname, 100);
@@ -328,7 +341,7 @@ abstract class MainOperatorAbstract
      *
      * @return self
      */
-    protected function setTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone = null)
+    public function setTimezone(\Ivoz\Domain\Model\Timezone\TimezoneInterface $timezone = null)
     {
         $this->timezone = $timezone;
 

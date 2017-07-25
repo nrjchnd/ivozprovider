@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersActiveWatcher;
 
 use Assert\Assertion;
@@ -217,9 +216,23 @@ abstract class UsersActiveWatcherAbstract
         $this->setUpdatedWinfo($updatedWinfo);
         $this->setFlags($flags);
         $this->setUserAgent($userAgent);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return UsersActiveWatcherDTO
@@ -395,7 +408,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setPresentityUri($presentityUri)
+    public function setPresentityUri($presentityUri)
     {
         Assertion::notNull($presentityUri);
         Assertion::maxLength($presentityUri, 128);
@@ -422,7 +435,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setWatcherUsername($watcherUsername)
+    public function setWatcherUsername($watcherUsername)
     {
         Assertion::notNull($watcherUsername);
         Assertion::maxLength($watcherUsername, 64);
@@ -449,7 +462,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setWatcherDomain($watcherDomain)
+    public function setWatcherDomain($watcherDomain)
     {
         Assertion::notNull($watcherDomain);
         Assertion::maxLength($watcherDomain, 64);
@@ -476,7 +489,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setToUser($toUser)
+    public function setToUser($toUser)
     {
         Assertion::notNull($toUser);
         Assertion::maxLength($toUser, 64);
@@ -503,7 +516,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setToDomain($toDomain)
+    public function setToDomain($toDomain)
     {
         Assertion::notNull($toDomain);
         Assertion::maxLength($toDomain, 190);
@@ -530,7 +543,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setEvent($event)
+    public function setEvent($event)
     {
         Assertion::notNull($event);
         Assertion::maxLength($event, 64);
@@ -557,7 +570,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setEventId($eventId = null)
+    public function setEventId($eventId = null)
     {
         if (!is_null($eventId)) {
             Assertion::maxLength($eventId, 64);
@@ -585,7 +598,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setToTag($toTag)
+    public function setToTag($toTag)
     {
         Assertion::notNull($toTag);
         Assertion::maxLength($toTag, 64);
@@ -612,7 +625,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setFromTag($fromTag)
+    public function setFromTag($fromTag)
     {
         Assertion::notNull($fromTag);
         Assertion::maxLength($fromTag, 64);
@@ -639,7 +652,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setCallid($callid)
+    public function setCallid($callid)
     {
         Assertion::notNull($callid);
         Assertion::maxLength($callid, 255);
@@ -666,7 +679,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setLocalCseq($localCseq)
+    public function setLocalCseq($localCseq)
     {
         Assertion::notNull($localCseq);
         Assertion::integerish($localCseq);
@@ -693,7 +706,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setRemoteCseq($remoteCseq)
+    public function setRemoteCseq($remoteCseq)
     {
         Assertion::notNull($remoteCseq);
         Assertion::integerish($remoteCseq);
@@ -720,7 +733,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setContact($contact)
+    public function setContact($contact)
     {
         Assertion::notNull($contact);
         Assertion::maxLength($contact, 128);
@@ -747,7 +760,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setRecordRoute($recordRoute = null)
+    public function setRecordRoute($recordRoute = null)
     {
         if (!is_null($recordRoute)) {
             Assertion::maxLength($recordRoute, 65535);
@@ -775,7 +788,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setExpires($expires)
+    public function setExpires($expires)
     {
         Assertion::notNull($expires);
         Assertion::integerish($expires);
@@ -802,7 +815,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setStatus($status)
+    public function setStatus($status)
     {
         Assertion::notNull($status);
         Assertion::integerish($status);
@@ -829,7 +842,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setReason($reason)
+    public function setReason($reason)
     {
         Assertion::notNull($reason);
         Assertion::maxLength($reason, 64);
@@ -856,7 +869,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setVersion($version)
+    public function setVersion($version)
     {
         Assertion::notNull($version);
         Assertion::integerish($version);
@@ -883,7 +896,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setSocketInfo($socketInfo)
+    public function setSocketInfo($socketInfo)
     {
         Assertion::notNull($socketInfo);
         Assertion::maxLength($socketInfo, 64);
@@ -910,7 +923,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setLocalContact($localContact)
+    public function setLocalContact($localContact)
     {
         Assertion::notNull($localContact);
         Assertion::maxLength($localContact, 128);
@@ -937,7 +950,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setFromUser($fromUser)
+    public function setFromUser($fromUser)
     {
         Assertion::notNull($fromUser);
         Assertion::maxLength($fromUser, 64);
@@ -964,7 +977,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setFromDomain($fromDomain)
+    public function setFromDomain($fromDomain)
     {
         Assertion::notNull($fromDomain);
         Assertion::maxLength($fromDomain, 190);
@@ -991,7 +1004,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setUpdated($updated)
+    public function setUpdated($updated)
     {
         Assertion::notNull($updated);
         Assertion::integerish($updated);
@@ -1018,7 +1031,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setUpdatedWinfo($updatedWinfo)
+    public function setUpdatedWinfo($updatedWinfo)
     {
         Assertion::notNull($updatedWinfo);
         Assertion::integerish($updatedWinfo);
@@ -1045,7 +1058,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setFlags($flags)
+    public function setFlags($flags)
     {
         Assertion::notNull($flags);
         Assertion::integerish($flags);
@@ -1072,7 +1085,7 @@ abstract class UsersActiveWatcherAbstract
      *
      * @return self
      */
-    protected function setUserAgent($userAgent)
+    public function setUserAgent($userAgent)
     {
         Assertion::notNull($userAgent);
         Assertion::maxLength($userAgent, 255);

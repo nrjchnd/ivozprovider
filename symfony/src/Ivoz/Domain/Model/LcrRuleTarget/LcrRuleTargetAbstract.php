@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\LcrRuleTarget;
 
 use Assert\Assertion;
@@ -56,9 +55,23 @@ abstract class LcrRuleTargetAbstract
         $this->setLcrId($lcrId);
         $this->setPriority($priority);
         $this->setWeight($weight);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return LcrRuleTargetDTO
@@ -154,7 +167,7 @@ abstract class LcrRuleTargetAbstract
      *
      * @return self
      */
-    protected function setLcrId($lcrId)
+    public function setLcrId($lcrId)
     {
         Assertion::notNull($lcrId);
         Assertion::integerish($lcrId);
@@ -182,7 +195,7 @@ abstract class LcrRuleTargetAbstract
      *
      * @return self
      */
-    protected function setPriority($priority)
+    public function setPriority($priority)
     {
         Assertion::notNull($priority);
         Assertion::between(intval($priority), 0, 1);
@@ -209,7 +222,7 @@ abstract class LcrRuleTargetAbstract
      *
      * @return self
      */
-    protected function setWeight($weight)
+    public function setWeight($weight)
     {
         Assertion::notNull($weight);
         Assertion::integerish($weight);
@@ -237,7 +250,7 @@ abstract class LcrRuleTargetAbstract
      *
      * @return self
      */
-    protected function setRule(\Ivoz\Domain\Model\LcrRule\LcrRuleInterface $rule)
+    public function setRule(\Ivoz\Domain\Model\LcrRule\LcrRuleInterface $rule)
     {
         $this->rule = $rule;
 
@@ -261,7 +274,7 @@ abstract class LcrRuleTargetAbstract
      *
      * @return self
      */
-    protected function setGw(\Ivoz\Domain\Model\LcrGateway\LcrGatewayInterface $gw)
+    public function setGw(\Ivoz\Domain\Model\LcrGateway\LcrGatewayInterface $gw)
     {
         $this->gw = $gw;
 
@@ -285,7 +298,7 @@ abstract class LcrRuleTargetAbstract
      *
      * @return self
      */
-    protected function setOutgoingRouting(\Ivoz\Domain\Model\OutgoingRouting\OutgoingRoutingInterface $outgoingRouting)
+    public function setOutgoingRouting(\Ivoz\Domain\Model\OutgoingRouting\OutgoingRoutingInterface $outgoingRouting)
     {
         $this->outgoingRouting = $outgoingRouting;
 

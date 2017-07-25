@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\HolidayDate;
 
-interface HolidayDateRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface HolidayDateRepository extends ObjectRepository {}
 

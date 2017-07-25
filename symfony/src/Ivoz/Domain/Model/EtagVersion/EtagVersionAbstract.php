@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\EtagVersion;
 
 use Assert\Assertion;
@@ -38,9 +37,23 @@ abstract class EtagVersionAbstract
     public function __construct()
     {
 
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return EtagVersionDTO
@@ -124,7 +137,7 @@ abstract class EtagVersionAbstract
      *
      * @return self
      */
-    protected function setTable($table = null)
+    public function setTable($table = null)
     {
         if (!is_null($table)) {
             Assertion::maxLength($table, 55);
@@ -152,7 +165,7 @@ abstract class EtagVersionAbstract
      *
      * @return self
      */
-    protected function setEtag($etag = null)
+    public function setEtag($etag = null)
     {
         if (!is_null($etag)) {
             Assertion::maxLength($etag, 255);
@@ -180,7 +193,7 @@ abstract class EtagVersionAbstract
      *
      * @return self
      */
-    protected function setLastChange($lastChange = null)
+    public function setLastChange($lastChange = null)
     {
         if (!is_null($lastChange)) {
         }

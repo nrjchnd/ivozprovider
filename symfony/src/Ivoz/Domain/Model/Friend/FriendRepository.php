@@ -2,5 +2,7 @@
 
 namespace Ivoz\Domain\Model\Friend;
 
-interface FriendRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface FriendRepository extends ObjectRepository {}
 

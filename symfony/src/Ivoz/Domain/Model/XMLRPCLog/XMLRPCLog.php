@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\XMLRPCLog;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class XMLRPCLog extends XMLRPCLogAbstract implements XMLRPCLogInterface
 
 
 }
+

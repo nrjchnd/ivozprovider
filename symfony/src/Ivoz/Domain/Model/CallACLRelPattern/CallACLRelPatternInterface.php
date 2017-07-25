@@ -7,11 +7,31 @@ use Core\Domain\Model\EntityInterface;
 interface CallACLRelPatternInterface extends EntityInterface
 {
     /**
+     * Set priority
+     *
+     * @param integer $priority
+     *
+     * @return CallACLRelPatternInterface
+     */
+    public function setPriority($priority);
+
+
+    /**
      * Get priority
      *
      * @return integer
      */
     public function getPriority();
+
+
+    /**
+     * Set policy
+     *
+     * @param string $policy
+     *
+     * @return CallACLRelPatternInterface
+     */
+    public function setPolicy($policy);
 
 
     /**
@@ -23,11 +43,31 @@ interface CallACLRelPatternInterface extends EntityInterface
 
 
     /**
+     * Set callACL
+     *
+     * @param \Ivoz\Domain\Model\CallACL\CallACLInterface $callACL
+     *
+     * @return CallACLRelPatternInterface
+     */
+    public function setCallACL(\Ivoz\Domain\Model\CallACL\CallACLInterface $callACL = null);
+
+
+    /**
      * Get callACL
      *
      * @return \Ivoz\Domain\Model\CallACL\CallACLInterface
      */
     public function getCallACL();
+
+
+    /**
+     * Set callACLPattern
+     *
+     * @param \Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern
+     *
+     * @return CallACLRelPatternInterface
+     */
+    public function setCallACLPattern(\Ivoz\Domain\Model\CallACLPattern\CallACLPatternInterface $callACLPattern);
 
 
     /**

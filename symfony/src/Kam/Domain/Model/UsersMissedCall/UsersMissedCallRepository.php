@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersMissedCall;
 
-interface UsersMissedCallRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersMissedCallRepository extends ObjectRepository {}
 

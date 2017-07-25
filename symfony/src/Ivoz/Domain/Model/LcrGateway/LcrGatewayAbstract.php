@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\LcrGateway;
 
 use Assert\Assertion;
@@ -98,9 +97,23 @@ abstract class LcrGatewayAbstract
         $this->setLcrId($lcrId);
         $this->setGwName($gwName);
         $this->setFlags($flags);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return LcrGatewayDTO
@@ -228,7 +241,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setLcrId($lcrId)
+    public function setLcrId($lcrId)
     {
         Assertion::notNull($lcrId);
         Assertion::integerish($lcrId);
@@ -256,7 +269,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setGwName($gwName)
+    public function setGwName($gwName)
     {
         Assertion::notNull($gwName);
         Assertion::maxLength($gwName, 200);
@@ -283,7 +296,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setIp($ip = null)
+    public function setIp($ip = null)
     {
         if (!is_null($ip)) {
             Assertion::maxLength($ip, 50);
@@ -311,7 +324,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setHostname($hostname = null)
+    public function setHostname($hostname = null)
     {
         if (!is_null($hostname)) {
             Assertion::maxLength($hostname, 64);
@@ -339,7 +352,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setPort($port = null)
+    public function setPort($port = null)
     {
         if (!is_null($port)) {
             if (!is_null($port)) {
@@ -370,7 +383,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setParams($params = null)
+    public function setParams($params = null)
     {
         if (!is_null($params)) {
             Assertion::maxLength($params, 64);
@@ -398,7 +411,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setUriScheme($uriScheme = null)
+    public function setUriScheme($uriScheme = null)
     {
         if (!is_null($uriScheme)) {
             Assertion::between(intval($uriScheme), 0, 1);
@@ -426,7 +439,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setTransport($transport = null)
+    public function setTransport($transport = null)
     {
         if (!is_null($transport)) {
             Assertion::between(intval($transport), 0, 1);
@@ -454,7 +467,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setStrip($strip = null)
+    public function setStrip($strip = null)
     {
         if (!is_null($strip)) {
             Assertion::between(intval($strip), 0, 1);
@@ -482,7 +495,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setPrefix($prefix = null)
+    public function setPrefix($prefix = null)
     {
         if (!is_null($prefix)) {
             Assertion::maxLength($prefix, 16);
@@ -510,7 +523,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setTag($tag = null)
+    public function setTag($tag = null)
     {
         if (!is_null($tag)) {
             Assertion::maxLength($tag, 64);
@@ -538,7 +551,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setFlags($flags)
+    public function setFlags($flags)
     {
         Assertion::notNull($flags);
         Assertion::integerish($flags);
@@ -566,7 +579,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setDefunct($defunct = null)
+    public function setDefunct($defunct = null)
     {
         if (!is_null($defunct)) {
             if (!is_null($defunct)) {
@@ -597,7 +610,7 @@ abstract class LcrGatewayAbstract
      *
      * @return self
      */
-    protected function setPeerServer(\Ivoz\Domain\Model\PeerServer\PeerServerInterface $peerServer)
+    public function setPeerServer(\Ivoz\Domain\Model\PeerServer\PeerServerInterface $peerServer)
     {
         $this->peerServer = $peerServer;
 

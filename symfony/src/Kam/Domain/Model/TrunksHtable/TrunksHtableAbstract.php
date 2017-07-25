@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\TrunksHtable;
 
 use Assert\Assertion;
@@ -61,9 +60,23 @@ abstract class TrunksHtableAbstract
         $this->setValueType($valueType);
         $this->setKeyValue($keyValue);
         $this->setExpires($expires);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TrunksHtableDTO
@@ -154,7 +167,7 @@ abstract class TrunksHtableAbstract
      *
      * @return self
      */
-    protected function setKeyName($keyName)
+    public function setKeyName($keyName)
     {
         Assertion::notNull($keyName);
         Assertion::maxLength($keyName, 64);
@@ -181,7 +194,7 @@ abstract class TrunksHtableAbstract
      *
      * @return self
      */
-    protected function setKeyType($keyType)
+    public function setKeyType($keyType)
     {
         Assertion::notNull($keyType);
         Assertion::integerish($keyType);
@@ -208,7 +221,7 @@ abstract class TrunksHtableAbstract
      *
      * @return self
      */
-    protected function setValueType($valueType)
+    public function setValueType($valueType)
     {
         Assertion::notNull($valueType);
         Assertion::integerish($valueType);
@@ -235,7 +248,7 @@ abstract class TrunksHtableAbstract
      *
      * @return self
      */
-    protected function setKeyValue($keyValue)
+    public function setKeyValue($keyValue)
     {
         Assertion::notNull($keyValue);
         Assertion::maxLength($keyValue, 128);
@@ -262,7 +275,7 @@ abstract class TrunksHtableAbstract
      *
      * @return self
      */
-    protected function setExpires($expires)
+    public function setExpires($expires)
     {
         Assertion::notNull($expires);
         Assertion::integerish($expires);

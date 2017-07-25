@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PricingPlansRelCompany;
 
 use Assert\Assertion;
@@ -55,9 +54,23 @@ abstract class PricingPlansRelCompanyAbstract
         $this->setValidFrom($validFrom);
         $this->setValidTo($validTo);
         $this->setMetric($metric);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PricingPlansRelCompanyDTO
@@ -153,7 +166,7 @@ abstract class PricingPlansRelCompanyAbstract
      *
      * @return self
      */
-    protected function setValidFrom($validFrom)
+    public function setValidFrom($validFrom)
     {
         Assertion::notNull($validFrom);
 
@@ -179,7 +192,7 @@ abstract class PricingPlansRelCompanyAbstract
      *
      * @return self
      */
-    protected function setValidTo($validTo)
+    public function setValidTo($validTo)
     {
         Assertion::notNull($validTo);
 
@@ -205,7 +218,7 @@ abstract class PricingPlansRelCompanyAbstract
      *
      * @return self
      */
-    protected function setMetric($metric)
+    public function setMetric($metric)
     {
         Assertion::notNull($metric);
         Assertion::integerish($metric);
@@ -232,7 +245,7 @@ abstract class PricingPlansRelCompanyAbstract
      *
      * @return self
      */
-    protected function setPricingPlan(\Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan)
+    public function setPricingPlan(\Ivoz\Domain\Model\PricingPlan\PricingPlanInterface $pricingPlan)
     {
         $this->pricingPlan = $pricingPlan;
 
@@ -256,7 +269,7 @@ abstract class PricingPlansRelCompanyAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -280,7 +293,7 @@ abstract class PricingPlansRelCompanyAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 

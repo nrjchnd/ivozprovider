@@ -2,5 +2,7 @@
 
 namespace Ast\Domain\Model\Musiconhold;
 
-interface MusiconholdRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface MusiconholdRepository extends ObjectRepository {}
 

@@ -10,5 +10,5 @@ services:
     tags:
       - { name: ivoz.lifecycle.brand.pre_persist, priority: 10 }
     arguments:
-      $companyServiceRepository:
+      $callForwardSettingRepository:
         '@=service("doctrine.orm.entity_manager").getRepository("Ivoz\\Domain\\Model\\CallForwardSetting\\CallForwardSetting")'

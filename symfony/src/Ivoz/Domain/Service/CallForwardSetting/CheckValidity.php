@@ -7,6 +7,11 @@ use Ivoz\Domain\Model\CallForwardSetting\CallForwardSettingRepository;
 use Ivoz\Domain\Model\CallForwardSetting\CallForwardSetting;
 use Doctrine\Common\Collections\Criteria;
 
+/**
+ * Class CheckValidity
+ * @package Ivoz\Domain\Service\CallForwardSetting
+ * @lifecycle brand.pre_persist
+ */
 class CheckValidity implements LifecycleEventHandlerInterface
 {
     /**
@@ -21,10 +26,9 @@ class CheckValidity implements LifecycleEventHandlerInterface
 
     /**
      * @param CallForwardSetting $entity
-     * @param callable $entityPersister
      * @throws \Exception
      */
-    public function execute(EntityInterface $entity, callable $entityPersister)
+    public function execute(EntityInterface $entity)
     {
         $callTypeFilterConditions = array(
             $entity->getCallTypeFilter()

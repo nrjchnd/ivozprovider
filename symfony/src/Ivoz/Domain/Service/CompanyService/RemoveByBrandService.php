@@ -2,6 +2,7 @@
 namespace Ivoz\Domain\Service\CompanyService;
 
 use Core\Domain\Model\EntityInterface;
+use Core\Domain\Service\EntityPersisterInterface;
 use Core\Domain\Service\LifecycleEventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Ivoz\Domain\Model\BrandService\BrandService;
@@ -9,12 +10,22 @@ use Ivoz\Domain\Model\Company\Company;
 use Ivoz\Domain\Model\Company\CompanyRepository;
 use Ivoz\Domain\Model\CompanyService\CompanyServiceRepository;
 
+/**
+ * Class PropagateBrandServices
+ * @package Ivoz\Domain\Service\CompanyService
+ * @lifecycle company.post_persist
+ */
 class RemoveByBrandService implements LifecycleEventHandlerInterface
 {
     /**
      * @var EntityManagerInterface
      */
     protected $em;
+
+    /**
+     * @var EntityPersisterInterface
+     */
+    protected $entityPersister;
 
     /**
      * @var CompanyRepository
@@ -28,10 +39,12 @@ class RemoveByBrandService implements LifecycleEventHandlerInterface
 
     function __construct(
         EntityManagerInterface $em,
+        EntityPersisterInterface $entityPersister,
         CompanyRepository $companyRepository,
         CompanyServiceRepository $companyServiceRepository
     ) {
         $this->em = $em;
+        $this->entityPersister = $entityPersister;
         $this->companyRepository = $companyRepository;
         $this->companyServiceRepository = $companyServiceRepository;
     }
@@ -39,7 +52,7 @@ class RemoveByBrandService implements LifecycleEventHandlerInterface
     /**
      * @param BrandService $entity
      */
-    public function execute(EntityInterface $entity, callable $entityPersister)
+    public function execute(EntityInterface $entity)
     {
         $companies = $this->companyRepository->findBy([
             'brand' => $entity->getBrand()->getId()

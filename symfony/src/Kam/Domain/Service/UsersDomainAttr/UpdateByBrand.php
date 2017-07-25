@@ -9,6 +9,11 @@ use Kam\Domain\Model\UsersDomainAttr\UsersDomainAttrRepository;
 use Kam\Domain\Model\UsersDomainAttr\UsersDomainAttr;
 use Kam\Domain\Model\UsersDomainAttr\UsersDomainAttrDTO;
 
+/**
+ * Class UpdateByBrand
+ * @package Kam\Domain\Service\UsersDomainAttr
+ * @lifecycle brand.post_persist
+ */
 class UpdateByBrand implements LifecycleEventHandlerInterface
 {
     /**
@@ -23,6 +28,7 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
 
     public function __construct(
         EntityManagerInterface $em,
+        EntityPersisterInterface $entityPersister,
         UsersDomainAttrRepository $usersDomainAttrRepository
     ) {
         $this->em = $em;
@@ -32,7 +38,7 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
     /**
      * @param Brand $entity
      */
-    public function execute(EntityInterface $entity, callable $entityPersister)
+    public function execute(EntityInterface $entity)
     {
         $domainName = $entity->getDomainUsers();
 
@@ -44,22 +50,21 @@ class UpdateByBrand implements LifecycleEventHandlerInterface
             ]);
 
             if (empty($domainsAttr)) {
-                $domainAttr = new \IvozProvider\Model\KamUsersDomainAttrs();
-
                 /**
-                 * @var UsersDomainAttrDTO $domainAttr
+                 * @var UsersDomainAttrDTO $domainAttrDto
                  */
-                $domainAttr = UsersDomainAttr::createDTO();
+                $domainAttrDto = UsersDomainAttr::createDTO();
 
                 /**
                  * @todo setDid expects CompanyInterface and that's wrong
                  */
-//                $domainAttr
-//                    ->setDid($domainName)
-//                    ->setName('brandId')
-//                    ->setType('0')
-//                    ->setValue($model->getPrimaryKey())
-//                    ->save();
+                $domainAttrDto
+                    ->setDidId($domainName)
+                    ->setName('brandId')
+                    ->setType('0')
+                    ->setValue($entity->getId());
+
+                $this->entityPersister->persist($domainAttrDto);
             }
         }
     }

@@ -2,5 +2,8 @@
 
 namespace Ivoz\Domain\Model\GenericCallACLPattern;
 
-interface GenericCallACLPatternRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+
+interface GenericCallACLPatternRepository extends ObjectRepository {}
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PricingPlan;
 
 use Assert\Assertion;
@@ -48,9 +47,23 @@ abstract class PricingPlanAbstract
         $this->setCreatedOn($createdOn);
         $this->setName($name);
         $this->setDescription($description);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return PricingPlanDTO
@@ -171,7 +184,7 @@ abstract class PricingPlanAbstract
      *
      * @return self
      */
-    protected function setCreatedOn($createdOn)
+    public function setCreatedOn($createdOn)
     {
         Assertion::notNull($createdOn);
 
@@ -197,7 +210,7 @@ abstract class PricingPlanAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -221,7 +234,7 @@ abstract class PricingPlanAbstract
      *
      * @return self
      */
-    protected function setName(Name $name)
+    public function setName(Name $name)
     {
         $this->name = $name;
 
@@ -245,7 +258,7 @@ abstract class PricingPlanAbstract
      *
      * @return self
      */
-    protected function setDescription(Description $description)
+    public function setDescription(Description $description)
     {
         $this->description = $description;
 

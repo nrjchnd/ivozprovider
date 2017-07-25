@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Locution;
 
 use Core\Application\DataTransferObjectInterface;

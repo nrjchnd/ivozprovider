@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Brand;
 
 use Core\Application\DataTransferObjectInterface;
@@ -152,6 +151,16 @@ class BrandDTO implements DataTransferObjectInterface
     private $retailAccounts = null;
 
     /**
+     * @var array|null
+     */
+    private $genericMusicsOnHold = null;
+
+    /**
+     * @var array|null
+     */
+    private $genericCallACLPatterns = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -182,7 +191,9 @@ class BrandDTO implements DataTransferObjectInterface
             'urlsId' => $this->getUrlsId(),
             'relFeaturesId' => $this->getRelFeaturesId(),
             'domainsId' => $this->getDomainsId(),
-            'retailAccountsId' => $this->getRetailAccountsId()
+            'retailAccountsId' => $this->getRetailAccountsId(),
+            'genericMusicsOnHoldId' => $this->getGenericMusicsOnHoldId(),
+            'genericCallACLPatternsId' => $this->getGenericCallACLPatternsId()
         ];
     }
 
@@ -256,6 +267,24 @@ class BrandDTO implements DataTransferObjectInterface
             );
         }
 
+        $items = $this->getGenericMusicsOnHold();
+        $this->genericMusicsOnHold = [];
+        foreach ($items as $item) {
+            $this->genericMusicsOnHold[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\GenericMusicOnHold\\GenericMusicOnHold',
+                $item
+            );
+        }
+
+        $items = $this->getGenericCallACLPatterns();
+        $this->genericCallACLPatterns = [];
+        foreach ($items as $item) {
+            $this->genericCallACLPatterns[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\GenericCallACLPattern\\GenericCallACLPattern',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -290,6 +319,14 @@ class BrandDTO implements DataTransferObjectInterface
         $this->retailAccounts = $transformer->transform(
             'Ivoz\\Domain\\Model\\RetailAccount\\RetailAccount',
             $this->retailAccounts
+        );
+        $this->genericMusicsOnHold = $transformer->transform(
+            'Ivoz\\Domain\\Model\\GenericMusicOnHold\\GenericMusicOnHold',
+            $this->genericMusicsOnHold
+        );
+        $this->genericCallACLPatterns = $transformer->transform(
+            'Ivoz\\Domain\\Model\\GenericCallACLPattern\\GenericCallACLPattern',
+            $this->genericCallACLPatterns
         );
     }
 
@@ -827,6 +864,46 @@ class BrandDTO implements DataTransferObjectInterface
     public function getRetailAccounts()
     {
         return $this->retailAccounts;
+    }
+
+    /**
+     * @param array $genericMusicsOnHold
+     *
+     * @return BrandDTO
+     */
+    public function setGenericMusicsOnHold($genericMusicsOnHold)
+    {
+        $this->genericMusicsOnHold = $genericMusicsOnHold;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGenericMusicsOnHold()
+    {
+        return $this->genericMusicsOnHold;
+    }
+
+    /**
+     * @param array $genericCallACLPatterns
+     *
+     * @return BrandDTO
+     */
+    public function setGenericCallACLPatterns($genericCallACLPatterns)
+    {
+        $this->genericCallACLPatterns = $genericCallACLPatterns;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGenericCallACLPatterns()
+    {
+        return $this->genericCallACLPatterns;
     }
 }
 

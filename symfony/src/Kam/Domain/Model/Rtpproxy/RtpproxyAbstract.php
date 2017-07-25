@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\Rtpproxy;
 
 use Assert\Assertion;
@@ -56,9 +55,23 @@ abstract class RtpproxyAbstract
         $this->setUrl($url);
         $this->setFlags($flags);
         $this->setWeight($weight);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return RtpproxyDTO
@@ -154,7 +167,7 @@ abstract class RtpproxyAbstract
      *
      * @return self
      */
-    protected function setSetid($setid)
+    public function setSetid($setid)
     {
         Assertion::notNull($setid);
         Assertion::maxLength($setid, 32);
@@ -181,7 +194,7 @@ abstract class RtpproxyAbstract
      *
      * @return self
      */
-    protected function setUrl($url)
+    public function setUrl($url)
     {
         Assertion::notNull($url);
         Assertion::maxLength($url, 128);
@@ -208,7 +221,7 @@ abstract class RtpproxyAbstract
      *
      * @return self
      */
-    protected function setFlags($flags)
+    public function setFlags($flags)
     {
         Assertion::notNull($flags);
         Assertion::integerish($flags);
@@ -236,7 +249,7 @@ abstract class RtpproxyAbstract
      *
      * @return self
      */
-    protected function setWeight($weight)
+    public function setWeight($weight)
     {
         Assertion::notNull($weight);
         Assertion::integerish($weight);
@@ -264,7 +277,7 @@ abstract class RtpproxyAbstract
      *
      * @return self
      */
-    protected function setDescription($description = null)
+    public function setDescription($description = null)
     {
         if (!is_null($description)) {
             Assertion::maxLength($description, 200);
@@ -292,7 +305,7 @@ abstract class RtpproxyAbstract
      *
      * @return self
      */
-    protected function setMediaRelaySet(\Ivoz\Domain\Model\MediaRelaySet\MediaRelaySetInterface $mediaRelaySet = null)
+    public function setMediaRelaySet(\Ivoz\Domain\Model\MediaRelaySet\MediaRelaySetInterface $mediaRelaySet = null)
     {
         $this->mediaRelaySet = $mediaRelaySet;
 

@@ -7,6 +7,16 @@ use Core\Domain\Model\EntityInterface;
 interface RoutingPatternGroupsRelPatternInterface extends EntityInterface
 {
     /**
+     * Set routingPattern
+     *
+     * @param \Ivoz\Domain\Model\RoutingPattern\RoutingPatternInterface $routingPattern
+     *
+     * @return RoutingPatternGroupsRelPatternInterface
+     */
+    public function setRoutingPattern(\Ivoz\Domain\Model\RoutingPattern\RoutingPatternInterface $routingPattern);
+
+
+    /**
      * Get routingPattern
      *
      * @return \Ivoz\Domain\Model\RoutingPattern\RoutingPatternInterface

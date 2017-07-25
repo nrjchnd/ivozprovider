@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\TrunksAddres;
 
 use Assert\Assertion;
@@ -51,9 +50,23 @@ abstract class TrunksAddresAbstract
         $this->setGrp($grp);
         $this->setMask($mask);
         $this->setPort($port);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return TrunksAddresDTO
@@ -145,7 +158,7 @@ abstract class TrunksAddresAbstract
      *
      * @return self
      */
-    protected function setGrp($grp)
+    public function setGrp($grp)
     {
         Assertion::notNull($grp);
         Assertion::integerish($grp);
@@ -173,7 +186,7 @@ abstract class TrunksAddresAbstract
      *
      * @return self
      */
-    protected function setIpAddr($ipAddr = null)
+    public function setIpAddr($ipAddr = null)
     {
         if (!is_null($ipAddr)) {
             Assertion::maxLength($ipAddr, 50);
@@ -201,7 +214,7 @@ abstract class TrunksAddresAbstract
      *
      * @return self
      */
-    protected function setMask($mask)
+    public function setMask($mask)
     {
         Assertion::notNull($mask);
         Assertion::integerish($mask);
@@ -228,7 +241,7 @@ abstract class TrunksAddresAbstract
      *
      * @return self
      */
-    protected function setPort($port)
+    public function setPort($port)
     {
         Assertion::notNull($port);
         Assertion::integerish($port);
@@ -255,7 +268,7 @@ abstract class TrunksAddresAbstract
      *
      * @return self
      */
-    protected function setTag($tag = null)
+    public function setTag($tag = null)
     {
         if (!is_null($tag)) {
             Assertion::maxLength($tag, 64);

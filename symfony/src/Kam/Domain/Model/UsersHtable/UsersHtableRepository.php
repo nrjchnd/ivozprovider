@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\UsersHtable;
 
-interface UsersHtableRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface UsersHtableRepository extends ObjectRepository {}
 

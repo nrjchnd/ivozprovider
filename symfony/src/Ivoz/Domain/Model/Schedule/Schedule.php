@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Schedule;
 
 use Core\Application\DataTransferObjectInterface;
@@ -109,3 +108,4 @@ class Schedule extends ScheduleAbstract implements ScheduleInterface
 
 
 }
+

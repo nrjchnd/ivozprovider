@@ -2,5 +2,7 @@
 
 namespace Kam\Domain\Model\Rtpproxy;
 
-interface RtpproxyRepository {}
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface RtpproxyRepository extends ObjectRepository {}
 

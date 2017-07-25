@@ -1,9 +1,10 @@
 <?php
-namespace Core\Infrastructure\Model\Lifecycle;
+namespace Core\Infrastructure\Domain\Model\Lifecycle;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class DoctrineSubscriber implements EventSubscriber
 {
@@ -31,7 +32,15 @@ class DoctrineSubscriber implements EventSubscriber
         );
     }
 
-    public function prePersist(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args)
+    {
+        $entity = $args->getObject();
+        $entity->initChangelog();
+
+        $this->run('post_load', $args);
+    }
+
+    public function prePersist(PreUpdateEventArgs $args)
     {
         $this->run('pre_persist', $args);
     }
@@ -41,7 +50,7 @@ class DoctrineSubscriber implements EventSubscriber
         $this->run('post_persist', $args);
     }
 
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         $this->run('pre_persist', $args);
     }

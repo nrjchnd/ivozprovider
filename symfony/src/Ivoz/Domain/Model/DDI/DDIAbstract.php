@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\DDI;
 
 use Assert\Assertion;
@@ -132,9 +131,23 @@ abstract class DDIAbstract
         $this->setDdi($ddi);
         $this->setRecordCalls($recordCalls);
         $this->setBillInboundCalls($billInboundCalls);
+        $this->initChangelog();
     }
 
-    abstract public function __wakeup();
+    public function initChangelog()
+    {
+        $this->_initialValues = $this->__toArray();
+    }
+
+    public function hasChanged($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+        $getter = 'get' . ucfisrt($fieldName);
+
+        return $this->$getter() != $this->_initialValues[$fieldName];
+    }
 
     /**
      * @return DDIDTO
@@ -290,7 +303,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setDdi($ddi)
+    public function setDdi($ddi)
     {
         Assertion::notNull($ddi);
         Assertion::maxLength($ddi, 25);
@@ -317,7 +330,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setDdie164($ddie164 = null)
+    public function setDdie164($ddie164 = null)
     {
         if (!is_null($ddie164)) {
             Assertion::maxLength($ddie164, 25);
@@ -345,7 +358,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setRecordCalls($recordCalls)
+    public function setRecordCalls($recordCalls)
     {
         Assertion::notNull($recordCalls);
         Assertion::maxLength($recordCalls, 25);
@@ -378,7 +391,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setDisplayName($displayName = null)
+    public function setDisplayName($displayName = null)
     {
         if (!is_null($displayName)) {
             Assertion::maxLength($displayName, 50);
@@ -406,7 +419,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setRouteType($routeType = null)
+    public function setRouteType($routeType = null)
     {
         if (!is_null($routeType)) {
             Assertion::maxLength($routeType, 25);
@@ -445,7 +458,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setBillInboundCalls($billInboundCalls)
+    public function setBillInboundCalls($billInboundCalls)
     {
         Assertion::notNull($billInboundCalls);
         Assertion::between(intval($billInboundCalls), 0, 1);
@@ -472,7 +485,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setFriendValue($friendValue = null)
+    public function setFriendValue($friendValue = null)
     {
         if (!is_null($friendValue)) {
             Assertion::maxLength($friendValue, 25);
@@ -500,7 +513,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company)
+    public function setCompany(\Ivoz\Domain\Model\Company\CompanyInterface $company = null)
     {
         $this->company = $company;
 
@@ -524,7 +537,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
+    public function setBrand(\Ivoz\Domain\Model\Brand\BrandInterface $brand)
     {
         $this->brand = $brand;
 
@@ -548,7 +561,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setConferenceRoom(\Ivoz\Domain\Model\ConferenceRoom\ConferenceRoomInterface $conferenceRoom = null)
+    public function setConferenceRoom(\Ivoz\Domain\Model\ConferenceRoom\ConferenceRoomInterface $conferenceRoom = null)
     {
         $this->conferenceRoom = $conferenceRoom;
 
@@ -572,7 +585,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
+    public function setLanguage(\Ivoz\Domain\Model\Language\LanguageInterface $language = null)
     {
         $this->language = $language;
 
@@ -596,7 +609,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setQueue(\Ivoz\Domain\Model\Queue\QueueInterface $queue = null)
+    public function setQueue(\Ivoz\Domain\Model\Queue\QueueInterface $queue = null)
     {
         $this->queue = $queue;
 
@@ -620,7 +633,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setExternalCallFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $externalCallFilter = null)
+    public function setExternalCallFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $externalCallFilter = null)
     {
         $this->externalCallFilter = $externalCallFilter;
 
@@ -644,7 +657,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setUser(\Ivoz\Domain\Model\User\UserInterface $user = null)
+    public function setUser(\Ivoz\Domain\Model\User\UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -668,7 +681,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setIVRCommon(\Ivoz\Domain\Model\IVRCommon\IVRCommonInterface $iVRCommon = null)
+    public function setIVRCommon(\Ivoz\Domain\Model\IVRCommon\IVRCommonInterface $iVRCommon = null)
     {
         $this->IVRCommon = $iVRCommon;
 
@@ -692,7 +705,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setIVRCustom(\Ivoz\Domain\Model\IVRCustom\IVRCustomInterface $iVRCustom = null)
+    public function setIVRCustom(\Ivoz\Domain\Model\IVRCustom\IVRCustomInterface $iVRCustom = null)
     {
         $this->IVRCustom = $iVRCustom;
 
@@ -716,7 +729,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup = null)
+    public function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup = null)
     {
         $this->huntGroup = $huntGroup;
 
@@ -740,7 +753,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setFax(\Ivoz\Domain\Model\Fax\FaxInterface $fax = null)
+    public function setFax(\Ivoz\Domain\Model\Fax\FaxInterface $fax = null)
     {
         $this->fax = $fax;
 
@@ -764,7 +777,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract = null)
+    public function setPeeringContract(\Ivoz\Domain\Model\PeeringContract\PeeringContractInterface $peeringContract = null)
     {
         $this->peeringContract = $peeringContract;
 
@@ -788,7 +801,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
+    public function setCountry(\Ivoz\Domain\Model\Country\CountryInterface $country = null)
     {
         $this->country = $country;
 
@@ -812,7 +825,7 @@ abstract class DDIAbstract
      *
      * @return self
      */
-    protected function setRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount = null)
+    public function setRetailAccount(\Ivoz\Domain\Model\RetailAccount\RetailAccountInterface $retailAccount = null)
     {
         $this->retailAccount = $retailAccount;
 
