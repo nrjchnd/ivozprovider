@@ -56,6 +56,7 @@ class CheckValidity implements LifecycleEventHandlerInterface
 
         $isInconditional = ($entity->getCallForwardType() == "inconditional");
         if ($isInconditional) {
+            //@todo this looks like duplicated code
             $callForwardsConditions = $this->getCallForwardsCondition(
                 $entity,
                 $callTypeFilterConditions
@@ -168,9 +169,9 @@ class CheckValidity implements LifecycleEventHandlerInterface
      */
     protected function getNoAnswerCallForwardsConditions(CallForwardSetting $entity, $callTypeFilterConditions)
     {
-        return $criteria = $this->createConditions(
+        return $this->createConditions(
             $entity,
-            $callTypeFilterConditions.
+            $callTypeFilterConditions,
             'noAnswer'
         );
     }

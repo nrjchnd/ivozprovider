@@ -56,7 +56,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "symfony/tests/"
+            "spec\\": "symfony/spec/"
         },
         "files": [
             "library/vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
@@ -84,7 +84,6 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "beberlei/assert": "2.7.*",
 
-        "phing/phing": "2.*",
         "knplabs/knp-snappy": "0.4.3",
         "h4cc/wkhtmltopdf-amd64": "0.12.3",
         "h4cc/wkhtmltopdf-i386": "0.12.3",
@@ -93,11 +92,13 @@
         "debach/zend-mp3": "1.8.*"
     },
     "require-dev": {
-        "crada/php-apidoc":"@dev",
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0",
+        "crada/php-apidoc": "@dev",
         "irontec/Generator": "dev-tayler",
-        "irontec/Iron": "dev-tayler"
+        "irontec/Iron": "dev-tayler",
+        "leanphp/phpspec-code-coverage": "^3.1",
+        "phpspec/phpspec": "3.4.*",
+        "sensio/generator-bundle": "^3.0",
+        "symfony/phpunit-bridge": "^3.0"
     },
     "scripts": {
         "symfony-scripts": [

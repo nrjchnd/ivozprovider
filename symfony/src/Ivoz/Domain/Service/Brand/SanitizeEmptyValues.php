@@ -4,6 +4,7 @@ namespace Ivoz\Domain\Service\Brand;
 use Core\Domain\Service\EntityPersisterInterface;
 use Core\Domain\Service\LifecycleEventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Ivoz\Domain\Model\Brand\Brand;
 use Ivoz\Domain\Model\Brand\BrandDTO;
 use Core\Domain\Model\EntityInterface;
 
@@ -32,10 +33,13 @@ class SanitizeEmptyValues implements LifecycleEventHandlerInterface
         $this->entityPersister = $entityPersister;
     }
 
+    /**
+     * @param Brand $entity
+     */
     public function execute(EntityInterface $entity)
     {
-        $isNew = $this->em->contains($entity);
-        if (!$isNew) {
+        $alreadyPersisted = $this->em->contains($entity);
+        if ($alreadyPersisted) {
             return;
         }
 
@@ -52,7 +56,7 @@ class SanitizeEmptyValues implements LifecycleEventHandlerInterface
 //        if (!$model->hasChange('country')) $model->setCountry('Country');
 //        if (!$model->hasChange('province')) $model->setProvince('Province');
 
-        if (!$dto->setDefaultTimezoneId()) {
+        if (!$dto->getDefaultTimezoneId()) {
             $dto->setDefaultTimezoneId(145);
         }
 

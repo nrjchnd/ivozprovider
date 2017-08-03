@@ -3,6 +3,7 @@
 namespace Ivoz\Domain\Model\HuntGroup;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Collections\Selectable;
 
-interface HuntGroupRepository extends ObjectRepository {}
+interface HuntGroupRepository extends ObjectRepository, Selectable {}
 

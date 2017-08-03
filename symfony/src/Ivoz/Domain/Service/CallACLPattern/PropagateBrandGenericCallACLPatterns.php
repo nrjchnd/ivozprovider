@@ -5,6 +5,7 @@ use Core\Domain\Service\EntityPersisterInterface;
 use Core\Domain\Service\LifecycleEventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Core\Domain\Model\EntityInterface;
+use Ivoz\Domain\Model\Brand\Brand;
 use Ivoz\Domain\Model\CallACLPattern\CallACLPattern;
 use Ivoz\Domain\Model\Company\Company;
 use Ivoz\Domain\Model\GenericCallACLPattern\GenericCallACLPattern;
@@ -40,12 +41,15 @@ class PropagateBrandGenericCallACLPatterns implements LifecycleEventHandlerInter
      */
     public function execute(EntityInterface $entity)
     {
-        $isNew = $this->em->contains($entity);
-        if (!$isNew) {
+        $alreadyPersisted = $this->em->contains($entity);
+        if ($alreadyPersisted) {
             return;
         }
 
-        $companyDto = $entity::createDTO();
+        $companyDto = $entity->toDTO();
+        /**
+         * @var Brand $brand
+         */
         $brand = $entity->getBrand();
         if (is_null($brand)) {
             throw new \Exception(_("Brand is not set"), 60000);
@@ -77,7 +81,7 @@ class PropagateBrandGenericCallACLPatterns implements LifecycleEventHandlerInter
         if (!empty($callACLPatterns)) {
             // @todo check whether cascade: ['persist']/ other is necessary
             $companyDto->setCallACLPatterns($callACLPatterns);
-            $this->entityPersister($companyDto, $entity);
+            $this->entityPersister->persist($companyDto, $entity);
         }
     }
 }
