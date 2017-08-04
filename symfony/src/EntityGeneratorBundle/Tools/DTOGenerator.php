@@ -60,7 +60,6 @@ public function <methodName>(<methodTypeHint>$<variableName><variableDefault>)
 <spaces>return $this;
 }';
 
-
     /**
      * @var string
      */
@@ -78,6 +77,8 @@ public function <methodName>()
         $metadata->name .= 'DTO';
         $metadata->rootEntityName = $metadata->name;
         $metadata->customRepositoryClassName = null;
+
+        $metadata->reflClass = new \ReflectionClass($metadata->name);
 
         return $metadata;
     }

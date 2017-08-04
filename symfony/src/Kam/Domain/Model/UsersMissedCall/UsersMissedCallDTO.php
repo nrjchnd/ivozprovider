@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersMissedCall;
 
 use Core\Application\DataTransferObjectInterface;

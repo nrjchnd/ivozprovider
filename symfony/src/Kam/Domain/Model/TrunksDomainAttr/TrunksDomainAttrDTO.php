@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\TrunksDomainAttr;
 
 use Core\Application\DataTransferObjectInterface;

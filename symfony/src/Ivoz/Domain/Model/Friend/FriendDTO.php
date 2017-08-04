@@ -151,6 +151,11 @@ class FriendDTO implements DataTransferObjectInterface
     private $language;
 
     /**
+     * @var array|null
+     */
+    private $psEndpoints = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -178,7 +183,8 @@ class FriendDTO implements DataTransferObjectInterface
             'countryId' => $this->getCountryId(),
             'callACLId' => $this->getCallACLId(),
             'outgoingDDIId' => $this->getOutgoingDDIId(),
-            'languageId' => $this->getLanguageId()
+            'languageId' => $this->getLanguageId(),
+            'psEndpointsId' => $this->getPsEndpointsId()
         ];
     }
 
@@ -192,6 +198,15 @@ class FriendDTO implements DataTransferObjectInterface
         $this->callACL = $transformer->transform('Ivoz\\Domain\\Model\\CallACL\\CallACL', $this->getCallACLId());
         $this->outgoingDDI = $transformer->transform('Ivoz\\Domain\\Model\\DDI\\DDI', $this->getOutgoingDDIId());
         $this->language = $transformer->transform('Ivoz\\Domain\\Model\\Language\\Language', $this->getLanguageId());
+        $items = $this->getPsEndpoints();
+        $this->psEndpoints = [];
+        foreach ($items as $item) {
+            $this->psEndpoints[] = $transformer->transform(
+                'Ast\\Domain\\Model\\PsEndpoint\\PsEndpoint',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -199,7 +214,10 @@ class FriendDTO implements DataTransferObjectInterface
      */
     public function transformCollections(CollectionTransformerInterface $transformer)
     {
-
+        $this->psEndpoints = $transformer->transform(
+            'Ast\\Domain\\Model\\PsEndpoint\\PsEndpoint',
+            $this->psEndpoints
+        );
     }
 
     /**
@@ -700,6 +718,26 @@ class FriendDTO implements DataTransferObjectInterface
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    /**
+     * @param array $psEndpoints
+     *
+     * @return FriendDTO
+     */
+    public function setPsEndpoints($psEndpoints)
+    {
+        $this->psEndpoints = $psEndpoints;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPsEndpoints()
+    {
+        return $this->psEndpoints;
     }
 }
 

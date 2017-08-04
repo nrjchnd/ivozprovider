@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersLocation;
 
 use Core\Application\DataTransferObjectInterface;

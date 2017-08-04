@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\Voicemail;
 
 use Core\Application\DataTransferObjectInterface;
@@ -179,7 +178,7 @@ class VoicemailDTO implements DataTransferObjectInterface
     /**
      * @var integer
      */
-    private $uniqueid;
+    private $id;
 
     /**
      * @var mixed
@@ -230,7 +229,7 @@ class VoicemailDTO implements DataTransferObjectInterface
             'imapport' => $this->getImapport(),
             'imapflags' => $this->getImapflags(),
             'stamp' => $this->getStamp(),
-            'uniqueid' => $this->getUniqueid(),
+            'id' => $this->getId(),
             'userId' => $this->getUserId()
         ];
     }
@@ -912,13 +911,13 @@ class VoicemailDTO implements DataTransferObjectInterface
     }
 
     /**
-     * @param integer $uniqueid
+     * @param integer $id
      *
      * @return VoicemailDTO
      */
-    public function setUniqueid($uniqueid)
+    public function setId($id)
     {
-        $this->uniqueid = $uniqueid;
+        $this->id = $id;
 
         return $this;
     }
@@ -926,9 +925,9 @@ class VoicemailDTO implements DataTransferObjectInterface
     /**
      * @return integer
      */
-    public function getUniqueid()
+    public function getId()
     {
-        return $this->uniqueid;
+        return $this->id;
     }
 
     /**

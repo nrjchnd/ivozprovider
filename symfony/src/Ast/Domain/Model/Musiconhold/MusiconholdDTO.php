@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\Musiconhold;
 
 use Core\Application\DataTransferObjectInterface;

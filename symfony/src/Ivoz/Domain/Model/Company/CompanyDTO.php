@@ -475,6 +475,18 @@ class CompanyDTO implements DataTransferObjectInterface
     }
 
     /**
+     * @param string $domainUsers
+     *
+     * @return CompanyDTO
+     */
+    public function setDomainUsers($domainUsers = null)
+    {
+        $this->domainUsers = $domainUsers;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getDomainUsers()

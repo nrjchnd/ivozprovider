@@ -1,5 +1,4 @@
 <?php
-
 namespace Kam\Domain\Model\UsersHtable;
 
 use Core\Application\DataTransferObjectInterface;

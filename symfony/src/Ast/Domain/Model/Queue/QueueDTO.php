@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\Queue;
 
 use Core\Application\DataTransferObjectInterface;
@@ -59,7 +58,7 @@ class QueueDTO implements DataTransferObjectInterface
     /**
      * @var string
      */
-    private $name;
+    private $id;
 
     /**
      * @var mixed
@@ -86,7 +85,7 @@ class QueueDTO implements DataTransferObjectInterface
             'maxlen' => $this->getMaxlen(),
             'strategy' => $this->getStrategy(),
             'weight' => $this->getWeight(),
-            'name' => $this->getName(),
+            'id' => $this->getId(),
             'queueId' => $this->getQueueId()
         ];
     }
@@ -288,13 +287,13 @@ class QueueDTO implements DataTransferObjectInterface
     }
 
     /**
-     * @param string $name
+     * @param string $id
      *
      * @return QueueDTO
      */
-    public function setName($name)
+    public function setId($id)
     {
-        $this->name = $name;
+        $this->id = $id;
 
         return $this;
     }
@@ -302,9 +301,9 @@ class QueueDTO implements DataTransferObjectInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getId()
     {
-        return $this->name;
+        return $this->id;
     }
 
     /**

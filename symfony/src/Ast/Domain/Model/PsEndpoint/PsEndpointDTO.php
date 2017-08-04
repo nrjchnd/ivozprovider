@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\PsEndpoint;
 
 use Core\Application\DataTransferObjectInterface;

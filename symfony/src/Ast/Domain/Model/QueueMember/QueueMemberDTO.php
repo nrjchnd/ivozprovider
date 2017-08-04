@@ -1,5 +1,4 @@
 <?php
-
 namespace Ast\Domain\Model\QueueMember;
 
 use Core\Application\DataTransferObjectInterface;
@@ -44,7 +43,7 @@ class QueueMemberDTO implements DataTransferObjectInterface
     /**
      * @var integer
      */
-    private $uniqueid;
+    private $id;
 
     /**
      * @var mixed
@@ -68,7 +67,7 @@ class QueueMemberDTO implements DataTransferObjectInterface
             'stateInterface' => $this->getStateInterface(),
             'penalty' => $this->getPenalty(),
             'paused' => $this->getPaused(),
-            'uniqueid' => $this->getUniqueid(),
+            'id' => $this->getId(),
             'queueMemberId' => $this->getQueueMemberId()
         ];
     }
@@ -210,13 +209,13 @@ class QueueMemberDTO implements DataTransferObjectInterface
     }
 
     /**
-     * @param integer $uniqueid
+     * @param integer $id
      *
      * @return QueueMemberDTO
      */
-    public function setUniqueid($uniqueid)
+    public function setId($id)
     {
-        $this->uniqueid = $uniqueid;
+        $this->id = $id;
 
         return $this;
     }
@@ -224,9 +223,9 @@ class QueueMemberDTO implements DataTransferObjectInterface
     /**
      * @return integer
      */
-    public function getUniqueid()
+    public function getId()
     {
-        return $this->uniqueid;
+        return $this->id;
     }
 
     /**
