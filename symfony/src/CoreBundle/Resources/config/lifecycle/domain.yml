@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  # services with priority 10 in lifecycle/xml_rpc.yml

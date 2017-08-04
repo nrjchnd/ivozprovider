@@ -8,6 +8,7 @@ imports:
   - { resource: "@CoreBundle/Resources/config/lifecycle/company_admin.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/conference_room.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ddi.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/domain.yml" }
 
 services:
   _defaults:

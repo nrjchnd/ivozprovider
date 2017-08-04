@@ -24,9 +24,11 @@ services:
 
   Core\Infrastructure\Service\RequestProxyUsersDomainReload:
     tags:
+      - { name: ivoz.lifecycle.domain.post_persist, priority: 10 }
       - { name: ivoz.lifecycle.company.post_persist, priority: 41 }
       - { name: ivoz.lifecycle.brand.post_persist, priority: 51 }
         ## post_remove
+      - { name: ivoz.lifecycle.domain.post_remove, priority: 10 }
       - { name: ivoz.lifecycle.brand.post_remove, priority: 51 }
     arguments:
       $xmlrpc:
