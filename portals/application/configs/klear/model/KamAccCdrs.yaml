@@ -1,5 +1,5 @@
 production: 
-  class: \IvozProvider\Model\AccCdrs
+  class: \IvozProvider\Model\KamAccCdrs
   entity: Kam\Domain\Model\AccCdr\AccCdr
   fields: 
     proxy:
@@ -127,16 +127,16 @@ production:
       title: _('Diversion')
       type: text
       maxLength: 64
-    peeringcontractId:
+    peeringContractId:
       title: _('Peering contract id')
       type: select
-      source: 
+      source:
         data: mapper
-        config: 
+        config:
 #          mapperName: \IvozProvider\Mapper\Sql\PeeringContracts
           entity: \Ivoz\Domain\Model\PeeringContract\PeeringContract
-          fieldName: 
-            fields: 
+          fieldName:
+            fields:
               - name
             template: '%name%'
           order:

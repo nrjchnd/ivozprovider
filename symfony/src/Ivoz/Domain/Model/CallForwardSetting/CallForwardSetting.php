@@ -1,8 +1,6 @@
 <?php
 namespace Ivoz\Domain\Model\CallForwardSetting;
 
-use Core\Application\DataTransferObjectInterface;
-
 /**
  * CallForwardSetting
  */
@@ -10,104 +8,44 @@ class CallForwardSetting extends CallForwardSettingAbstract implements CallForwa
 {
     use CallForwardSettingTrait;
 
-    /**
-     * @var integer
-     */
-    protected $id;
-
-
-    /**
-     * Changelog tracking purpose
-     * @var array
-     */
-    protected $_initialValues = [];
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function toArrayPortal()
     {
-        parent::__construct(...func_get_args());
+        /**
+         * @var CallACL $this
+         */
+        $response = array();
 
-    }
+        $response['id'] = $this->getId();
+        $response['userId'] = $this->getUser()->getId();
 
-    public function __wakeup()
-    {
-        if ($this->id) {
-            $this->_initialValues = $this->__toArray();
+        $numberValue = $this->getNumberValue();
+        settype($numberValue, "integer");
+
+        $response['callTypeFilter'] = $this->getCallTypeFilter();
+        $response['callForwardType'] = $this->getCallForwardType();
+        $response['targetType'] = $this->getTargetType();
+        $response['numberValue'] = $numberValue;
+        $response['extensionId'] = $this->getExtension()->getId();
+
+        $response['extensionId'] = null;
+        $response['extension'] = '';
+        $extension = $this->getExtension();
+
+        if (!is_null($extension)) {
+            $response['extensionId'] = $extension->getId();
+            $response['extension'] = $extension->getNumber();
         }
-        // Do nothing: Doctrines requirement
+
+        $voiceMailUser = $this->getVoiceMailUser();
+        $response['voiceMailUserId'] = $voiceMailUser
+            ? $voiceMailUser->getId()
+            : null;
+        $response['voiceMailUser'] = $voiceMailUser
+            ? $this->getVoiceMailUser()->getFullName()
+            : '';
+        $response['noAnswerTimeout'] = $this->getNoAnswerTimeout();
+
+        return $response;
     }
-
-    /**
-     * @return CallForwardSettingDTO
-     */
-    public static function createDTO()
-    {
-        return new CallForwardSettingDTO();
-    }
-
-    /**
-     * Factory method
-     * @param DataTransferObjectInterface $dto
-     * @return self
-     */
-    public static function fromDTO(DataTransferObjectInterface $dto)
-    {
-        /**
-         * @var $dto CallForwardSettingDTO
-         */
-        $self = parent::fromDTO($dto);
-
-        return $self;
-    }
-
-    /**
-     * @param DataTransferObjectInterface $dto
-     * @return self
-     */
-    public function updateFromDTO(DataTransferObjectInterface $dto)
-    {
-        /**
-         * @var $dto CallForwardSettingDTO
-         */
-        parent::updateFromDTO($dto);
-
-        
-        return $this;
-    }
-
-    /**
-     * @return CallForwardSettingDTO
-     */
-    public function toDTO()
-    {
-        $dto = parent::toDTO();
-        return $dto
-            ->setId($this->getId());
-    }
-
-    /**
-     * @return array
-     */
-    protected function __toArray()
-    {
-        return parent::__toArray() + [
-            'id' => $this->getId()
-        ];
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-
 }
 

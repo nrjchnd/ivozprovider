@@ -1,461 +1,1006 @@
 <?php
-
 namespace Ivoz\Domain\Model\Company;
 
-
-use Ivoz\Domain\Model\CompanyService\CompanyService;
-use Ivoz\Domain\Model\Extension\Extension;
-use Ivoz\Domain\Model\Feature\Feature;
-use Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompany;
-use Ivoz\Domain\Model\Friend\Friend;
-use Ivoz\Domain\Model\Recording\Recording;
+use Core\Application\DataTransferObjectInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 
+/**
+ * CompanyTrait
+ */
 trait CompanyTrait
 {
-    protected static $EMPTY_DOMAIN_EXCEPTION = 2001;
+    /**
+     * @var integer
+     */
+    protected $id;
 
     /**
-     * Available Company Types
+     * @var ArrayCollection
      */
-    public static $VPBX      = 'vpbx';
-    public static $RETAIL    = "retail";
+    protected $extensions;
 
     /**
-     *
-     * @param string $exten
-     * @return string
+     * @var ArrayCollection
      */
-    public function getTypeCall($exten)
+    protected $ddis;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $friends;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $companyServices;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $terminals;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $relPricingPlans;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $musicsOnHold;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $recordings;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $relFeatures;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $callACLPatterns;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $domains;
+
+
+    /**
+     * Changelog tracking purpose
+     * @var array
+     */
+    protected $_initialValues = [];
+
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
-        /**
-         * @var Company $this
-         */
+        parent::__construct(...func_get_args());
+        $this->extensions = new ArrayCollection();
+        $this->ddis = new ArrayCollection();
+        $this->friends = new ArrayCollection();
+        $this->companyServices = new ArrayCollection();
+        $this->terminals = new ArrayCollection();
+        $this->relPricingPlans = new ArrayCollection();
+        $this->musicsOnHold = new ArrayCollection();
+        $this->recordings = new ArrayCollection();
+        $this->relFeatures = new ArrayCollection();
+        $this->callACLPatterns = new ArrayCollection();
+        $this->domains = new ArrayCollection();
+    }
 
-        /**
-         * @var Extension $extension
-         */
-        $extension = $this->getExtension($exten);
-
-        if (empty($extension)) {
-
-            return "shared-external";
+    public function __wakeup()
+    {
+        if ($this->id) {
+            $this->_initialValues = $this->__toArray();
         }
-
-        return "shared-" . $extension->getRouteType();
+        // Do nothing: Doctrines requirement
     }
 
-    public function getExtension($exten)
+    /**
+     * @return CompanyDTO
+     */
+    public static function createDTO()
     {
-        /**
-         * @var Company $this
-         */
-        $criteria = Criteria::create();
-        $criteria->where(
-            Criteria::expr()->eq('number', $exten)
-        );
-        $extensions = $this->getExtensions($criteria);
-
-        return array_shift($extensions);
+        return new CompanyDTO();
     }
 
-    public function getDDI($ddieE164)
+    /**
+     * Factory method
+     * @param DataTransferObjectInterface $dto
+     * @return self
+     */
+    public static function fromDTO(DataTransferObjectInterface $dto)
     {
         /**
-         * @var Company $this
+         * @var $dto CompanyDTO
          */
-        $criteria = Criteria::create();
-        $criteria->where(
-            Criteria::expr()->eq('DDIE164', $ddieE164)
-        );
-        $ddis = $this->getDDIs($criteria);
+        $self = parent::fromDTO($dto);
 
-        return array_shift($ddis);
-    }
-
-
-    public function getFriend($exten)
-    {
-        /**
-         * @var Company $this
-         */
-        $criteria = Criteria::create();
-        $criteria->orderBy('priority', Criteria::ASC);
-        $friends = $this->getFriends($criteria);
-        /**
-         * @var Friend $friend
-         */
-        foreach ($friends as $friend) {
-            if ($friend->checkExtension($exten)) {
-
-                return $friend;
-            }
-        }
-
-        return null;
-    }
-
-    public function getService($exten)
-    {
-        /**
-         * @var Company $this
-         */
-        $code = substr($exten, 1);
-
-        // Get company services
-        $services = $this->getCompanyServices();
-
-        /**
-         * @var CompanyService $service
-         */
-        // Look for an exact match in service name
-        foreach ($services as $service) {
-            if ($service->getService()->getExtraArgs()) {
-                continue;
-            }
-            if (strlen($code) != strlen($service->getCode())) {
-                continue;
-            }
-            if ($code == $service->getCode()) {
-                return $service;
-            }
-        }
-
-        // Look for a partial service match
-        foreach ($services as $service) {
-            if (!$service->getService()->getExtraArgs()) {
-                continue;
-            }
-            if (!strncmp($code, $service->getCode(), strlen($service->getCode()))) {
-                return $service;
-            }
-        }
-
-        // Extension doesn't match any service
-        return null;
-    }
-
-    public function getTerminal($name)
-    {
-        /**
-         * @var Company $this
-         */
-        $criteria = Criteria::create();
-        $criteria->where(
-            Criteria::expr()->eq('name', $name)
-        );
-        $terminals = $this->getTerminals($criteria);
-
-        return array_shift($terminals);
-    }
-
-    public function getCompanyActivePricingPlan($date = null)
-    {
-        /**
-         * @var Company $this
-         */
-        if (is_null($date)) {
-            $date = new \Zend_Date();
-            $date->setTimezone("UTC");
-        }
-
-        $dateTime = $date->toString('yyyy-MM-dd HH:mm:ss');
-
-        $criteria = Criteria::create();
-        $criteria
-            ->where(
-                Criteria::expr()->lte('validFrom', $dateTime)
-            )
-            ->andWhere(
-                Criteria::expr()->gte('validTo', $dateTime)
-            )
-            ->orderBy('metric', Criteria::ASC)
+        return $self
+            ->replaceExtensions($dto->getExtensions())
+            ->replaceDdis($dto->getDdis())
+            ->replaceFriends($dto->getFriends())
+            ->replaceCompanyServices($dto->getCompanyServices())
+            ->replaceTerminals($dto->getTerminals())
+            ->replaceRelPricingPlans($dto->getRelPricingPlans())
+            ->replaceMusicsOnHold($dto->getMusicsOnHold())
+            ->replaceRecordings($dto->getRecordings())
+            ->replaceRelFeatures($dto->getRelFeatures())
+            ->replaceCallACLPatterns($dto->getCallACLPatterns())
+            ->replaceDomains($dto->getDomains())
         ;
-
-//        $this->_logger->log("[Model][Companies] Condition: " . $where,
-//            \Zend_Log::DEBUG);
-//        $order = "metric asc";
-        $companyPricingPlans = $this->getRelPricingPlans($criteria);
-
-        if (empty($companyPricingPlans)) {
-//            $this->_logger->log("[Model][Companies] No active Pricing Plan.",
-//                \Zend_Log::WARN);
-            return array();
-        }
-        return $companyPricingPlans;
-    }
-
-    public function getLanguageCode()
-    {
-        /**
-         * @var Company $this
-         */
-        $language = $this->getLanguage();
-        if (! $language) {
-            return $this->getBrand()->getLanguageCode();
-        }
-        return $language->getIden();
     }
 
     /**
-     * @brief Get musicclass for given company
+     * @param DataTransferObjectInterface $dto
+     * @return self
+     */
+    public function updateFromDTO(DataTransferObjectInterface $dto)
+    {
+        /**
+         * @var $dto CompanyDTO
+         */
+        parent::updateFromDTO($dto);
+
+        $this
+            ->replaceExtensions($dto->getExtensions())
+            ->replaceDdis($dto->getDdis())
+            ->replaceFriends($dto->getFriends())
+            ->replaceCompanyServices($dto->getCompanyServices())
+            ->replaceTerminals($dto->getTerminals())
+            ->replaceRelPricingPlans($dto->getRelPricingPlans())
+            ->replaceMusicsOnHold($dto->getMusicsOnHold())
+            ->replaceRecordings($dto->getRecordings())
+            ->replaceRelFeatures($dto->getRelFeatures())
+            ->replaceCallACLPatterns($dto->getCallACLPatterns())
+            ->replaceDomains($dto->getDomains());
+
+
+        return $this;
+    }
+
+    /**
+     * @return CompanyDTO
+     */
+    public function toDTO()
+    {
+        $dto = parent::toDTO();
+        return $dto
+            ->setId($this->getId())
+            ->setExtensions($this->getExtensions())
+            ->setDdis($this->getDdis())
+            ->setFriends($this->getFriends())
+            ->setCompanyServices($this->getCompanyServices())
+            ->setTerminals($this->getTerminals())
+            ->setRelPricingPlans($this->getRelPricingPlans())
+            ->setMusicsOnHold($this->getMusicsOnHold())
+            ->setRecordings($this->getRecordings())
+            ->setRelFeatures($this->getRelFeatures())
+            ->setCallACLPatterns($this->getCallACLPatterns())
+            ->setDomains($this->getDomains());
+    }
+
+    /**
+     * @return array
+     */
+    protected function __toArray()
+    {
+        return parent::__toArray() + [
+            'id' => $this->getId()
+        ];
+    }
+
+
+    /**
+     * Get id
      *
-     * If no specific company music on hold is found, brand music will be used.
-     * If no specific brand music  on hold is found, dafault music will be sued.
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add extension
      *
-     */
-    public function getMusicClass()
-    {
-        /**
-         * @var Company $this
-         */
-        // Company has music on hold
-        $companyMoH = $this->getMusicsOnHold();
-        if (!empty($companyMoH)) {
-            return $companyMoH[0]->getOwner();
-        }
-
-        // Brand has music on hold
-        $brandMoH = $this->getBrand()->getGenericMusicsOnHold();
-        if (!empty($brandMoH)) {
-            return $brandMoH[0]->getOwner();
-        }
-
-        return "default";
-    }
-
-    /**
-     * Ensures valid domain value
-     * @param string $data
-     * @return \IvozProvider\Model\Raw\Companies
-     * @throws \Exception
-     */
-    public function setDomainUsers($domainUsers = null)
-    {
-        /**
-         * @var Company $this
-         */
-        if (is_string($domainUsers)) {
-            $domainUsers = trim($domainUsers);
-        }
-
-        if ($this->getType() === self::$VPBX && empty($data)) {
-            throw new \Exception("Domain can't be empty", self::$EMPTY_DOMAIN_EXCEPTION);
-        }
-
-        return parent::setDomainUsers($domainUsers);
-    }
-
-    /**
-     * Get associated user domain for this company
-     */
-    public function getDomain()
-    {
-        /**
-         * @var Company $this
-         */
-        if ($this->getType() === self::$RETAIL) {
-            // Retail Companies use Brand's Domain
-            return $this->getBrand()->getDomainUsers();
-        } else {
-            // Virtual PBX Companies use Company's Domain
-            return $this->getDomainUsers();
-        }
-    }
-
-    /**
+     * @param \Ivoz\Domain\Model\Extension\Extension $extension
      *
-     * @param string $number
-     * @return bool tarificable
+     * @return CompanyTrait
      */
-    public function isDstTarificable($number)
+    public function addExtension(\Ivoz\Domain\Model\Extension\Extension $extension)
     {
-        /**
-         * @var Company $this
-         */
-        $call = new \IvozProvider\Model\KamAccCdrs();
+        $this->extensions[] = $extension;
 
-        $call->setCallee($number)
-            ->setCompanyId($this->getId())
-            ->setBrandId($this->getBrand()->getId())
-            ->setStartTimeUtc(new \Zend_Date());
+        return $this;
+    }
 
-        $result = $call->tarificate();
-        if (! is_null($result)) {
-            return $result->getPricingPlan();
+    /**
+     * Remove extension
+     *
+     * @param \Ivoz\Domain\Model\Extension\Extension $extension
+     */
+    public function removeExtension(\Ivoz\Domain\Model\Extension\Extension $extension)
+    {
+        $this->extensions->removeElement($extension);
+    }
+
+    /**
+     * Replace extensions
+     *
+     * @param \Ivoz\Domain\Model\Extension\Extension[] $extensions
+     * @return self
+     */
+    public function replaceExtensions(array $extensions)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($extensions as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
         }
-        return null;
-    }
+        $updatedEntityKeys = array_keys($updatedEntities);
 
-    /**
-     * Convert a company dialed number to E164 form
-     *
-     * param string $number
-     * return string number in E164
-     */
-    public function preferredToE164($prefnumber)
-    {
-        /**
-         * @var Company $this
-         */
-        // Remove company outbound prefix
-        $prefnumber = $this->removeOutboundPrefix($prefnumber);
-        // Get user country
-        $country = $this->getCountry();
-        // Return e164 number dialed by this user
-        return $country->preferredToE164($prefnumber, $this->getAreaCodeValue());
-    }
-
-    /**
-     * Convert a received number to Company prefered format
-     *
-     * @param unknown $number
-     */
-    public function E164ToPreferred($e164number)
-    {
-        /**
-         * @var Company $this
-         */
-        // Get Compnay country
-        $country = $this->getCountry();
-        // Convert from E164 to user country preferred format
-        $prefnumber = $country->E164ToPreferred($e164number, $this->getAreaCodeValue());
-        // Add Company outbound prefix
-        return $this->addOutboundPrefix($prefnumber);
-    }
-
-    /**
-     * Gets company area code if company country uses area code
-     *
-     * @return string
-     */
-    public function getAreaCodeValue()
-    {
-        /**
-         * @var Company $this
-         */
-        if (!$this->getCountry()->hasAreaCode()) {
-            return "";
-        }
-
-        return $this->getAreaCode();
-    }
-
-    public function removeOutboundPrefix($number)
-    {
-        /**
-         * @var Company $this
-         */
-        // Remove company outbound prefix
-        $outboundPrefix = $this->getOutboundPrefix();
-        return preg_replace("/^$outboundPrefix/", "", $number);
-    }
-
-    public function addOutboundPrefix($number)
-    {
-        /**
-         * @var Company $this
-         */
-        // Add Company outbound prefix
-        return $this->getOutboundPrefix() . $number;
-    }
-
-    public function getOutgoingRoutings()
-    {
-        /**
-         * @var Company $this
-         */
-        $outgoingRoutings = $this->getBrand()->getOutgoingRouting();
-        $applicableOutgoingRoutings = array();
-
-        foreach ($outgoingRoutings as $outgoingRouting) {
-            $isForMyCompany = ($outgoingRouting->getCompany()->getId() == $this->getId());
-            $isForAllCompanies = is_null($outgoingRouting->getCompany()->getId());
-
-            if ($isForMyCompany or $isForAllCompanies) {
-                array_push($applicableOutgoingRoutings, $outgoingRouting);
+        foreach ($this->extensions as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->extensions[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeExtension($key);
             }
+            unset($updatedEntities[$identity]);
         }
 
-        return $applicableOutgoingRoutings;
+        foreach ($updatedEntities as $entity) {
+            $this->addExtension($entity);
+        }
+
+        return $this;
     }
 
     /**
-     * Get the size in bytes used by the recordings on this company
+     * Get extensions
+     *
+     * @return array
      */
-    public function getRecordingsDiskUsage()
+    public function getExtensions(Criteria $criteria = null)
     {
-        /**
-         * @var Company $this
-         */
-        $total = 0;
-
-        // Get company recordings
-        $recordings = $this->getRecordings();
-
-        // Sum all recording size
-        /**
-         * @var Recording $recording
-         */
-        foreach ($recordings as $recording) {
-            $total += $recording->getRecordedFile()->getFileSize();
+        if (!is_null($criteria)) {
+            return $this->extensions->matching($criteria)->toArray();
         }
-        return $total;
+
+        return $this->extensions->toArray();
     }
 
     /**
-     * Get the size in bytes for disk usage limit on this company
+     * Add ddi
+     *
+     * @param \Ivoz\Domain\Model\DDI\DDI $ddi
+     *
+     * @return CompanyTrait
      */
-    public function getRecordingsLimit()
+    public function addDdi(\Ivoz\Domain\Model\DDI\DDI $ddi)
     {
-        /**
-         * @var Company $this
-         */
-        return $this->getRecordingsLimitMB() * 1024 * 1024;
+        $this->ddis[] = $ddi;
+
+        return $this;
     }
 
-    public function hasFeature($featureId)
+    /**
+     * Remove ddi
+     *
+     * @param \Ivoz\Domain\Model\DDI\DDI $ddi
+     */
+    public function removeDdi(\Ivoz\Domain\Model\DDI\DDI $ddi)
     {
-        /**
-         * @var Company $this
-         * @var Feature $feature
-         */
-        foreach ($this->getFeatures() as $feature) {
-            if ($feature->getId() == $featureId) {
-                return true;
+        $this->ddis->removeElement($ddi);
+    }
+
+    /**
+     * Replace ddis
+     *
+     * @param \Ivoz\Domain\Model\DDI\DDI[] $ddis
+     * @return self
+     */
+    public function replaceDdis(array $ddis)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($ddis as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->ddis as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->ddis[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeDdi($key);
             }
+            unset($updatedEntities[$identity]);
         }
-        return false;
+
+        foreach ($updatedEntities as $entity) {
+            $this->addDdi($entity);
+        }
+
+        return $this;
     }
 
     /**
-     * Get On demand recording code DTMFs
+     * Get ddis
+     *
+     * @return array
      */
-    public function getOnDemandRecordDTMFs()
+    public function getDdis(Criteria $criteria = null)
     {
-        /**
-         * @var Company $this
-         */
-        return '*' . $this->getOnDemandRecordCode();
-    }
-
-    public function getFeatures()
-    {
-        /**
-         * @var Company $this
-         */
-        $features = array();
-
-        /**
-         * @var FeaturesRelCompany $relFeature
-         */
-        foreach ($this->getFeaturesRelCompanies() as $relFeature) {
-            if ($this->getBrand()->hasFeature($relFeature->getFeatureId())) {
-                array_push($features, $relFeature->getFeature());
-            }
+        if (!is_null($criteria)) {
+            return $this->ddis->matching($criteria)->toArray();
         }
 
-        return $features;
+        return $this->ddis->toArray();
     }
+
+    /**
+     * Add friend
+     *
+     * @param \Ivoz\Domain\Model\Friend\Friend $friend
+     *
+     * @return CompanyTrait
+     */
+    public function addFriend(\Ivoz\Domain\Model\Friend\Friend $friend)
+    {
+        $this->friends[] = $friend;
+
+        return $this;
+    }
+
+    /**
+     * Remove friend
+     *
+     * @param \Ivoz\Domain\Model\Friend\Friend $friend
+     */
+    public function removeFriend(\Ivoz\Domain\Model\Friend\Friend $friend)
+    {
+        $this->friends->removeElement($friend);
+    }
+
+    /**
+     * Replace friends
+     *
+     * @param \Ivoz\Domain\Model\Friend\Friend[] $friends
+     * @return self
+     */
+    public function replaceFriends(array $friends)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($friends as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->friends as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->friends[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeFriend($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addFriend($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get friends
+     *
+     * @return array
+     */
+    public function getFriends(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->friends->matching($criteria)->toArray();
+        }
+
+        return $this->friends->toArray();
+    }
+
+    /**
+     * Add companyService
+     *
+     * @param \Ivoz\Domain\Model\CompanyService\CompanyService $companyService
+     *
+     * @return CompanyTrait
+     */
+    public function addCompanyService(\Ivoz\Domain\Model\CompanyService\CompanyService $companyService)
+    {
+        $this->companyServices[] = $companyService;
+
+        return $this;
+    }
+
+    /**
+     * Remove companyService
+     *
+     * @param \Ivoz\Domain\Model\CompanyService\CompanyService $companyService
+     */
+    public function removeCompanyService(\Ivoz\Domain\Model\CompanyService\CompanyService $companyService)
+    {
+        $this->companyServices->removeElement($companyService);
+    }
+
+    /**
+     * Replace companyServices
+     *
+     * @param \Ivoz\Domain\Model\CompanyService\CompanyService[] $companyServices
+     * @return self
+     */
+    public function replaceCompanyServices(array $companyServices)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($companyServices as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->companyServices as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->companyServices[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeCompanyService($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addCompanyService($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get companyServices
+     *
+     * @return array
+     */
+    public function getCompanyServices(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->companyServices->matching($criteria)->toArray();
+        }
+
+        return $this->companyServices->toArray();
+    }
+
+    /**
+     * Add terminal
+     *
+     * @param \Ivoz\Domain\Model\Terminal\Terminal $terminal
+     *
+     * @return CompanyTrait
+     */
+    public function addTerminal(\Ivoz\Domain\Model\Terminal\Terminal $terminal)
+    {
+        $this->terminals[] = $terminal;
+
+        return $this;
+    }
+
+    /**
+     * Remove terminal
+     *
+     * @param \Ivoz\Domain\Model\Terminal\Terminal $terminal
+     */
+    public function removeTerminal(\Ivoz\Domain\Model\Terminal\Terminal $terminal)
+    {
+        $this->terminals->removeElement($terminal);
+    }
+
+    /**
+     * Replace terminals
+     *
+     * @param \Ivoz\Domain\Model\Terminal\Terminal[] $terminals
+     * @return self
+     */
+    public function replaceTerminals(array $terminals)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($terminals as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->terminals as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->terminals[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeTerminal($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addTerminal($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get terminals
+     *
+     * @return array
+     */
+    public function getTerminals(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->terminals->matching($criteria)->toArray();
+        }
+
+        return $this->terminals->toArray();
+    }
+
+    /**
+     * Add relPricingPlan
+     *
+     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompany $relPricingPlan
+     *
+     * @return CompanyTrait
+     */
+    public function addRelPricingPlan(\Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompany $relPricingPlan)
+    {
+        $this->relPricingPlans[] = $relPricingPlan;
+
+        return $this;
+    }
+
+    /**
+     * Remove relPricingPlan
+     *
+     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompany $relPricingPlan
+     */
+    public function removeRelPricingPlan(\Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompany $relPricingPlan)
+    {
+        $this->relPricingPlans->removeElement($relPricingPlan);
+    }
+
+    /**
+     * Replace relPricingPlans
+     *
+     * @param \Ivoz\Domain\Model\PricingPlansRelCompany\PricingPlansRelCompany[] $relPricingPlans
+     * @return self
+     */
+    public function replaceRelPricingPlans(array $relPricingPlans)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($relPricingPlans as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->relPricingPlans as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->relPricingPlans[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeRelPricingPlan($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addRelPricingPlan($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get relPricingPlans
+     *
+     * @return array
+     */
+    public function getRelPricingPlans(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->relPricingPlans->matching($criteria)->toArray();
+        }
+
+        return $this->relPricingPlans->toArray();
+    }
+
+    /**
+     * Add musicsOnHold
+     *
+     * @param \Ivoz\Domain\Model\MusicOnHold\MusicOnHold $musicsOnHold
+     *
+     * @return CompanyTrait
+     */
+    public function addMusicsOnHold(\Ivoz\Domain\Model\MusicOnHold\MusicOnHold $musicsOnHold)
+    {
+        $this->musicsOnHold[] = $musicsOnHold;
+
+        return $this;
+    }
+
+    /**
+     * Remove musicsOnHold
+     *
+     * @param \Ivoz\Domain\Model\MusicOnHold\MusicOnHold $musicsOnHold
+     */
+    public function removeMusicsOnHold(\Ivoz\Domain\Model\MusicOnHold\MusicOnHold $musicsOnHold)
+    {
+        $this->musicsOnHold->removeElement($musicsOnHold);
+    }
+
+    /**
+     * Replace musicsOnHold
+     *
+     * @param \Ivoz\Domain\Model\MusicOnHold\MusicOnHold[] $musicsOnHold
+     * @return self
+     */
+    public function replaceMusicsOnHold(array $musicsOnHold)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($musicsOnHold as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->musicsOnHold as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->musicsOnHold[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeMusicsOnHold($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addMusicsOnHold($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get musicsOnHold
+     *
+     * @return array
+     */
+    public function getMusicsOnHold(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->musicsOnHold->matching($criteria)->toArray();
+        }
+
+        return $this->musicsOnHold->toArray();
+    }
+
+    /**
+     * Add recording
+     *
+     * @param \Ivoz\Domain\Model\Recording\Recording $recording
+     *
+     * @return CompanyTrait
+     */
+    public function addRecording(\Ivoz\Domain\Model\Recording\Recording $recording)
+    {
+        $this->recordings[] = $recording;
+
+        return $this;
+    }
+
+    /**
+     * Remove recording
+     *
+     * @param \Ivoz\Domain\Model\Recording\Recording $recording
+     */
+    public function removeRecording(\Ivoz\Domain\Model\Recording\Recording $recording)
+    {
+        $this->recordings->removeElement($recording);
+    }
+
+    /**
+     * Replace recordings
+     *
+     * @param \Ivoz\Domain\Model\Recording\Recording[] $recordings
+     * @return self
+     */
+    public function replaceRecordings(array $recordings)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($recordings as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->recordings as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->recordings[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeRecording($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addRecording($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get recordings
+     *
+     * @return array
+     */
+    public function getRecordings(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->recordings->matching($criteria)->toArray();
+        }
+
+        return $this->recordings->toArray();
+    }
+
+    /**
+     * Add relFeature
+     *
+     * @param \Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompany $relFeature
+     *
+     * @return CompanyTrait
+     */
+    public function addRelFeature(\Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompany $relFeature)
+    {
+        $this->relFeatures[] = $relFeature;
+
+        return $this;
+    }
+
+    /**
+     * Remove relFeature
+     *
+     * @param \Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompany $relFeature
+     */
+    public function removeRelFeature(\Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompany $relFeature)
+    {
+        $this->relFeatures->removeElement($relFeature);
+    }
+
+    /**
+     * Replace relFeatures
+     *
+     * @param \Ivoz\Domain\Model\FeaturesRelCompany\FeaturesRelCompany[] $relFeatures
+     * @return self
+     */
+    public function replaceRelFeatures(array $relFeatures)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($relFeatures as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->relFeatures as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->relFeatures[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeRelFeature($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addRelFeature($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get relFeatures
+     *
+     * @return array
+     */
+    public function getRelFeatures(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->relFeatures->matching($criteria)->toArray();
+        }
+
+        return $this->relFeatures->toArray();
+    }
+
+    /**
+     * Add callACLPattern
+     *
+     * @param \Ivoz\Domain\Model\CallACLPattern\CallACLPattern $callACLPattern
+     *
+     * @return CompanyTrait
+     */
+    public function addCallACLPattern(\Ivoz\Domain\Model\CallACLPattern\CallACLPattern $callACLPattern)
+    {
+        $this->callACLPatterns[] = $callACLPattern;
+
+        return $this;
+    }
+
+    /**
+     * Remove callACLPattern
+     *
+     * @param \Ivoz\Domain\Model\CallACLPattern\CallACLPattern $callACLPattern
+     */
+    public function removeCallACLPattern(\Ivoz\Domain\Model\CallACLPattern\CallACLPattern $callACLPattern)
+    {
+        $this->callACLPatterns->removeElement($callACLPattern);
+    }
+
+    /**
+     * Replace callACLPatterns
+     *
+     * @param \Ivoz\Domain\Model\CallACLPattern\CallACLPattern[] $callACLPatterns
+     * @return self
+     */
+    public function replaceCallACLPatterns(array $callACLPatterns)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($callACLPatterns as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->callACLPatterns as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->callACLPatterns[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeCallACLPattern($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addCallACLPattern($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get callACLPatterns
+     *
+     * @return array
+     */
+    public function getCallACLPatterns(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->callACLPatterns->matching($criteria)->toArray();
+        }
+
+        return $this->callACLPatterns->toArray();
+    }
+
+    /**
+     * Add domain
+     *
+     * @param \Ivoz\Domain\Model\Domain\Domain $domain
+     *
+     * @return CompanyTrait
+     */
+    public function addDomain(\Ivoz\Domain\Model\Domain\Domain $domain)
+    {
+        $this->domains[] = $domain;
+
+        return $this;
+    }
+
+    /**
+     * Remove domain
+     *
+     * @param \Ivoz\Domain\Model\Domain\Domain $domain
+     */
+    public function removeDomain(\Ivoz\Domain\Model\Domain\Domain $domain)
+    {
+        $this->domains->removeElement($domain);
+    }
+
+    /**
+     * Replace domains
+     *
+     * @param \Ivoz\Domain\Model\Domain\Domain[] $domains
+     * @return self
+     */
+    public function replaceDomains(array $domains)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($domains as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCompany($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->domains as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->domains[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeDomain($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addDomain($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get domains
+     *
+     * @return array
+     */
+    public function getDomains(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->domains->matching($criteria)->toArray();
+        }
+
+        return $this->domains->toArray();
+    }
+
 
 }
+

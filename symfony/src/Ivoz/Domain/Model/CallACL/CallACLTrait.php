@@ -1,40 +1,196 @@
 <?php
-
 namespace Ivoz\Domain\Model\CallACL;
 
+use Core\Application\DataTransferObjectInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPattern;
 
+/**
+ * CallACLTrait
+ */
 trait CallACLTrait
 {
-    public function dstIsCallable($dst)
+    /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $relPatterns;
+
+
+    /**
+     * Changelog tracking purpose
+     * @var array
+     */
+    protected $_initialValues = [];
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct(...func_get_args());
+        $this->relPatterns = new ArrayCollection();
+    }
+
+    public function __wakeup()
+    {
+        if ($this->id) {
+            $this->_initialValues = $this->__toArray();
+        }
+        // Do nothing: Doctrines requirement
+    }
+
+    /**
+     * @return CallACLDTO
+     */
+    public static function createDTO()
+    {
+        return new CallACLDTO();
+    }
+
+    /**
+     * Factory method
+     * @param DataTransferObjectInterface $dto
+     * @return self
+     */
+    public static function fromDTO(DataTransferObjectInterface $dto)
     {
         /**
-         * @var CallACL $this
+         * @var $dto CallACLDTO
          */
-        $defaultPolicy = $this->getDefaultPolicy();
+        $self = parent::fromDTO($dto);
 
-        $criteria = Criteria
-            ::create()
-            ->orderBy(['priority' => Criteria::ASC]);
+        return $self
+            ->replaceRelPatterns($dto->getRelPatterns())
+        ;
+    }
 
-        $aclRelPatterns = $this->getRelPatterns($criteria);
-
+    /**
+     * @param DataTransferObjectInterface $dto
+     * @return self
+     */
+    public function updateFromDTO(DataTransferObjectInterface $dto)
+    {
         /**
-         * @var CallACLRelPattern $aclRelPattern
+         * @var $dto CallACLDTO
          */
-        foreach($aclRelPatterns as $aclRelPattern) {
-            $aclPattern = $aclRelPattern->getCallACLPattern();
-            $policy = $aclRelPattern->getPolicy();
-            $pattern = $aclPattern->getRegExp();
-            $match = preg_match('/'.$pattern.'/', $dst);
+        parent::updateFromDTO($dto);
 
-            if($match) {
-                return 'allow' === $policy;
+        $this
+            ->replaceRelPatterns($dto->getRelPatterns());
+
+
+        return $this;
+    }
+
+    /**
+     * @return CallACLDTO
+     */
+    public function toDTO()
+    {
+        $dto = parent::toDTO();
+        return $dto
+            ->setId($this->getId())
+            ->setRelPatterns($this->getRelPatterns());
+    }
+
+    /**
+     * @return array
+     */
+    protected function __toArray()
+    {
+        return parent::__toArray() + [
+            'id' => $this->getId()
+        ];
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add relPattern
+     *
+     * @param \Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPattern $relPattern
+     *
+     * @return CallACLTrait
+     */
+    public function addRelPattern(\Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPattern $relPattern)
+    {
+        $this->relPatterns[] = $relPattern;
+
+        return $this;
+    }
+
+    /**
+     * Remove relPattern
+     *
+     * @param \Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPattern $relPattern
+     */
+    public function removeRelPattern(\Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPattern $relPattern)
+    {
+        $this->relPatterns->removeElement($relPattern);
+    }
+
+    /**
+     * Replace relPatterns
+     *
+     * @param \Ivoz\Domain\Model\CallACLRelPattern\CallACLRelPattern[] $relPatterns
+     * @return self
+     */
+    public function replaceRelPatterns(array $relPatterns)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($relPatterns as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setCallACL($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->relPatterns as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->relPatterns[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeRelPattern($key);
             }
+            unset($updatedEntities[$identity]);
         }
 
-        return 'allow' === $defaultPolicy;
+        foreach ($updatedEntities as $entity) {
+            $this->addRelPattern($entity);
+        }
+
+        return $this;
     }
+
+    /**
+     * Get relPatterns
+     *
+     * @return array
+     */
+    public function getRelPatterns(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->relPatterns->matching($criteria)->toArray();
+        }
+
+        return $this->relPatterns->toArray();
+    }
+
+
 }
 

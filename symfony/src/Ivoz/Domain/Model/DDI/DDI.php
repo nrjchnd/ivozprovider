@@ -1,8 +1,6 @@
 <?php
 namespace Ivoz\Domain\Model\DDI;
 
-use Core\Application\DataTransferObjectInterface;
-
 /**
  * DDI
  */
@@ -11,103 +9,51 @@ class DDI extends DDIAbstract implements DDIInterface
     use DDITrait;
 
     /**
-     * @var integer
+     * @return string Domain
      */
-    protected $id;
-
-
-    /**
-     * Changelog tracking purpose
-     * @var array
-     */
-    protected $_initialValues = [];
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function getDomain()
     {
-        parent::__construct(...func_get_args());
+        /**
+         * @var CompanyInterface $company
+         */
+        $company = $this->getCompany();
+        if(!$company) {
 
-    }
-
-    public function __wakeup()
-    {
-        if ($this->id) {
-            $this->_initialValues = $this->__toArray();
+            return null;
         }
-        // Do nothing: Doctrines requirement
+
+        /**
+         * @var Brand $brand
+         */
+        $brand = $company->getBrand();
+        if(!$brand) {
+
+            return null;
+        }
+
+        /**
+         * @todo this does not exist
+         */
+        return $brand->getDomain();
     }
 
-    /**
-     * @return DDIDTO
-     */
-    public static function createDTO()
-    {
-        return new DDIDTO();
-    }
-
-    /**
-     * Factory method
-     * @param DataTransferObjectInterface $dto
-     * @return self
-     */
-    public static function fromDTO(DataTransferObjectInterface $dto)
+    public function getLanguageCode()
     {
         /**
-         * @var $dto DDIDTO
+         * @var Language $language
          */
-        $self = parent::fromDTO($dto);
+        $language = $this->getLanguage();
+        if (!$language) {
 
-        return $self;
+            /**
+             * @var Company $company
+             */
+            $company = $this->getCompany();
+
+            return $company->getLanguageCode();
+        }
+
+        return $language->getIden();
     }
-
-    /**
-     * @param DataTransferObjectInterface $dto
-     * @return self
-     */
-    public function updateFromDTO(DataTransferObjectInterface $dto)
-    {
-        /**
-         * @var $dto DDIDTO
-         */
-        parent::updateFromDTO($dto);
-
-        
-        return $this;
-    }
-
-    /**
-     * @return DDIDTO
-     */
-    public function toDTO()
-    {
-        $dto = parent::toDTO();
-        return $dto
-            ->setId($this->getId());
-    }
-
-    /**
-     * @return array
-     */
-    protected function __toArray()
-    {
-        return parent::__toArray() + [
-            'id' => $this->getId()
-        ];
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-
 }
 
