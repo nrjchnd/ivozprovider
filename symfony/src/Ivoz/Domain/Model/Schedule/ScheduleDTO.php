@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\Schedule;
 
 use Core\Application\DataTransferObjectInterface;

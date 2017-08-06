@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\CallACLRelPattern;
 
 use Core\Application\DataTransferObjectInterface;

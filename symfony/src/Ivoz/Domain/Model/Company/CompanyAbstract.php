@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\Company;
 
 use Assert\Assertion;
@@ -55,6 +56,12 @@ abstract class CompanyAbstract
      * @var string
      */
     protected $province;
+
+    /**
+     * @column country_name
+     * @var string
+     */
+    protected $countryName;
 
     /**
      * @column outbound_prefix
@@ -150,7 +157,8 @@ abstract class CompanyAbstract
         $postalAddress,
         $postalCode,
         $town,
-        $province
+        $province,
+        $countryName
     ) {
         $this->setType($type);
         $this->setName($name);
@@ -160,6 +168,7 @@ abstract class CompanyAbstract
         $this->setPostalCode($postalCode);
         $this->setTown($town);
         $this->setProvince($province);
+        $this->setCountryName($countryName);
         $this->initChangelog();
     }
 
@@ -206,7 +215,8 @@ abstract class CompanyAbstract
             $dto->getPostalAddress(),
             $dto->getPostalCode(),
             $dto->getTown(),
-            $dto->getProvince());
+            $dto->getProvince(),
+            $dto->getCountryName());
 
         return $self
             ->setDomainUsers($dto->getDomainUsers())
@@ -249,6 +259,7 @@ abstract class CompanyAbstract
             ->setPostalCode($dto->getPostalCode())
             ->setTown($dto->getTown())
             ->setProvince($dto->getProvince())
+            ->setCountryName($dto->getCountryName())
             ->setOutboundPrefix($dto->getOutboundPrefix())
             ->setIpfilter($dto->getIpfilter())
             ->setOnDemandRecord($dto->getOnDemandRecord())
@@ -284,6 +295,7 @@ abstract class CompanyAbstract
             ->setPostalCode($this->getPostalCode())
             ->setTown($this->getTown())
             ->setProvince($this->getProvince())
+            ->setCountryName($this->getCountryName())
             ->setOutboundPrefix($this->getOutboundPrefix())
             ->setIpfilter($this->getIpfilter())
             ->setOnDemandRecord($this->getOnDemandRecord())
@@ -316,6 +328,7 @@ abstract class CompanyAbstract
             'postalCode' => $this->getPostalCode(),
             'town' => $this->getTown(),
             'province' => $this->getProvince(),
+            'countryName' => $this->getCountryName(),
             'outboundPrefix' => $this->getOutboundPrefix(),
             'ipfilter' => $this->getIpfilter(),
             'onDemandRecord' => $this->getOnDemandRecord(),
@@ -584,6 +597,33 @@ abstract class CompanyAbstract
     public function getProvince()
     {
         return $this->province;
+    }
+
+    /**
+     * Set countryName
+     *
+     * @param string $countryName
+     *
+     * @return self
+     */
+    public function setCountryName($countryName)
+    {
+        Assertion::notNull($countryName);
+        Assertion::maxLength($countryName, 255);
+
+        $this->countryName = $countryName;
+
+        return $this;
+    }
+
+    /**
+     * Get countryName
+     *
+     * @return string
+     */
+    public function getCountryName()
+    {
+        return $this->countryName;
     }
 
     /**

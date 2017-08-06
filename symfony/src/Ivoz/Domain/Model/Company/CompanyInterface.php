@@ -169,6 +169,24 @@ interface CompanyInterface extends EntityInterface
 
 
     /**
+     * Set countryName
+     *
+     * @param string $countryName
+     *
+     * @return CompanyInterface
+     */
+    public function setCountryName($countryName);
+
+
+    /**
+     * Get countryName
+     *
+     * @return string
+     */
+    public function getCountryName();
+
+
+    /**
      * Set outboundPrefix
      *
      * @param string $outboundPrefix

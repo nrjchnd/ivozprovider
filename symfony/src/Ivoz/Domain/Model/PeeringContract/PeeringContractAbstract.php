@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\PeeringContract;
 
 use Assert\Assertion;

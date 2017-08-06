@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\FixedCost;
 
 use Core\Application\DataTransferObjectInterface;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\Company;
 
 use Core\Application\DataTransferObjectInterface;
@@ -54,6 +55,11 @@ class CompanyDTO implements DataTransferObjectInterface
      * @var string
      */
     private $province;
+
+    /**
+     * @var string
+     */
+    private $countryName;
 
     /**
      * @var string
@@ -240,6 +246,7 @@ class CompanyDTO implements DataTransferObjectInterface
             'postalCode' => $this->getPostalCode(),
             'town' => $this->getTown(),
             'province' => $this->getProvince(),
+            'countryName' => $this->getCountryName(),
             'outboundPrefix' => $this->getOutboundPrefix(),
             'ipfilter' => $this->getIpfilter(),
             'onDemandRecord' => $this->getOnDemandRecord(),
@@ -612,6 +619,26 @@ class CompanyDTO implements DataTransferObjectInterface
     public function getProvince()
     {
         return $this->province;
+    }
+
+    /**
+     * @param string $countryName
+     *
+     * @return CompanyDTO
+     */
+    public function setCountryName($countryName)
+    {
+        $this->countryName = $countryName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryName()
+    {
+        return $this->countryName;
     }
 
     /**

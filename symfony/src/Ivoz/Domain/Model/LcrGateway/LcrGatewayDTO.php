@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\LcrGateway;
 
 use Core\Application\DataTransferObjectInterface;

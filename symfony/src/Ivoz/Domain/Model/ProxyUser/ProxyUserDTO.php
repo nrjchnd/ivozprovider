@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\ProxyUser;
 
 use Core\Application\DataTransferObjectInterface;

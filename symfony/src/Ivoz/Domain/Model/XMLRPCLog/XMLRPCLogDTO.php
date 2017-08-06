@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\XMLRPCLog;
 
 use Core\Application\DataTransferObjectInterface;

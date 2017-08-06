@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\FeaturesRelBrand;
 
 use Assert\Assertion;

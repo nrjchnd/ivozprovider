@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\CallACL;
 
 use Core\Application\DataTransferObjectInterface;

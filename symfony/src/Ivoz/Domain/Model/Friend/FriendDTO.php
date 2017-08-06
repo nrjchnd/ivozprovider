@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\Friend;
 
 use Core\Application\DataTransferObjectInterface;

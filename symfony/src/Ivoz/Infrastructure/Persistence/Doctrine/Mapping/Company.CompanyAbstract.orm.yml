@@ -91,6 +91,12 @@ Ivoz\Domain\Model\Company\CompanyAbstract:
       length: 255
       options:
         fixed: false
+    countryName:
+      type: string
+      nullable: false
+      length: 255
+      options:
+        fixed: false
     outboundPrefix:
       type: string
       nullable: true

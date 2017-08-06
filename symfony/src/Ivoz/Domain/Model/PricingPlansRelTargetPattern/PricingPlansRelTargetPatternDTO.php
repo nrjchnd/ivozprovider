@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\PricingPlansRelTargetPattern;
 
 use Core\Application\DataTransferObjectInterface;

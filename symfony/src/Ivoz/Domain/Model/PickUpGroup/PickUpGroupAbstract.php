@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\PickUpGroup;
 
 use Assert\Assertion;

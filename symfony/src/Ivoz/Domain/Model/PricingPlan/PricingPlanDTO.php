@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\PricingPlan;
 
 use Core\Application\DataTransferObjectInterface;

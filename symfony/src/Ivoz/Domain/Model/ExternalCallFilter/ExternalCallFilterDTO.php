@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\ExternalCallFilter;
 
 use Core\Application\DataTransferObjectInterface;

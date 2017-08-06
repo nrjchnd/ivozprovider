@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\MatchListPattern;
 
 use Core\Application\DataTransferObjectInterface;

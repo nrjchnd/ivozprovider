@@ -33,8 +33,8 @@ class SanitizeEmptyValues implements LifecycleEventHandlerInterface
      */
     public function execute(EntityInterface $entity)
     {
-        $isNew = $this->em->contains($entity);
-        if (!$isNew) {
+        $alreadyPersisted = $this->em->contains($entity);
+        if ($alreadyPersisted) {
             return;
         }
 
@@ -52,11 +52,11 @@ class SanitizeEmptyValues implements LifecycleEventHandlerInterface
         if (!$dto->getPostalCode()) {
             $dto->setPostalCode('PC');
         }
-        if ($dto->getTown()) {
+        if (!$dto->getTown()) {
             $dto->setTown('Town');
         }
-        if (!$dto->getCountry()) {
-            $dto->setCountry('Country');
+        if (!$dto->getCountryName()) {
+            $dto->setCountryName('Country');
         }
         if (!$dto->getProvince()) {
             $dto->setProvince('Province');

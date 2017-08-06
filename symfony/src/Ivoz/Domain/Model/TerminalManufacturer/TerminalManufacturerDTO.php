@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\TerminalManufacturer;
 
 use Core\Application\DataTransferObjectInterface;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\ExternalCallFilterBlackList;
 
 use Core\Application\DataTransferObjectInterface;

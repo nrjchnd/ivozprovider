@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\RoutingPatternGroup;
 
 use Core\Application\DataTransferObjectInterface;

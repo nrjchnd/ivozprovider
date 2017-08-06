@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\EtagVersion;
 
 use Core\Application\DataTransferObjectInterface;

@@ -39,12 +39,6 @@ class TraitGenerator extends AbstractEntityGenerator
     protected static $constructorMethodTemplate =
         '
 /**
- * Changelog tracking purpose
- * @var array
- */
-protected $_initialValues = [];
-
-/**
  * Constructor
  */
 public function __construct(<requiredFields>)<lineBreak>{
@@ -55,7 +49,7 @@ public function __construct(<requiredFields>)<lineBreak>{
 public function __wakeup()
 {
     if ($this->id) {
-        $this->_initialValues = $this->__toArray();
+        $this->initChangelog();
     }
     // Do nothing: Doctrines requirement
 }

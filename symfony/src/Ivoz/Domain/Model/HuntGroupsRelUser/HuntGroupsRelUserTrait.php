@@ -18,7 +18,7 @@ trait HuntGroupsRelUserTrait
      * Changelog tracking purpose
      * @var array
      */
-    protected $_initialValues = [];
+
 
     /**
      * Constructor

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\CallForwardSetting;
 
 use Assert\Assertion;

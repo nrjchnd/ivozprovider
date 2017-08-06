@@ -18,7 +18,7 @@ trait UsersDomainAttrTrait
      * Changelog tracking purpose
      * @var array
      */
-    protected $_initialValues = [];
+
 
     /**
      * Constructor

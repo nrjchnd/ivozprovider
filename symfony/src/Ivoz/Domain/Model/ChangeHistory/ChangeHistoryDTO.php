@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\ChangeHistory;
 
 use Core\Application\DataTransferObjectInterface;

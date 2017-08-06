@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\FeaturesRelCompany;
 
 use Assert\Assertion;

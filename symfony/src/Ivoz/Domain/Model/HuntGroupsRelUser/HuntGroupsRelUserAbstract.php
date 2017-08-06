@@ -1,4 +1,5 @@
 <?php
+
 namespace Ivoz\Domain\Model\HuntGroupsRelUser;
 
 use Assert\Assertion;
