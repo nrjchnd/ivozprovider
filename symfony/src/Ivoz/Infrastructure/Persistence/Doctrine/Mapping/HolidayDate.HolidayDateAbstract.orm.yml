@@ -30,7 +30,7 @@ Ivoz\Domain\Model\HolidayDate\HolidayDateAbstract:
       cascade: {  }
       fetch: LAZY
       mappedBy: null
-      inversedBy: null
+      inversedBy: holidayDates
       joinColumns:
         calendarId:
           referencedColumnName: id

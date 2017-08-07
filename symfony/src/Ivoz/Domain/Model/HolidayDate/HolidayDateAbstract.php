@@ -219,7 +219,7 @@ abstract class HolidayDateAbstract
      *
      * @return self
      */
-    public function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar)
+    public function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar = null)
     {
         $this->calendar = $calendar;
 

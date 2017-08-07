@@ -13,7 +13,7 @@ interface ExternalCallFilterWhiteListInterface extends EntityInterface
      *
      * @return ExternalCallFilterWhiteListInterface
      */
-    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter);
+    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter = null);
 
 
     /**

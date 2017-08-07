@@ -147,7 +147,7 @@ abstract class ExternalCallFilterRelScheduleAbstract
      *
      * @return self
      */
-    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter)
+    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter = null)
     {
         $this->filter = $filter;
 

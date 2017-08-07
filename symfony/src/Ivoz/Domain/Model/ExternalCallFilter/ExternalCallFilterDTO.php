@@ -121,6 +121,26 @@ class ExternalCallFilterDTO implements DataTransferObjectInterface
     private $outOfScheduleVoiceMailUser;
 
     /**
+     * @var array|null
+     */
+    private $blackLists = null;
+
+    /**
+     * @var array|null
+     */
+    private $whiteList = null;
+
+    /**
+     * @var array|null
+     */
+    private $schedules = null;
+
+    /**
+     * @var array|null
+     */
+    private $calendars = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -139,7 +159,11 @@ class ExternalCallFilterDTO implements DataTransferObjectInterface
             'holidayExtensionId' => $this->getHolidayExtensionId(),
             'outOfScheduleExtensionId' => $this->getOutOfScheduleExtensionId(),
             'holidayVoiceMailUserId' => $this->getHolidayVoiceMailUserId(),
-            'outOfScheduleVoiceMailUserId' => $this->getOutOfScheduleVoiceMailUserId()
+            'outOfScheduleVoiceMailUserId' => $this->getOutOfScheduleVoiceMailUserId(),
+            'blackListsId' => $this->getBlackListsId(),
+            'whiteListId' => $this->getWhiteListId(),
+            'schedulesId' => $this->getSchedulesId(),
+            'calendarsId' => $this->getCalendarsId()
         ];
     }
 
@@ -156,6 +180,42 @@ class ExternalCallFilterDTO implements DataTransferObjectInterface
         $this->outOfScheduleExtension = $transformer->transform('Ivoz\\Domain\\Model\\Extension\\Extension', $this->getOutOfScheduleExtensionId());
         $this->holidayVoiceMailUser = $transformer->transform('Ivoz\\Domain\\Model\\User\\User', $this->getHolidayVoiceMailUserId());
         $this->outOfScheduleVoiceMailUser = $transformer->transform('Ivoz\\Domain\\Model\\User\\User', $this->getOutOfScheduleVoiceMailUserId());
+        $items = $this->getBlackLists();
+        $this->blackLists = [];
+        foreach ($items as $item) {
+            $this->blackLists[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\ExternalCallFilterBlackList\\ExternalCallFilterBlackList',
+                $item
+            );
+        }
+
+        $items = $this->getWhiteList();
+        $this->whiteList = [];
+        foreach ($items as $item) {
+            $this->whiteList[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\ExternalCallFilterWhiteList\\ExternalCallFilterWhiteList',
+                $item
+            );
+        }
+
+        $items = $this->getSchedules();
+        $this->schedules = [];
+        foreach ($items as $item) {
+            $this->schedules[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\ExternalCallFilter\\ExternalCallFilter',
+                $item
+            );
+        }
+
+        $items = $this->getCalendars();
+        $this->calendars = [];
+        foreach ($items as $item) {
+            $this->calendars[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\Calendar\\Calendar',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -163,7 +223,22 @@ class ExternalCallFilterDTO implements DataTransferObjectInterface
      */
     public function transformCollections(CollectionTransformerInterface $transformer)
     {
-
+        $this->blackLists = $transformer->transform(
+            'Ivoz\\Domain\\Model\\ExternalCallFilterBlackList\\ExternalCallFilterBlackList',
+            $this->blackLists
+        );
+        $this->whiteList = $transformer->transform(
+            'Ivoz\\Domain\\Model\\ExternalCallFilterWhiteList\\ExternalCallFilterWhiteList',
+            $this->whiteList
+        );
+        $this->schedules = $transformer->transform(
+            'Ivoz\\Domain\\Model\\ExternalCallFilter\\ExternalCallFilter',
+            $this->schedules
+        );
+        $this->calendars = $transformer->transform(
+            'Ivoz\\Domain\\Model\\Calendar\\Calendar',
+            $this->calendars
+        );
     }
 
     /**
@@ -508,6 +583,86 @@ class ExternalCallFilterDTO implements DataTransferObjectInterface
     public function getOutOfScheduleVoiceMailUser()
     {
         return $this->outOfScheduleVoiceMailUser;
+    }
+
+    /**
+     * @param array $blackLists
+     *
+     * @return ExternalCallFilterDTO
+     */
+    public function setBlackLists($blackLists)
+    {
+        $this->blackLists = $blackLists;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBlackLists()
+    {
+        return $this->blackLists;
+    }
+
+    /**
+     * @param array $whiteList
+     *
+     * @return ExternalCallFilterDTO
+     */
+    public function setWhiteList($whiteList)
+    {
+        $this->whiteList = $whiteList;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWhiteList()
+    {
+        return $this->whiteList;
+    }
+
+    /**
+     * @param array $schedules
+     *
+     * @return ExternalCallFilterDTO
+     */
+    public function setSchedules($schedules)
+    {
+        $this->schedules = $schedules;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSchedules()
+    {
+        return $this->schedules;
+    }
+
+    /**
+     * @param array $calendars
+     *
+     * @return ExternalCallFilterDTO
+     */
+    public function setCalendars($calendars)
+    {
+        $this->calendars = $calendars;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCalendars()
+    {
+        return $this->calendars;
     }
 }
 

@@ -13,7 +13,7 @@ Ivoz\Domain\Model\ExternalCallFilterRelCalendar\ExternalCallFilterRelCalendarAbs
       cascade: {  }
       fetch: LAZY
       mappedBy: null
-      inversedBy: null
+      inversedBy: calendars
       joinColumns:
         filterId:
           referencedColumnName: id

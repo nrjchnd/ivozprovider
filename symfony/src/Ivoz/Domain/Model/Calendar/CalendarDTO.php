@@ -31,6 +31,11 @@ class CalendarDTO implements DataTransferObjectInterface
     private $company;
 
     /**
+     * @var array|null
+     */
+    private $holidayDates = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -38,7 +43,8 @@ class CalendarDTO implements DataTransferObjectInterface
         return [
             'name' => $this->getName(),
             'id' => $this->getId(),
-            'companyId' => $this->getCompanyId()
+            'companyId' => $this->getCompanyId(),
+            'holidayDatesId' => $this->getHolidayDatesId()
         ];
     }
 
@@ -48,6 +54,15 @@ class CalendarDTO implements DataTransferObjectInterface
     public function transformForeignKeys(ForeignKeyTransformerInterface $transformer)
     {
         $this->company = $transformer->transform('Ivoz\\Domain\\Model\\Company\\Company', $this->getCompanyId());
+        $items = $this->getHolidayDates();
+        $this->holidayDates = [];
+        foreach ($items as $item) {
+            $this->holidayDates[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\HolidayDate\\HolidayDate',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -55,7 +70,10 @@ class CalendarDTO implements DataTransferObjectInterface
      */
     public function transformCollections(CollectionTransformerInterface $transformer)
     {
-
+        $this->holidayDates = $transformer->transform(
+            'Ivoz\\Domain\\Model\\HolidayDate\\HolidayDate',
+            $this->holidayDates
+        );
     }
 
     /**
@@ -124,6 +142,26 @@ class CalendarDTO implements DataTransferObjectInterface
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * @param array $holidayDates
+     *
+     * @return CalendarDTO
+     */
+    public function setHolidayDates($holidayDates)
+    {
+        $this->holidayDates = $holidayDates;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHolidayDates()
+    {
+        return $this->holidayDates;
     }
 }
 

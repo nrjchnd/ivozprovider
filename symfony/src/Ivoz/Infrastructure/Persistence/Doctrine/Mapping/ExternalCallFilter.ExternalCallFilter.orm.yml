@@ -11,4 +11,17 @@ Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilter:
       id: true
       generator:
         strategy: IDENTITY
+  oneToMany:
+    blackLists:
+      targetEntity: Ivoz\Domain\Model\ExternalCallFilterBlackList\ExternalCallFilterBlackListInterface
+      mappedBy: filter
+    whiteList:
+      targetEntity: Ivoz\Domain\Model\ExternalCallFilterWhiteList\ExternalCallFilterWhiteListInterface
+      mappedBy: filter
+    schedules:
+      targetEntity: \Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface
+      mappedBy: filter
+    calendars:
+      targetEntity: \Ivoz\Domain\Model\Calendar\CalendarInterface
+      mappedBy: filter
   lifecycleCallbacks: {  }

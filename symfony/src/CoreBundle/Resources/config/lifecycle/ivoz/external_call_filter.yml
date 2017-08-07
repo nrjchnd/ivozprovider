@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\ExternalCallFilter\SanitizeValues:
+    tags:
+      - { name: ivoz.lifecycle.external_call_filter.pre_persist, priority: 10}
+#    arguments: ~

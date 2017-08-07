@@ -13,7 +13,7 @@ interface ExternalCallFilterRelCalendarInterface extends EntityInterface
      *
      * @return ExternalCallFilterRelCalendarInterface
      */
-    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter);
+    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter = null);
 
 
     /**

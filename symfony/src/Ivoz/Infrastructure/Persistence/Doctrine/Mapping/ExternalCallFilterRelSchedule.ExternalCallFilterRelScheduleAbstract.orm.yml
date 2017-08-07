@@ -13,7 +13,7 @@ Ivoz\Domain\Model\ExternalCallFilterRelSchedule\ExternalCallFilterRelScheduleAbs
       cascade: {  }
       fetch: LAZY
       mappedBy: null
-      inversedBy: null
+      inversedBy: schedules
       joinColumns:
         filterId:
           referencedColumnName: id

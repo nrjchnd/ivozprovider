@@ -13,7 +13,7 @@ interface ExternalCallFilterRelScheduleInterface extends EntityInterface
      *
      * @return ExternalCallFilterRelScheduleInterface
      */
-    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter);
+    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter = null);
 
 
     /**

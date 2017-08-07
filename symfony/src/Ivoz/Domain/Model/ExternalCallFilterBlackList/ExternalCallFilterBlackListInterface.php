@@ -13,7 +13,7 @@ interface ExternalCallFilterBlackListInterface extends EntityInterface
      *
      * @return ExternalCallFilterBlackListInterface
      */
-    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter);
+    public function setFilter(\Ivoz\Domain\Model\ExternalCallFilter\ExternalCallFilterInterface $filter = null);
 
 
     /**

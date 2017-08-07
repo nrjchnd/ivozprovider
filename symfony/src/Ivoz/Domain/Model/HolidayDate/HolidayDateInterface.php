@@ -49,7 +49,7 @@ interface HolidayDateInterface extends EntityInterface
      *
      * @return HolidayDateInterface
      */
-    public function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar);
+    public function setCalendar(\Ivoz\Domain\Model\Calendar\CalendarInterface $calendar = null);
 
 
     /**

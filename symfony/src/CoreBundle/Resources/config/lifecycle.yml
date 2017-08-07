@@ -10,6 +10,7 @@ imports:
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/ddi.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/domain.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/extension.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/external_call_filter.yml" }
 
 services:
   _defaults:
