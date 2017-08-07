@@ -1,0 +1,26 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\Extension\SanitizeValues:
+    tags:
+      - { name: ivoz.lifecycle.extension.pre_persist, priority: 10}
+    arguments:
+      $entityPersister:
+        '@Core\Infrastructure\Domain\Service\DoctrineEntityPersister'
+
+  ##################################
+  ## post_persist
+  ##################################
+  Ivoz\Domain\Service\User\UpdateByExtension:
+    tags:
+      - { name: ivoz.lifecycle.extension.post_persist, priority: 10}
+    arguments:
+      $entityPersister:
+        '@Core\Infrastructure\Domain\Service\DoctrineEntityPersister'
+      $userRepository:
+        '@=service("doctrine.orm.entity_manager").getRepository("Ivoz\\Domain\\Model\\User\\User")'

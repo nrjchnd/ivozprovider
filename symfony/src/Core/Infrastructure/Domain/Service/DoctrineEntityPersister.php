@@ -48,7 +48,6 @@ class DoctrineEntityPersister implements EntityPersisterInterface
             $this->entityUpdater->execute($entity, $dto);
         }
         $this->em->persist($entity);
-//      $this->em->flush();
 
         return $entity;
     }

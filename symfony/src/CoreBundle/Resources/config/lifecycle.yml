@@ -1,14 +1,15 @@
 imports:
-  - { resource: "@CoreBundle/Resources/config/lifecycle/xml_rpc.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/application_server.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/brand.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/brand_service.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/call_forward_setting.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/company.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/company_admin.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/conference_room.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/ddi.yml" }
-  - { resource: "@CoreBundle/Resources/config/lifecycle/domain.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/xml_rpc.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/application_server.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/brand.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/brand_service.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/call_forward_setting.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/company.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/company_admin.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/conference_room.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/ddi.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/domain.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/extension.yml" }
 
 services:
   _defaults:

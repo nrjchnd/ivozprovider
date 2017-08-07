@@ -90,11 +90,21 @@ abstract class TerminalAbstract
         $this->initChangelog();
     }
 
+    /**
+     * @param string $fieldName
+     * @return mixed
+     * @throws \Exception
+     */
     public function initChangelog()
     {
         $this->_initialValues = $this->__toArray();
     }
 
+    /**
+     * @param string $fieldName
+     * @return mixed
+     * @throws \Exception
+     */
     public function hasChanged($fieldName)
     {
         if (array_key_exists($fieldName, $this->_initialValues)) {
@@ -103,6 +113,15 @@ abstract class TerminalAbstract
         $getter = 'get' . ucfisrt($fieldName);
 
         return $this->$getter() != $this->_initialValues[$fieldName];
+    }
+
+    public function getInitialValue($fieldName)
+    {
+        if (array_key_exists($fieldName, $this->_initialValues)) {
+            throw new \Exception($fieldName . ' field was not found');
+        }
+
+        return $this->_initialValues[$fieldName];
     }
 
     /**
