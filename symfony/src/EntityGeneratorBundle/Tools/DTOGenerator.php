@@ -78,7 +78,9 @@ public function <methodName>()
         $metadata->rootEntityName = $metadata->name;
         $metadata->customRepositoryClassName = null;
 
-        $metadata->reflClass = new \ReflectionClass($metadata->name);
+        if (class_exists($metadata->name)) {
+            $metadata->reflClass = new \ReflectionClass($metadata->name);
+        }
 
         return $metadata;
     }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PeerServer;
 
 use Core\Application\DataTransferObjectInterface;

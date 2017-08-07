@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\FeaturesRelBrand;
 
 use Core\Application\DataTransferObjectInterface;

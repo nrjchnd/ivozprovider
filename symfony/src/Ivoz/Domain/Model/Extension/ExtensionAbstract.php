@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Extension;
 
 use Assert\Assertion;

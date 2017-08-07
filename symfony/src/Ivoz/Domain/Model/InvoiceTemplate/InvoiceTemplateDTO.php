@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\InvoiceTemplate;
 
 use Core\Application\DataTransferObjectInterface;

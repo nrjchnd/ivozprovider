@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\XMLRPCLog;
 
 use Assert\Assertion;

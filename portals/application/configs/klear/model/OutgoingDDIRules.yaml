@@ -1,5 +1,6 @@
 production:
   class: \IvozProvider\Model\OutgoingDDIRules
+  entity: Ivoz\Domain\Model\OutgoingDDIRule\OutgoingDDIRule
   fields:
     companyId:
       title: _('Companyid')

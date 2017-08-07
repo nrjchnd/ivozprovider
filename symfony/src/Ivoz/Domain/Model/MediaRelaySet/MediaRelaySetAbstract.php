@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\MediaRelaySet;
 
 use Assert\Assertion;

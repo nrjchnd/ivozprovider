@@ -20,12 +20,6 @@ trait TargetPatternTrait
 
 
     /**
-     * Changelog tracking purpose
-     * @var array
-     */
-
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -37,7 +31,7 @@ trait TargetPatternTrait
     public function __wakeup()
     {
         if ($this->id) {
-            $this->_initialValues = $this->__toArray();
+            $this->initChangelog();
         }
         // Do nothing: Doctrines requirement
     }
@@ -116,30 +110,6 @@ trait TargetPatternTrait
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set brand
-     *
-     * @param \Ivoz\Domain\Model\Brand\Brand $brand
-     *
-     * @return self
-     */
-    public function setBrand(\Ivoz\Domain\Model\Brand\Brand $brand)
-    {
-        $this->brand = $brand;
-
-        return $this;
-    }
-
-    /**
-     * Get brand
-     *
-     * @return \Ivoz\Domain\Model\Brand\Brand
-     */
-    public function getBrand()
-    {
-        return $this->brand;
     }
 
 

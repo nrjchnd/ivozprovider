@@ -15,12 +15,6 @@ trait InvoiceTrait
 
 
     /**
-     * Changelog tracking purpose
-     * @var array
-     */
-
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -32,7 +26,7 @@ trait InvoiceTrait
     public function __wakeup()
     {
         if ($this->id) {
-            $this->_initialValues = $this->__toArray();
+            $this->initChangelog();
         }
         // Do nothing: Doctrines requirement
     }

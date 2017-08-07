@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Queue;
 
 use Assert\Assertion;

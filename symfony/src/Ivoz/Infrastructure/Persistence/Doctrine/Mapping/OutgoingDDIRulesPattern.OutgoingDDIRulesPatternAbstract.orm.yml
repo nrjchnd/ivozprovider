@@ -1,0 +1,62 @@
+Ivoz\Domain\Model\OutgoingDDIRulesPattern\OutgoingDDIRulesPatternAbstract:
+  type: mappedSuperclass
+  indexes:
+    OutgoingDDIRulesPatterns_ibfk_2:
+      columns:
+        - matchListId
+    OutgoingDDIRulesPatterns_ibfk_3:
+      columns:
+        - forcedDDIId
+    IDX_A4399FB2CAA0E202:
+      columns:
+        - outgoingDDIRuleId
+  uniqueConstraints:
+    patternPriority:
+      columns:
+        - outgoingDDIRuleId
+        - priority
+  fields:
+    action:
+      type: string
+      nullable: false
+      length: 10
+      options:
+        fixed: false
+        comment: '[enum:keep|force]'
+    priority:
+      type: smallint
+      nullable: false
+      options:
+        unsigned: false
+        default: '1'
+  manyToOne:
+    outgoingDDIRuleId:
+      targetEntity: Ivoz\Domain\Model\OutgoingDDIRule\OutgoingDDIRuleInterface
+      cascade: {  }
+      fetch: LAZY
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        outgoingDDIRuleId:
+          referencedColumnName: id
+      orphanRemoval: false
+    matchListId:
+      targetEntity: Ivoz\Domain\Model\MatchList\MatchListInterface
+      cascade: {  }
+      fetch: LAZY
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        matchListId:
+          referencedColumnName: id
+      orphanRemoval: false
+    forcedDDIId:
+      targetEntity: Ivoz\Domain\Model\DDI\DDIInterface
+      cascade: {  }
+      fetch: LAZY
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        forcedDDIId:
+          referencedColumnName: id
+      orphanRemoval: false

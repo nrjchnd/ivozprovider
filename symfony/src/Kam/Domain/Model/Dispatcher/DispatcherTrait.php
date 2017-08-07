@@ -15,12 +15,6 @@ trait DispatcherTrait
 
 
     /**
-     * Changelog tracking purpose
-     * @var array
-     */
-
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -32,7 +26,7 @@ trait DispatcherTrait
     public function __wakeup()
     {
         if ($this->id) {
-            $this->_initialValues = $this->__toArray();
+            $this->initChangelog();
         }
         // Do nothing: Doctrines requirement
     }

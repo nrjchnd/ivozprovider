@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\BrandURL;
 
 use Assert\Assertion;

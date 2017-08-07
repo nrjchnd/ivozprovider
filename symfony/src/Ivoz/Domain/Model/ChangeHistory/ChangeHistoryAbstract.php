@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\ChangeHistory;
 
 use Assert\Assertion;

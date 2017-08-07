@@ -15,12 +15,6 @@ trait PsEndpointTrait
 
 
     /**
-     * Changelog tracking purpose
-     * @var array
-     */
-
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -32,7 +26,7 @@ trait PsEndpointTrait
     public function __wakeup()
     {
         if ($this->id) {
-            $this->_initialValues = $this->__toArray();
+            $this->initChangelog();
         }
         // Do nothing: Doctrines requirement
     }
@@ -71,7 +65,7 @@ trait PsEndpointTrait
          */
         parent::updateFromDTO($dto);
 
-
+        
         return $this;
     }
 
@@ -91,8 +85,8 @@ trait PsEndpointTrait
     protected function __toArray()
     {
         return parent::__toArray() + [
-                'id' => $this->getId()
-            ];
+            'id' => $this->getId()
+        ];
     }
 
 

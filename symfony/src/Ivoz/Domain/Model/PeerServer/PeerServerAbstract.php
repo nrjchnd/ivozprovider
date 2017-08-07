@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\PeerServer;
 
 use Assert\Assertion;

@@ -1,0 +1,14 @@
+Ivoz\Domain\Model\OutgoingDDIRulesPattern\OutgoingDDIRulesPattern:
+  repositoryClass: Ivoz\Infrastructure\Persistence\Doctrine\OutgoingDDIRulesPatternDoctrineRepository
+  type: entity
+  table: OutgoingDDIRulesPatterns
+  id:
+    id:
+      type: integer
+      nullable: false
+      options:
+        unsigned: true
+      id: true
+      generator:
+        strategy: IDENTITY
+  lifecycleCallbacks: {  }

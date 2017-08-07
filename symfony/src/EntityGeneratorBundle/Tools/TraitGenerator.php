@@ -141,4 +141,130 @@ protected function __toArray()
 
         return implode("\n", $lines);
     }
+
+
+    /**
+     * @param ClassMetadataInfo $metadata
+     *
+     * @return string
+     */
+    protected function generateEntityAssociationMappingProperties(ClassMetadataInfo $metadata)
+    {
+        $lines = array();
+
+        foreach ($metadata->associationMappings as $associationMapping) {
+            if ($this->hasProperty($associationMapping['fieldName'], $metadata)) {
+                continue;
+            }
+
+            if (isset($associationMapping['declared'])) {
+                continue;
+            }
+
+            $lines[] = $this->generateAssociationMappingPropertyDocBlock($associationMapping, $metadata);
+            $lines[] = $this->spaces . $this->fieldVisibility . ' $' . $associationMapping['fieldName']
+                . ($associationMapping['type'] == 'manyToMany' ? ' = array()' : null) . ";\n";
+        }
+
+        return implode("\n", $lines);
+    }
+
+
+    /**
+     * @param string            $property
+     * @param ClassMetadataInfo $metadata
+     *
+     * @return bool
+     */
+    protected function hasProperty($property, ClassMetadataInfo $metadata)
+    {
+        if ($this->extendsClass() || (!$this->isNew && class_exists($metadata->name))) {
+            // don't generate property if its already on the base class.
+            $reflClass = new \ReflectionClass($this->getClassToExtend() ?: $metadata->name);
+            if ($reflClass->hasProperty($property)) {
+                return true;
+            }
+        }
+
+        return (
+            isset($this->staticReflection[$metadata->name]) &&
+            in_array($property, $this->staticReflection[$metadata->name]['properties'])
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function hasMethod($method, ClassMetadataInfo $metadata)
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function generateEntityStubMethods(ClassMetadataInfo $metadata)
+    {
+        $fieldMappings = $metadata->fieldMappings;
+        $associationMapping = $metadata->associationMappings;
+        $embeddedClasses = $metadata->embeddedClasses;
+
+        $metadata->fieldMappings = [];
+        $metadata->associationMappings = [];
+
+        if ($this->skipEmbeddedMethods) {
+            $metadata->embeddedClasses = [];
+        }
+
+        $parentMethodsStr = parent::generateEntityStubMethods($metadata);
+        $parentMethods = explode("\n\n", $parentMethodsStr);
+
+        $metadata->embeddedClasses = $embeddedClasses;
+        $methods = array();
+
+        $metadata->associationMappings = $associationMapping;
+
+        $metadata->fieldMappings = $fieldMappings;
+        foreach ($metadata->fieldMappings as $fieldMapping) {
+
+            if (!isset($fieldMapping['id'])) {
+                continue;
+            }
+
+            if ($code = $this->generateEntityStubMethod($metadata, 'get', $fieldMapping['fieldName'], $fieldMapping['type'])) {
+                $methods[] = $code;
+            }
+        }
+
+        foreach ($metadata->associationMappings as $associationMapping) {
+
+            if (isset($associationMapping['declared'])) {
+                continue;
+            }
+
+            if ($associationMapping['type'] & ClassMetadataInfo::TO_MANY) {
+                if ($code = $this->generateEntityStubMethod($metadata, 'add', $associationMapping['fieldName'], $associationMapping['targetEntity'])) {
+                    $methods[] = $code;
+                }
+                if ($code = $this->generateEntityStubMethod($metadata, 'remove', $associationMapping['fieldName'], $associationMapping['targetEntity'])) {
+                    $methods[] = $code;
+                }
+                if ($code = $this->generateEntityStubMethod($metadata, 'replace', $associationMapping['fieldName'], 'IteratorAggregate')) {
+                    $methods[] = $code;
+                }
+                if ($code = $this->generateEntityStubMethod($metadata, 'get', $associationMapping['fieldName'], 'Doctrine\Common\Collections\Collection')) {
+                    $methods[] = $code;
+                }
+            }
+        }
+
+        $response = array_merge($methods, $parentMethods);
+
+        if ($this->codeCoverageIgnoreBlock) {
+            array_unshift($response, $this->spaces . "// @codeCoverageIgnoreStart");
+            $response[] = $this->spaces . "// @codeCoverageIgnoreEnd";
+        }
+
+        return implode("\n\n", $response);
+    }
 }

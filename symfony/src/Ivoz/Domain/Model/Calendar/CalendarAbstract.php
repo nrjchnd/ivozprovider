@@ -1,5 +1,4 @@
 <?php
-
 namespace Ivoz\Domain\Model\Calendar;
 
 use Assert\Assertion;

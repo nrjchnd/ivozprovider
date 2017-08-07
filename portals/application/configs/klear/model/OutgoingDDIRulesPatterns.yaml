@@ -1,5 +1,6 @@
 production:
   class: \IvozProvider\Model\OutgoingDDIRulesPatterns
+  entity: Ivoz\Domain\Model\OutgoingDDIRulesPattern\OutgoingDDIRulesPattern
   fields:
     outgoingDDIRuleId:
       title: _('Outgoing DDI Rule Pattern')
