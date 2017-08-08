@@ -211,7 +211,7 @@ abstract class FriendsPatternAbstract
      *
      * @return self
      */
-    public function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend)
+    public function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend = null)
     {
         $this->friend = $friend;
 

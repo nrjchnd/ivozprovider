@@ -156,6 +156,11 @@ class FriendDTO implements DataTransferObjectInterface
     private $psEndpoints = null;
 
     /**
+     * @var array|null
+     */
+    private $patterns = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -184,7 +189,8 @@ class FriendDTO implements DataTransferObjectInterface
             'callACLId' => $this->getCallACLId(),
             'outgoingDDIId' => $this->getOutgoingDDIId(),
             'languageId' => $this->getLanguageId(),
-            'psEndpointsId' => $this->getPsEndpointsId()
+            'psEndpointsId' => $this->getPsEndpointsId(),
+            'patternsId' => $this->getPatternsId()
         ];
     }
 
@@ -207,6 +213,15 @@ class FriendDTO implements DataTransferObjectInterface
             );
         }
 
+        $items = $this->getPatterns();
+        $this->patterns = [];
+        foreach ($items as $item) {
+            $this->patterns[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\FriendsPattern\\FriendsPattern',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -217,6 +232,10 @@ class FriendDTO implements DataTransferObjectInterface
         $this->psEndpoints = $transformer->transform(
             'Ast\\Domain\\Model\\PsEndpoint\\PsEndpoint',
             $this->psEndpoints
+        );
+        $this->patterns = $transformer->transform(
+            'Ivoz\\Domain\\Model\\FriendsPattern\\FriendsPattern',
+            $this->patterns
         );
     }
 
@@ -738,6 +757,26 @@ class FriendDTO implements DataTransferObjectInterface
     public function getPsEndpoints()
     {
         return $this->psEndpoints;
+    }
+
+    /**
+     * @param array $patterns
+     *
+     * @return FriendDTO
+     */
+    public function setPatterns($patterns)
+    {
+        $this->patterns = $patterns;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPatterns()
+    {
+        return $this->patterns;
     }
 }
 

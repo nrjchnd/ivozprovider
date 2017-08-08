@@ -13,6 +13,7 @@ imports:
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/external_call_filter.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/faxes.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/faxes_in_out.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/friend.yml" }
 
 services:
   _defaults:

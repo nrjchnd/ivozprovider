@@ -15,4 +15,7 @@ Ivoz\Domain\Model\Friend\Friend:
     psEndpoints:
       targetEntity: Ast\Domain\Model\PsEndpoint\PsEndpointInterface
       mappedBy: friend
+    patterns:
+      targetEntity: Ivoz\Domain\Model\FriendsPattern\FriendsPatternInterface
+      mappedBy: friend
   lifecycleCallbacks: {  }

@@ -141,7 +141,7 @@ class Friends extends Raw\Friends
         // Check if the configured transport is not the standard (UDP)
         $transport = $this->getTransport();
         if ($transport != 'udp') {
-            $uri .= ";transport=$tranport";
+            $uri .= ";transport=$transport";
         }
 
         return $uri;

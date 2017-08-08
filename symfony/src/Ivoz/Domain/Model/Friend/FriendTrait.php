@@ -20,6 +20,11 @@ trait FriendTrait
      */
     protected $psEndpoints;
 
+    /**
+     * @var ArrayCollection
+     */
+    protected $patterns;
+
 
     /**
      * Constructor
@@ -28,6 +33,7 @@ trait FriendTrait
     {
         parent::__construct(...func_get_args());
         $this->psEndpoints = new ArrayCollection();
+        $this->patterns = new ArrayCollection();
     }
 
     public function __wakeup()
@@ -60,6 +66,7 @@ trait FriendTrait
 
         return $self
             ->replacePsEndpoints($dto->getPsEndpoints())
+            ->replacePatterns($dto->getPatterns())
         ;
     }
 
@@ -75,7 +82,8 @@ trait FriendTrait
         parent::updateFromDTO($dto);
 
         $this
-            ->replacePsEndpoints($dto->getPsEndpoints());
+            ->replacePsEndpoints($dto->getPsEndpoints())
+            ->replacePatterns($dto->getPatterns());
 
 
         return $this;
@@ -89,7 +97,8 @@ trait FriendTrait
         $dto = parent::toDTO();
         return $dto
             ->setId($this->getId())
-            ->setPsEndpoints($this->getPsEndpoints());
+            ->setPsEndpoints($this->getPsEndpoints())
+            ->setPatterns($this->getPatterns());
     }
 
     /**
@@ -183,6 +192,78 @@ trait FriendTrait
         }
 
         return $this->psEndpoints->toArray();
+    }
+
+    /**
+     * Add pattern
+     *
+     * @param \Ivoz\Domain\Model\FriendsPattern\FriendsPattern $pattern
+     *
+     * @return FriendTrait
+     */
+    public function addPattern(\Ivoz\Domain\Model\FriendsPattern\FriendsPattern $pattern)
+    {
+        $this->patterns[] = $pattern;
+
+        return $this;
+    }
+
+    /**
+     * Remove pattern
+     *
+     * @param \Ivoz\Domain\Model\FriendsPattern\FriendsPattern $pattern
+     */
+    public function removePattern(\Ivoz\Domain\Model\FriendsPattern\FriendsPattern $pattern)
+    {
+        $this->patterns->removeElement($pattern);
+    }
+
+    /**
+     * Replace patterns
+     *
+     * @param \Ivoz\Domain\Model\FriendsPattern\FriendsPattern[] $patterns
+     * @return self
+     */
+    public function replacePatterns(array $patterns)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($patterns as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setFriend($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->patterns as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->patterns[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removePattern($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addPattern($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get patterns
+     *
+     * @return array
+     */
+    public function getPatterns(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->patterns->matching($criteria)->toArray();
+        }
+
+        return $this->patterns->toArray();
     }
 
 

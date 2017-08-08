@@ -49,7 +49,7 @@ interface FriendsPatternInterface extends EntityInterface
      *
      * @return FriendsPatternInterface
      */
-    public function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend);
+    public function setFriend(\Ivoz\Domain\Model\Friend\FriendInterface $friend = null);
 
 
     /**

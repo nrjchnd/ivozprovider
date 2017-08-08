@@ -1,0 +1,35 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\Friend\SanitizeValues:
+    tags:
+      - { name: ivoz.lifecycle.friend.pre_persist, priority: 10}
+
+  ##################################
+  ## post_persist
+  ##################################
+  Ast\Domain\Service\PsEndpoint\UpdateByFriend:
+    tags:
+      - { name: ivoz.lifecycle.friend.post_persist, priority: 10}
+    arguments:
+      $entityPersister:
+        '@Core\Infrastructure\Domain\Service\DoctrineEntityPersister'
+      $psEndpointRepository:
+        '@=service("doctrine.orm.entity_manager").getRepository("Ast\\Domain\\Model\\PsEndpoint\\PsEndpoint")'
+
+  Ast\Domain\Service\PsAor\UpdateByFriend:
+    tags:
+      - { name: ivoz.lifecycle.friend.post_persist, priority: 20}
+    arguments:
+      $entityPersister:
+        '@Core\Infrastructure\Domain\Service\DoctrineEntityPersister'
+      $psEndpointRepository:
+        '@=service("doctrine.orm.entity_manager").getRepository("Ast\\Domain\\Model\\PsEndpoint\\PsEndpoint")'
+      $psAorRepository:
+        '@=service("doctrine.orm.entity_manager").getRepository("Ast\\Domain\\Model\\PsAor\\PsAor")'
+
