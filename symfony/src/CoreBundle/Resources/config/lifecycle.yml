@@ -11,6 +11,8 @@ imports:
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/domain.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/extension.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/external_call_filter.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/faxes.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/faxes_in_out.yml" }
 
 services:
   _defaults:

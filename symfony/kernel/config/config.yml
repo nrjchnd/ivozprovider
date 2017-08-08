@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: logger.yml }
     - { resource: services.yml }
     - { resource: "@CoreBundle/Resources/config/orm_target_entities.yml" }
     - { resource: "@ZfBundle/Resources/config/services.yml" }

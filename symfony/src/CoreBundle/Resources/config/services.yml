@@ -1,5 +1,6 @@
 imports:
   - { resource: "@CoreBundle/Resources/config/gearmand.yml" }
+  - { resource: "@CoreBundle/Resources/config/asterisk.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle.yml" }
 
 services:
