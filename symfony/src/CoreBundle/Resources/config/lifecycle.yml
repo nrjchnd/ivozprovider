@@ -1,5 +1,4 @@
 imports:
-  - { resource: "@CoreBundle/Resources/config/legacy.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/xml_rpc.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/application_server.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/brand.yml" }
@@ -16,6 +15,7 @@ imports:
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/faxes_in_out.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/friend.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/generic_music_on_hold.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/hunt_group.yml" }
 
 services:
   _defaults:

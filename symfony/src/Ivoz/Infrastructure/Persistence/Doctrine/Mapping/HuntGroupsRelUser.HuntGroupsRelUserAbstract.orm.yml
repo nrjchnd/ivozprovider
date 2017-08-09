@@ -34,7 +34,7 @@ Ivoz\Domain\Model\HuntGroupsRelUser\HuntGroupsRelUserAbstract:
       cascade: {  }
       fetch: LAZY
       mappedBy: null
-      inversedBy: null
+      inversedBy: huntGroupsRelUsers
       joinColumns:
         huntGroupId:
           referencedColumnName: id

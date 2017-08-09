@@ -225,7 +225,7 @@ abstract class HuntGroupsRelUserAbstract
      *
      * @return self
      */
-    public function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup)
+    public function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup = null)
     {
         $this->huntGroup = $huntGroup;
 

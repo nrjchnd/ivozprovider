@@ -2,6 +2,8 @@
 namespace Ivoz\Domain\Model\HuntGroup;
 
 use Core\Application\DataTransferObjectInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * HuntGroupTrait
@@ -13,6 +15,11 @@ trait HuntGroupTrait
      */
     protected $id;
 
+    /**
+     * @var ArrayCollection
+     */
+    protected $huntGroupsRelUsers;
+
 
     /**
      * Constructor
@@ -20,7 +27,7 @@ trait HuntGroupTrait
     public function __construct()
     {
         parent::__construct(...func_get_args());
-
+        $this->huntGroupsRelUsers = new ArrayCollection();
     }
 
     public function __wakeup()
@@ -51,7 +58,9 @@ trait HuntGroupTrait
          */
         $self = parent::fromDTO($dto);
 
-        return $self;
+        return $self
+            ->replaceHuntGroupsRelUsers($dto->getHuntGroupsRelUsers())
+        ;
     }
 
     /**
@@ -65,7 +74,10 @@ trait HuntGroupTrait
          */
         parent::updateFromDTO($dto);
 
-        
+        $this
+            ->replaceHuntGroupsRelUsers($dto->getHuntGroupsRelUsers());
+
+
         return $this;
     }
 
@@ -76,7 +88,8 @@ trait HuntGroupTrait
     {
         $dto = parent::toDTO();
         return $dto
-            ->setId($this->getId());
+            ->setId($this->getId())
+            ->setHuntGroupsRelUsers($this->getHuntGroupsRelUsers());
     }
 
     /**
@@ -98,6 +111,78 @@ trait HuntGroupTrait
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add huntGroupsRelUser
+     *
+     * @param \Ivoz\Domain\Model\HuntGroupsRelUser\HuntGroupsRelUserInterface $huntGroupsRelUser
+     *
+     * @return HuntGroupTrait
+     */
+    public function addHuntGroupsRelUser(\Ivoz\Domain\Model\HuntGroupsRelUser\HuntGroupsRelUserInterface $huntGroupsRelUser)
+    {
+        $this->huntGroupsRelUsers[] = $huntGroupsRelUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove huntGroupsRelUser
+     *
+     * @param \Ivoz\Domain\Model\HuntGroupsRelUser\HuntGroupsRelUserInterface $huntGroupsRelUser
+     */
+    public function removeHuntGroupsRelUser(\Ivoz\Domain\Model\HuntGroupsRelUser\HuntGroupsRelUserInterface $huntGroupsRelUser)
+    {
+        $this->huntGroupsRelUsers->removeElement($huntGroupsRelUser);
+    }
+
+    /**
+     * Replace huntGroupsRelUsers
+     *
+     * @param \Ivoz\Domain\Model\HuntGroupsRelUser\HuntGroupsRelUserInterface[] $huntGroupsRelUsers
+     * @return self
+     */
+    public function replaceHuntGroupsRelUsers(array $huntGroupsRelUsers)
+    {
+        $updatedEntities = [];
+        $fallBackId = -1;
+        foreach ($huntGroupsRelUsers as $entity) {
+            $index = $entity->getId() ? $entity->getId() : $fallBackId--;
+            $updatedEntities[$index] = $entity;
+            $entity->setHuntGroup($this);
+        }
+        $updatedEntityKeys = array_keys($updatedEntities);
+
+        foreach ($this->huntGroupsRelUsers as $key => $entity) {
+            $identity = $entity->getId();
+            if (in_array($identity, $updatedEntityKeys)) {
+                $this->huntGroupsRelUsers[$key] = $updatedEntities[$identity];
+            } else {
+                $this->removeHuntGroupsRelUser($key);
+            }
+            unset($updatedEntities[$identity]);
+        }
+
+        foreach ($updatedEntities as $entity) {
+            $this->addHuntGroupsRelUser($entity);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get huntGroupsRelUsers
+     *
+     * @return array
+     */
+    public function getHuntGroupsRelUsers(Criteria $criteria = null)
+    {
+        if (!is_null($criteria)) {
+            return $this->huntGroupsRelUsers->matching($criteria)->toArray();
+        }
+
+        return $this->huntGroupsRelUsers->toArray();
     }
 
 

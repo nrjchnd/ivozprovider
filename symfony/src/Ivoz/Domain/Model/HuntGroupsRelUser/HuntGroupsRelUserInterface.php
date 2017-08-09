@@ -49,7 +49,7 @@ interface HuntGroupsRelUserInterface extends EntityInterface
      *
      * @return HuntGroupsRelUserInterface
      */
-    public function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup);
+    public function setHuntGroup(\Ivoz\Domain\Model\HuntGroup\HuntGroupInterface $huntGroup = null);
 
 
     /**

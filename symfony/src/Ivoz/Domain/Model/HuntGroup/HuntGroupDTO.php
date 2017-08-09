@@ -91,6 +91,11 @@ class HuntGroupDTO implements DataTransferObjectInterface
     private $noAnswerVoiceMailUser;
 
     /**
+     * @var array|null
+     */
+    private $huntGroupsRelUsers = null;
+
+    /**
      * @return array
      */
     public function __toArray()
@@ -107,7 +112,8 @@ class HuntGroupDTO implements DataTransferObjectInterface
             'companyId' => $this->getCompanyId(),
             'noAnswerLocutionId' => $this->getNoAnswerLocutionId(),
             'noAnswerExtensionId' => $this->getNoAnswerExtensionId(),
-            'noAnswerVoiceMailUserId' => $this->getNoAnswerVoiceMailUserId()
+            'noAnswerVoiceMailUserId' => $this->getNoAnswerVoiceMailUserId(),
+            'huntGroupsRelUsersId' => $this->getHuntGroupsRelUsersId()
         ];
     }
 
@@ -120,6 +126,15 @@ class HuntGroupDTO implements DataTransferObjectInterface
         $this->noAnswerLocution = $transformer->transform('Ivoz\\Domain\\Model\\Locution\\Locution', $this->getNoAnswerLocutionId());
         $this->noAnswerExtension = $transformer->transform('Ivoz\\Domain\\Model\\Extension\\Extension', $this->getNoAnswerExtensionId());
         $this->noAnswerVoiceMailUser = $transformer->transform('Ivoz\\Domain\\Model\\User\\User', $this->getNoAnswerVoiceMailUserId());
+        $items = $this->getHuntGroupsRelUsers();
+        $this->huntGroupsRelUsers = [];
+        foreach ($items as $item) {
+            $this->huntGroupsRelUsers[] = $transformer->transform(
+                'Ivoz\\Domain\\Model\\HuntGroupsRelUser\\HuntGroupsRelUserInterface',
+                $item
+            );
+        }
+
     }
 
     /**
@@ -127,7 +142,10 @@ class HuntGroupDTO implements DataTransferObjectInterface
      */
     public function transformCollections(CollectionTransformerInterface $transformer)
     {
-
+        $this->huntGroupsRelUsers = $transformer->transform(
+            'Ivoz\\Domain\\Model\\HuntGroupsRelUser\\HuntGroupsRelUserInterface',
+            $this->huntGroupsRelUsers
+        );
     }
 
     /**
@@ -400,6 +418,26 @@ class HuntGroupDTO implements DataTransferObjectInterface
     public function getNoAnswerVoiceMailUser()
     {
         return $this->noAnswerVoiceMailUser;
+    }
+
+    /**
+     * @param array $huntGroupsRelUsers
+     *
+     * @return HuntGroupDTO
+     */
+    public function setHuntGroupsRelUsers($huntGroupsRelUsers)
+    {
+        $this->huntGroupsRelUsers = $huntGroupsRelUsers;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHuntGroupsRelUsers()
+    {
+        return $this->huntGroupsRelUsers;
     }
 }
 

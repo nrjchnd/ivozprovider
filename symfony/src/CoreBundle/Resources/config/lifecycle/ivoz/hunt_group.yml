@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\HuntGroup\SanitizeValues:
+    tags:
+      - { name: ivoz.lifecycle.hunt_group.pre_persist, priority: 20}
