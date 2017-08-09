@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\GenericMusicOnHold\SanitizeValues:
+    tags:
+      - { name: ivoz.lifecycle.generic_music_on_hold.pre_persist, priority: 10}
+
+  ##################################
+  ## post_persist
+  ##################################
+  Ivoz\Domain\Service\GenericMusicOnHold\Recoder:
+    tags:
+      - { name: ivoz.lifecycle.generic_music_on_hold.post_persist, priority: 10}
