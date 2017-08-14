@@ -2,6 +2,7 @@
 
 namespace Kam\Infrastructure\Persistence\Doctrine;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Kam\Domain\Model\AccCdr\AccCdrRepository;
 
@@ -13,4 +14,14 @@ use Kam\Domain\Model\AccCdr\AccCdrRepository;
  */
 class AccCdrDoctrineRepository extends EntityRepository implements AccCdrRepository
 {
+
+    public function fetchTarificableList(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        $criteria += [
+            Criteria::expr()->neq('peeringContract' , null),
+            Criteria::expr()->neq('peeringContract' , '')
+        ];
+
+        return $this->findBy($criteria, $orderBy, $limit, $offset);
+    }
 }

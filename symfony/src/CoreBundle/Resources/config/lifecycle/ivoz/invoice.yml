@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  ##################################
+  ## pre_persist
+  ##################################
+  Ivoz\Domain\Service\Invoice\CheckValidity:
+    tags:
+      - { name: ivoz.lifecycle.invoice.pre_persist, priority: 10 }
+    arguments:
+      $accCdrRepository:
+        '@=service("doctrine.orm.entity_manager").getRepository("Kam\\Domain\\Model\\AccCdr\\AccCdr")'

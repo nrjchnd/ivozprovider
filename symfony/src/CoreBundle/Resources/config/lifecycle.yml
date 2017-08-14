@@ -16,6 +16,7 @@ imports:
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/friend.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/generic_music_on_hold.yml" }
   - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/hunt_group.yml" }
+  - { resource: "@CoreBundle/Resources/config/lifecycle/ivoz/invoice.yml" }
 
 services:
   _defaults:

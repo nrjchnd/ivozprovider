@@ -43,10 +43,16 @@ class Invoices extends Raw\Invoices
     {
 
         $invoiceTz = $invoice->getCompany()->getDefaultTimezone()->getTz();
+        /**
+         * @var \Zend_Date $inDate
+         */
         $inDate = $invoice->getInDate(true);
         $inDate->setTimezone($invoiceTz);
         $outDate = $invoice->getOutDate(true);
         $outDate->setTimezone($invoiceTz);
+        /**
+         * @var \Zend_Date $outDate
+         */
         $outDate->addDay(1)->subSecond(1);
 
         if ($inDate->compare($outDate) >= 0) {
